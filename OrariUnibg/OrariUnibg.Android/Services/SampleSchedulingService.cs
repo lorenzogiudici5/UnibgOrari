@@ -20,8 +20,8 @@ namespace OrariUnibg.Droid.Services
         {
             System.Diagnostics.Debug.WriteLine("START SERVICE");
             _intent = intent;
-            string lez = "";
             DateTime date;
+
             if (DateTime.Now.Hour > 18)
                 date = DateTime.Now.AddDays(1);
             else

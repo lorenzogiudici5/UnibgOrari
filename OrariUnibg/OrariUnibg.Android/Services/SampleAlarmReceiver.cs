@@ -50,7 +50,7 @@ namespace OrariUnibg.Droid.Services
             //intent.PutExtra (ALARM_ACTION, true);
             pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
             //PendingIntentFlags.UpdateCurrent
-            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 10000, pi);
+            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour , pi);
             Console.WriteLine(alarmTime);
 
             // Enable {@code SampleBootReceiver} to automatically restart the alarm when the

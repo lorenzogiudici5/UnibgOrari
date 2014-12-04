@@ -105,7 +105,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AlarmReceiver.cs" />
     <Compile Include="Services\Notification_Android.cs" />
     <Compile Include="Services\SampleAlarmReceiver.cs" />
     <Compile Include="Services\SampleBootReceiver.cs" />
