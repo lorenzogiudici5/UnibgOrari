@@ -25,24 +25,6 @@ namespace OrariUnibg
                 Source = "UnibgOk.png"
             };
 
-            var btnSet = new Button()
-            {
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                Text = "Set Alarm",
-                BackgroundColor = Color.FromHex("10528c"),
-                TextColor = Color.White,
-                BorderColor = Color.White,
-            };        
-
-            var btnCancel = new Button()
-            {
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                Text = "Cancel Alarm",
-                BackgroundColor = Color.FromHex("10528c"),
-                TextColor = Color.White,
-                BorderColor = Color.White,
-            };
-
             var btnGiorn = new Button()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -59,16 +41,6 @@ namespace OrariUnibg
                 BackgroundColor = Color.FromHex("10528c"),
                 TextColor = Color.White,
                 BorderColor = Color.White,
-            };
-
-            btnSet.Clicked += (sender, arg) =>
-            {
-                DependencyService.Get<INotification>().Notify(true);
-            };     
-
-            btnCancel.Clicked += (sender, arg) =>
-            {
-                DependencyService.Get<INotification>().Notify(false);
             };
 
             btnGiorn.Clicked += (sender, arg) =>
@@ -88,7 +60,7 @@ namespace OrariUnibg
                 Padding = new Thickness(10),
                 Children = { 
                     logo, 
-                    new StackLayout() { Spacing = 5, Children={ btnSet, btnCancel, btnGiorn, btnComp}} }
+                    new StackLayout() { Spacing = 5, Children={ btnGiorn, btnComp}} }
             };
 
             Content = layout;
