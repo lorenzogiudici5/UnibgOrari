@@ -43,11 +43,14 @@
     <Compile Include="Models\Laurea.cs" />
     <Compile Include="Models\CorsoGiornaliero.cs" />
     <Compile Include="Models\Lezione.cs" />
+    <Compile Include="Services\Database\DbSQLite.cs" />
+    <Compile Include="Services\Database\ISQLite.cs" />
     <Compile Include="Services\INotification.cs" />
     <Compile Include="View\OrarioCompletoGroup.cs" />
     <Compile Include="View\OrarioCompleto.cs" />
     <Compile Include="View\OrarioGiornaliero.cs" />
     <Compile Include="View\SelectCompleto.cs" />
+    <Compile Include="View\ViewCells\FavouriteCell.cs" />
     <Compile Include="View\ViewCells\HeaderCell.cs" />
     <Compile Include="View\ViewCells\OrarioComplCellGroup.cs" />
     <Compile Include="View\ViewCells\OrarioGiornCell.cs" />
@@ -69,6 +72,9 @@
     </Reference>
     <Reference Include="Refractored.Xam.Settings.Abstractions">
       <HintPath>..\..\packages\Xam.Plugins.Settings.1.4.0.1\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10\Refractored.Xam.Settings.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.Net">
+      <HintPath>..\..\packages\SQLite.Net-PCL.2.4.1\lib\portable-win8+net45+wp8+wpa81+MonoAndroid1+MonoTouch1\SQLite.Net.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>

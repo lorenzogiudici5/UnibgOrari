@@ -6,25 +6,44 @@ using System.Threading.Tasks;
 using OrariUnibg.Services;
 using OrariUnibg.View;
 using Xamarin.Forms;
+using OrariUnibg.Services.Database;
+using OrariUnibg.View.ViewCells;
 
 namespace OrariUnibg
 {
     public class MainPage : ContentPage
     {
-        Label label;
+        #region Constructor
         public MainPage()
+        {
+            db = new DbSQLite();
+            Content = getView();
+        }
+        #endregion
+
+        #region Private Fields
+        private Label label;
+        private ListView listView;
+        private DbSQLite db;
+        #endregion
+        
+        public Xamarin.Forms.View getView()
         {
             Title = "OrariUnibg";
             label = new Label();
 
-            var logo = new Image()
+            //var logo = new Image()
+            //{
+            //    HorizontalOptions = LayoutOptions.CenterAndExpand,
+            //    VerticalOptions = LayoutOptions.CenterAndExpand,
+            //    //Source = "logo_Unibg"
+            //    Source = "UnibgOk.png"
+            //};
+            listView = new ListView()
             {
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                //Source = "logo_Unibg"
-                Source = "UnibgOk.png"
+                ItemsSource = db.GetItems(),
+                ItemTemplate = new DataTemplate(typeof(FavouriteCell))
             };
-
             var btnGiorn = new Button()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -60,7 +79,8 @@ namespace OrariUnibg
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Padding = new Thickness(10),
                 Children = { 
-                    logo, 
+                    listView,
+                    //logo, 
                     new StackLayout() { Spacing = 5, Children={ btnGiorn, btnComp}} }
             };
 
@@ -70,7 +90,7 @@ namespace OrariUnibg
                 Content = layout
             };
 
-            Content = scroll;
+            return scroll;
         }
     }
 }
