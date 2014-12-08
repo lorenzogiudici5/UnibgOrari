@@ -9,7 +9,6 @@ namespace OrariUnibg
 {
     public class App
     {
-        //static string s = "TEST";
         public static Page GetMainPage()
         {
             //GetString();
@@ -20,21 +19,7 @@ namespace OrariUnibg
                 BarTextColor = Color.White
             };
             return nav;
-            //return new ContentPage
-            //{
-            //    Content = new Label
-            //    {
-            //        Text = "TEST",
-            //        VerticalOptions = LayoutOptions.CenterAndExpand,
-            //        HorizontalOptions = LayoutOptions.CenterAndExpand,
-            //    },
-            //};
         }
-
-        //public static void GetString()
-        //{
-        //    s = Web.GetWebString();
-        //}
 
     }
 }

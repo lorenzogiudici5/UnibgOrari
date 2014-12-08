@@ -53,6 +53,7 @@ namespace OrariUnibg
                 this.Navigation.PushAsync(new SelectCompleto());
             };
 
+
             var layout = new StackLayout()
             {
                 BackgroundColor = Color.White,
@@ -63,7 +64,13 @@ namespace OrariUnibg
                     new StackLayout() { Spacing = 5, Children={ btnGiorn, btnComp}} }
             };
 
-            Content = layout;
+            
+            var scroll = new ScrollView()
+            {
+                Content = layout
+            };
+
+            Content = scroll;
         }
     }
 }
