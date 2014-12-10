@@ -61,16 +61,6 @@ namespace OrariUnibg
                 BorderColor = Color.White,
             };
 
-            btnSet.Clicked += (sender, arg) =>
-            {
-                DependencyService.Get<INotification>().Notify(true);
-            };     
-
-            btnCancel.Clicked += (sender, arg) =>
-            {
-                DependencyService.Get<INotification>().Notify(false);
-            };
-
             btnGiorn.Clicked += (sender, arg) =>
             {
                 this.Navigation.PushAsync(new SelectGiornaliero());

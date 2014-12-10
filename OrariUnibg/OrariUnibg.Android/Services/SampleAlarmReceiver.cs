@@ -32,9 +32,6 @@ namespace OrariUnibg.Droid.Services
         public void SetAlarm(Context context)
         {
             System.Diagnostics.Debug.WriteLine("SET ALARM");
-            //Calendar alarmTime = Calendar.GetInstance(Java.Util.TimeZone.Default);
-            //alarmTime.Set(date.Year, date.Month, date.Day, date.Hour, date.Minute);
-            //alarmTime.Set(2014, 11, 24, 4, 50);
             Calendar alarmTime = Calendar.GetInstance(Java.Util.TimeZone.Default);
             //alarmTime.Set(CalendarField.DayOfMonth, 1);
             //alarmTime.Set(CalendarField.Month, 11);

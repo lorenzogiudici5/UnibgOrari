@@ -20,12 +20,10 @@ namespace OrariUnibg.Droid.Services
 
         public override void OnReceive(Context context, Intent intent)
         {
-            System.Diagnostics.Debug.WriteLine("BOOT RECEIVER ON RECEIVE");
             alarm.SetAlarm(context);
             
             if (intent.Action.Equals("android.intent.action.BOOT_COMPLETED"))
             {
-                System.Diagnostics.Debug.WriteLine("ACTION EQUALS BOOT COMPLTED");
                 alarm.SetAlarm(context);
             }
         }

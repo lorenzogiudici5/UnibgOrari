@@ -29,7 +29,8 @@ namespace OrariUnibg.Droid.Services
             
             string s = await Web.GetOrarioGiornaliero("IN", 1, 19, date.ToString("dd'/'MM'/'yyyy"));
             List<CorsoGiornaliero> lista = Web.GetSingleOrarioGiornaliero(s, 0);
-           /*
+            
+            /*
             * lista dei corsi salvati. Scandisco ogni elemento della lista con la lista di tutti i corsi di giornata
             * se insegnamento+ora sono uguali, verifico se le Note cambiano. Se cambiano, la salvo nel database e invio la notifica
             * */
@@ -40,11 +41,8 @@ namespace OrariUnibg.Droid.Services
                 {
                     string longMess = "La lezione del corso " + l.Insegnamento + " delle ore " + l.Ora + " è stata sospesa";
                     SendNotification(l);
-                    //lez += l.Insegnamento + Environment.NewLine;
                 }
             }
-
-            //SendNotification(lez);
 
             // Release the wake lock provided by the BroadcastReceiver.
             SampleAlarmReceiver.CompleteWakefulIntent(intent);
