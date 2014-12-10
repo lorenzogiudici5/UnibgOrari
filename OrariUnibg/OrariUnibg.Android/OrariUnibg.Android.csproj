@@ -111,6 +111,10 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Notification\Notification_Android.cs" />
+    <Compile Include="Services\Notification\SampleAlarmReceiver.cs" />
+    <Compile Include="Services\Notification\SampleBootReceiver.cs" />
+    <Compile Include="Services\Notification\SampleSchedulingService.cs" />
     <Compile Include="Services\Database\SQLite_Android.cs" />
     <Compile Include="Splash.cs" />
   </ItemGroup>
