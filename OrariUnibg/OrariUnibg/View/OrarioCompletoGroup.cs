@@ -103,7 +103,7 @@ namespace OrariUnibg.View
                                  from lez in corso.Lezioni
                                  orderby lez.Ora
                                  where lez.AulaOra != string.Empty
-                                 group new { corso.Insegnamento, corso.Docente, corso.Cod, corso.InizioFine, lez.AulaOra, lez.Aula, lez.Ora, lez.isVisible, lez.Giorno, lez.Note, lez.day } by lez.Giorno into Group
+                                 group new { corso.Insegnamento, corso.Docente, Cod = corso.Codice, corso.InizioFine, lez.AulaOra, lez.Aula, lez.Ora, lez.isVisible, lez.Giorno, lez.Note, lez.day } by lez.Giorno into Group
                                  //group corso by lez.Giorno into Group
                                  select Group;
 

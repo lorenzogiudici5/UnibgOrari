@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrariUnibg.Models
 {
-    public class CorsoCompleto
+    public class CorsoCompleto : Corso
     {
         private string _inizio;
         private string _fine;
@@ -15,9 +15,7 @@ namespace OrariUnibg.Models
         {
 
         }
-        public string Insegnamento { get; set; }
-        public string Cod { get; set; }
-        public string Docente { get; set; }
+       
         public List<Lezione> Lezioni { get { return _lezioni; } }
         public List<Lezione> _lezioni = new List<Lezione>(); 
         

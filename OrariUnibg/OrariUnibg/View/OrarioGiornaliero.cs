@@ -90,7 +90,7 @@ namespace OrariUnibg.View
 
             MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", x);
             DbSQLite db = new DbSQLite();
-            Favourite favourite = new Favourite() { Codice = x.Cod, Insegnamento = x.Insegnamento, Docente = x.Docente };
+            MieiCorsi favourite = new MieiCorsi() { Codice = x.Codice, Insegnamento = x.Insegnamento, Docente = x.Docente };
             db.Insert(favourite);
 
             System.Diagnostics.Debug.WriteLine(db.GetItems().Count());

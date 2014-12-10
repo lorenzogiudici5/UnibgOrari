@@ -38,6 +38,7 @@
     <Compile Include="EarthquakesItem.cs" />
     <Compile Include="Helpers\LaureeDictionary.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Models\Corso.cs" />
     <Compile Include="Models\CorsoCompleto.cs" />
     <Compile Include="Models\Facolta.cs" />
     <Compile Include="Models\Laurea.cs" />

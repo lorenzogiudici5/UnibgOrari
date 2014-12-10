@@ -22,7 +22,6 @@ namespace OrariUnibg
         #endregion
 
         #region Private Fields
-        private Label label;
         private ListView listView;
         private DbSQLite db;
         #endregion
@@ -30,7 +29,6 @@ namespace OrariUnibg
         public Xamarin.Forms.View getView()
         {
             Title = "OrariUnibg";
-            label = new Label();
 
             //var logo = new Image()
             //{

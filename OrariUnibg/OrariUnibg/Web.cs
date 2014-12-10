@@ -87,7 +87,7 @@ namespace OrariUnibg
                 CorsoGiornaliero orario = new CorsoGiornaliero() 
                 {
                     Insegnamento = col[0].InnerText.Trim(),
-                    Cod = col[1].InnerText.Trim(),
+                    Codice = col[1].InnerText.Trim(),
                     Docente = col[2].InnerText.Trim(),
                     AulaOra = col[3].InnerText.Trim(),
                     Note = col[4].InnerText.Trim()
@@ -123,7 +123,7 @@ namespace OrariUnibg
                 CorsoCompleto corso = new CorsoCompleto()
                 {
                     Insegnamento = col[0].InnerText.Trim(),
-                    Cod = col[1].InnerText.Trim(),
+                    Codice = col[1].InnerText.Trim(),
                     Docente = col[2].InnerText.Trim(),
                     //Lunedi = col[3].InnerText.Trim(),
                     //Martedi = col[4].InnerText.Trim(),

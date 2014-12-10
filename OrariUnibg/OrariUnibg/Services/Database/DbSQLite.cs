@@ -11,35 +11,41 @@ namespace OrariUnibg.Services.Database
 {
     public class DbSQLite
     {
-        #region private Fields
+        #region Constructor
+        public DbSQLite()
+        {
+            db = DependencyService.Get<ISQLite>().GetConnection();
+            db.CreateTable<MieiCorsi>();
+        }
+        #endregion
+
+        #region Private Fields
         SQLiteConnection db;
         #endregion 
-        public DbSQLite(){
-            db = DependencyService.Get<ISQLite> ().GetConnection ();
-            db.CreateTable<Favourite>();
+
+        #region MieiCorsi
+        public IEnumerable<MieiCorsi> GetItems()
+        {
+            return (from i in db.Table<MieiCorsi>() select i).ToList();
+        }
+        public MieiCorsi GetItem(int id)
+        {
+            return db.Table<MieiCorsi>().FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Favourite> GetItems()
-        {
-            return (from i in db.Table<Favourite>() select i).ToList();
-        }
-        public Favourite GetItem(int id)
-        {
-            return db.Table<Favourite>().FirstOrDefault(x => x.Id == id);
-        }
-
-        public void Insert(Favourite item)
+        public void Insert(MieiCorsi item)
         {
             db.Insert(item);
         }
         public int DeleteItem(int id)
         {
-            return db.Delete<Favourite>(id);
+            return db.Delete<MieiCorsi>(id);
         }
+        #endregion
     }
 
-    [Table("Favourite")]
-    public class Favourite
+    [Table("MieiCorsi")]
+    public class MieiCorsi
     {
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id { get; set; }
