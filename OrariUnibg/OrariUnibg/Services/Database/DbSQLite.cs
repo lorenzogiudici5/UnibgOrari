@@ -1,4 +1,5 @@
-﻿using SQLite.Net;
+﻿using OrariUnibg.Models;
+using SQLite.Net;
 using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace OrariUnibg.Services.Database
             return db.Table<MieiCorsi>().FirstOrDefault(x => x.Id == id);
         }
 
+        public void Update(MieiCorsi item)
+        {
+            db.Update(item);
+        }
+
         public void Insert(MieiCorsi item)
         {
             db.Insert(item);
@@ -45,12 +51,14 @@ namespace OrariUnibg.Services.Database
     }
 
     [Table("MieiCorsi")]
-    public class MieiCorsi
+    public class MieiCorsi : CorsoGiornaliero
     {
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id { get; set; }
-        public string Codice { get; set; }
-        public string Insegnamento { get; set; }
-        public string Docente { get; set; }
+        public bool Notify { get; set; }
+        //public string Codice { get; set; }
+        //public string Insegnamento { get; set; }
+        //public string Docente { get; set; }
+
     }
 }

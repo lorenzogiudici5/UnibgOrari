@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Xamarin.Forms;
 
-namespace OrariUnibg.View.ViewCells
+namespace OrariUnibg.Views.ViewCells
 {
     class HeaderCell : ViewCell
     {

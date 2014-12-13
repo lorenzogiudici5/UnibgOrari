@@ -6,41 +6,56 @@ using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Xamarin.Forms;
 
-namespace OrariUnibg.View.ViewCells
+namespace OrariUnibg.Views.ViewCells
 {
     class OrarioGiornCell : ViewCell
     {
+        #region Constructor
         public OrarioGiornCell()
         {
-            var lblCorso = new Label()
+            View = getView();
+        }
+        #endregion
+        #region Private Fields
+        private Label lblCorso;
+        private Label lblOra;
+        private Label lblDocente;
+        private Label lblAula;
+        private Label lblNote;
+        #endregion
+
+        #region Private Methods
+        private View getView()
+        {
+            lblCorso = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
                 TextColor = Color.Blue,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
-            var lblOra = new Label()
+            lblOra = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
                 TextColor = Color.Gray,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 
-            var lblAula = new Label()
+            lblAula = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
                 TextColor = Color.Gray,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
-            var lblDocente = new Label()
+            lblDocente = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Bold),
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
 
-            var lblNote = new Label()
+            lblNote = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
                 TextColor = Color.Black,
@@ -50,7 +65,9 @@ namespace OrariUnibg.View.ViewCells
 
             lblCorso.SetBinding(Label.TextProperty, "Insegnamento");
             lblOra.SetBinding(Label.TextProperty, "Ora");
+            //lblOra.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             lblAula.SetBinding(Label.TextProperty, "Aula");
+            //lblAula.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             lblDocente.SetBinding(Label.TextProperty, "Docente");
             lblNote.SetBinding(Label.TextProperty, "Note");
 
@@ -69,7 +86,7 @@ namespace OrariUnibg.View.ViewCells
                 }
             };
 
-            layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
+            //layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
 
             MessagingCenter.Subscribe<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", (sender, arg) =>
             {
@@ -84,8 +101,10 @@ namespace OrariUnibg.View.ViewCells
                     return;
             });
 
-            View = layout;
+            return layout;
         }
+        #endregion
+        
     }
 
     public class NoteBackgroundConverter : IValueConverter
@@ -112,7 +131,7 @@ namespace OrariUnibg.View.ViewCells
                     case "Recupero lezione":
                         return Color.FromHex("00DD00");
                     default:
-                        return Color.Transparent;
+                        return Color.Transparent; // per sfondo layout
                 }
             }
 

@@ -13,8 +13,9 @@ using Android.Support.V4.Content;
 using Java.Util;
 using Xamarin.Forms;
 using Android.Content.PM;
+using OrariUnibg.Droid.Services.Notifications;
 
-namespace OrariUnibg.Droid.Services
+namespace OrariUnibg.Droid.Services.Notifications
 {
     [BroadcastReceiver]
     public class SampleAlarmReceiver : WakefulBroadcastReceiver

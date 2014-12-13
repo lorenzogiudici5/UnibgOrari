@@ -36,29 +36,38 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="EarthquakesItem.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\LaureeDictionary.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Corso.cs" />
     <Compile Include="Models\CorsoCompleto.cs" />
     <Compile Include="Models\Facolta.cs" />
     <Compile Include="Models\Laurea.cs" />
     <Compile Include="Models\CorsoGiornaliero.cs" />
     <Compile Include="Models\Lezione.cs" />
+    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Services\Database\DbSQLite.cs" />
     <Compile Include="Services\Database\ISQLite.cs" />
     <Compile Include="Services\INotification.cs" />
-    <Compile Include="View\OrarioCompletoGroup.cs" />
-    <Compile Include="View\OrarioCompleto.cs" />
-    <Compile Include="View\OrarioGiornaliero.cs" />
-    <Compile Include="View\SelectCompleto.cs" />
-    <Compile Include="View\ViewCells\FavouriteCell.cs" />
-    <Compile Include="View\ViewCells\HeaderCell.cs" />
-    <Compile Include="View\ViewCells\OrarioComplCellGroup.cs" />
-    <Compile Include="View\ViewCells\OrarioGiornCell.cs" />
-    <Compile Include="View\MainPage.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\MasterDetailViewModel.cs" />
+    <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\InformationView.cs" />
+    <Compile Include="Views\MasterDetailView.cs" />
+    <Compile Include="Views\OrarioCompletoGroup.cs" />
+    <Compile Include="Views\OrarioCompleto.cs" />
+    <Compile Include="Views\OrarioGiornaliero.cs" />
+    <Compile Include="Views\SelectCompleto.cs" />
+    <Compile Include="Views\ViewCells\FavouriteCell.cs" />
+    <Compile Include="Views\ViewCells\HeaderCell.cs" />
+    <Compile Include="Views\ViewCells\MenuCell.cs" />
+    <Compile Include="Views\ViewCells\OrarioComplCellGroup.cs" />
+    <Compile Include="Views\ViewCells\OrarioGiornCell.cs" />
+    <Compile Include="Views\MainPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\SelectGiornaliero.cs" />
-    <Compile Include="View\ViewCells\OrarioComplCell.cs" />
+    <Compile Include="Views\SelectGiornaliero.cs" />
+    <Compile Include="Views\ViewCells\OrarioComplCell.cs" />
     <Compile Include="Web.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +106,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

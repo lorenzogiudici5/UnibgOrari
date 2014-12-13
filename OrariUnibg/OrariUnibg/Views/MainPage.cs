@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Services;
-using OrariUnibg.View;
+using OrariUnibg.Views;
 using Xamarin.Forms;
 using OrariUnibg.Services.Database;
-using OrariUnibg.View.ViewCells;
+using OrariUnibg.Views.ViewCells;
 
 namespace OrariUnibg
 {
@@ -22,7 +22,8 @@ namespace OrariUnibg
         #endregion
 
         #region Private Fields
-        private ListView listView;
+        private ListView _listView;
+        private Label _day;
         private DbSQLite db;
         #endregion
         
@@ -37,11 +38,36 @@ namespace OrariUnibg
             //    //Source = "logo_Unibg"
             //    Source = "UnibgOk.png"
             //};
-            listView = new ListView()
+
+            String dateString;
+            DateTime date = DateTime.Now;
+            if(DateTime.Now.Hour >= 19)
             {
-                ItemsSource = db.GetItems(),
-                ItemTemplate = new DataTemplate(typeof(FavouriteCell))
+                date = DateTime.Now.AddDays(1);
+                dateString = "DOMANI - " + date.ToString("dd/MM/yyyy");
+            } 
+            else
+                dateString = "OGGI - " + date.ToString("dd/MM/yyyy");
+                
+
+            _day = new Label()
+            {
+                Text = dateString,
+                Font = Font.SystemFontOfSize(NamedSize.Large, FontAttributes.Bold),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
+
+            System.Diagnostics.Debug.WriteLine("DB ITEMS: " + db.GetItems().Count());
+            var mieiCorsiList = db.GetItems().OrderBy(x => x.Ora).Where(dateX => dateX.Date.Day == date.Day);
+
+            _listView = new ListView()
+            {
+                ItemsSource = mieiCorsiList,
+                ItemTemplate = new DataTemplate(typeof(OrarioGiornCell)),
+                HasUnevenRows = true,
+            };
+
+            _listView.ItemSelected += listView_ItemSelected;
             var btnGiorn = new Button()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -73,22 +99,36 @@ namespace OrariUnibg
 
             var layout = new StackLayout()
             {
+                Spacing = 3,
                 BackgroundColor = Color.White,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Padding = new Thickness(10),
                 Children = { 
-                    listView,
+                    _day,
+                    _listView,
                     //logo, 
                     new StackLayout() { Spacing = 5, Children={ btnGiorn, btnComp}} }
             };
 
             
-            var scroll = new ScrollView()
-            {
-                Content = layout
-            };
+            //var scroll = new ScrollView()
+            //{
+            //    Content = layout
+            //};
 
-            return scroll;
+            return layout;
         }
+
+        void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            DependencyService.Get<INotification>().Notify(true);
+        }
+
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
+        //    DependencyService.Get<INotification>().Notify(true);
+        //}
     }
 }

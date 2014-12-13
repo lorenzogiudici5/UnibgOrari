@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace OrariUnibg.View.ViewCells
+namespace OrariUnibg.Views.ViewCells
 {
     class FavouriteCell : ViewCell
     {

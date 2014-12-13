@@ -5,28 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Helpers;
 using OrariUnibg.Models;
+using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 
-namespace OrariUnibg.View
+namespace OrariUnibg.Views
 {
-    class SelectCompleto : ContentPage
+    public class SelectGiornaliero : ContentPage
     {
         Picker pickerFacoltà;
         Picker pickerLaurea;
-        Picker pickerAnno;
-        Picker pickerSemestre;
-        Picker pickerRaggruppa;
+        Picker pickerOrder;
+        DatePicker pickData;
         ActivityIndicator activityIndicator;
         Label lblError;
-        String[] anni;
-        String[] ragg;
         List<Facolta> listFacolta = new List<Facolta>();
         Dictionary<string, int> dictionaryLauree = new Dictionary<string, int>();
-        Dictionary<string, string> sem;
-        public SelectCompleto()
+        public SelectGiornaliero()
         {
-            Title = "Completo";
-            Icon = null;
+            Title = "Giornaliero";
             listFacolta = Facolta.facolta;
             pickerFacoltà = new Picker()
             {
@@ -46,47 +42,33 @@ namespace OrariUnibg.View
             {
                 var s = pickerFacoltà.Items[pickerFacoltà.SelectedIndex];
                 Facolta facolta = listFacolta.Where(x => x.Nome == s).First();
-                //dictionaryLauree = LaureeDictionary.getLauree(facolta).Where(x => x.Value != 0).ToDictionary(x => x.Key, x => x.Value);
-                dictionaryLauree = LaureeDictionary.getLauree(facolta).Where(x => x.Value != 0).ToDictionary(x => x.Key, x => x.Value);
+                dictionaryLauree = LaureeDictionary.getLauree(facolta);
                 pickerLaurea.Items.Clear();
 
-                if (dictionaryLauree.Count == 0)
-                    return;
                 foreach (var item in dictionaryLauree)
                     pickerLaurea.Items.Add(item.Key);
 
                 pickerLaurea.SelectedIndex = 0;
             };
 
-            pickerAnno = new Picker() { Title = "Ordina per..", };
-            anni = new String[] { "TUTTI gli anni", "I Anno", "II Anno", "III Anno"};
-
-            pickerSemestre = new Picker() { Title = "Semestre" };
-            sem = new Dictionary<string, string>()
+            pickData = new DatePicker()
             {
-                {"Primo", "completo"}, {"Secondo", "secondo"}
+                Format = "D"
             };
 
-            pickerRaggruppa = new Picker() { Title = "Raggruppa per.." };
-            ragg = new String[] { "Corso", "Giorno" };
+            pickerOrder = new Picker()
+            {
+                Title = "Ordina per..",
+            };
+            String[] ordina = new String[] { "Alfabetico", "Orario"};
 
-            foreach (var x in anni)
-                pickerAnno.Items.Add(x);
-
-            foreach (var s in sem)
-                pickerSemestre.Items.Add(s.Key);
-
-            foreach (var g in ragg)
-                pickerRaggruppa.Items.Add(g);
+            foreach (var x in ordina)
+                pickerOrder.Items.Add(x);
 
             pickerFacoltà.SelectedIndex = Settings.Facolta;
-            if(Settings.Laurea == 0)
-                pickerLaurea.SelectedIndex = 0;
-            else 
-                pickerLaurea.SelectedIndex = Settings.Laurea - 1;
-            pickerAnno.SelectedIndex = Settings.Anno;
-            pickerSemestre.SelectedIndex = 0;
-            pickerRaggruppa.SelectedIndex = Settings.Raggruppa;
+            System.Diagnostics.Debug.WriteLine("FACOLTA: " + Settings.Facolta);
+            pickerLaurea.SelectedIndex = Settings.Laurea;
+            pickerOrder.SelectedIndex = Settings.Order;
 
             var btn = new Button()
             {
@@ -96,29 +78,30 @@ namespace OrariUnibg.View
                 TextColor = Color.White,
                 BorderColor = Color.White,
             };
-            btn.Clicked += btn_Clicked;
 
-            lblError = new Label()
-            {
-                Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
-                TextColor = Color.Red,
-                Font = Font.SystemFontOfSize(NamedSize.Small),
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                IsVisible = false,
-            };
             activityIndicator = new ActivityIndicator()
             {
                 IsVisible = false,
                 IsRunning = true,
                 HorizontalOptions = LayoutOptions.Fill
             };
+
+            lblError = new Label()
+            {
+                Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
+                TextColor = Color.Red,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Font = Font.SystemFontOfSize(NamedSize.Small),
+                IsVisible = false,
+            };
             
+            btn.Clicked += btn_Clicked;
             var layout = new StackLayout()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = new Thickness(10, 10, 10, 10),
                 Orientation = StackOrientation.Vertical,
-                Children = { pickerFacoltà, pickerLaurea, pickerAnno, pickerSemestre, pickerRaggruppa, lblError, activityIndicator, btn }
+                Children = { pickerFacoltà, pickerLaurea, pickData, pickerOrder, lblError, activityIndicator, btn, }
             };
 
             Content = layout;
@@ -126,42 +109,40 @@ namespace OrariUnibg.View
 
         private async void btn_Clicked(object sender, EventArgs e)
         {
+            lblError.IsVisible = false;
+            activityIndicator.IsVisible = true;
+
             Facolta fac = listFacolta.Where(x => x.Nome == pickerFacoltà.Items[pickerFacoltà.SelectedIndex]).First();
             int facolta = fac.IdFacolta;
             string db = fac.DB;
             int laureaId = dictionaryLauree.Where(x => x.Key == pickerLaurea.Items[pickerLaurea.SelectedIndex]).First().Value;
             string laurea = dictionaryLauree.Where(x => x.Key == pickerLaurea.Items[pickerLaurea.SelectedIndex]).First().Key;
-            int anno = pickerAnno.SelectedIndex;
-            string annoString = anni[anno];
-            string semestre = sem.Where(x => x.Key == pickerSemestre.Items[pickerSemestre.SelectedIndex]).First().Value;
-            string semestreString = sem.Where(x => x.Key == pickerSemestre.Items[pickerSemestre.SelectedIndex]).First().Key;
-            bool group = pickerRaggruppa.SelectedIndex == 0 ? false : true;
+            string data = pickData.Date.ToString("dd'/'MM'/'yyyy");
+            int order = pickerOrder.SelectedIndex;
 
-            activityIndicator.IsVisible = true;
+            string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data);
 
             Settings.Facolta = pickerFacoltà.SelectedIndex;
             Settings.Laurea = pickerLaurea.SelectedIndex;
-            Settings.Anno = anno;
-            Settings.Raggruppa = pickerRaggruppa.SelectedIndex;
+            Settings.Order = order;
 
-            string s = await Web.GetOrarioCompleto(semestre, db, facolta, laureaId, anno);
-            if(s == string.Empty)
+            if (s == string.Empty)
             {
                 activityIndicator.IsVisible = false;
                 lblError.IsVisible = true;
-                return;           
+                return;
             }
 
-            List<CorsoCompleto> lista = Web.GetSingleOrarioCompleto(s);
+            List<CorsoGiornaliero> lista = Web.GetSingleOrarioGiornaliero(s, order, pickData.Date);
             activityIndicator.IsVisible = false;
-
             if (lista.Count > 0)
-                await this.Navigation.PushAsync(new OrarioCompletoGroup(lista, fac.Nome, laurea, annoString, semestreString, group));
+                await this.Navigation.PushAsync(new OrarioGiornaliero(lista, fac.Nome, laurea, data));
             else
             {
                 lblError.IsVisible = true;
                 return;
             }
+                
         }
     }
 }

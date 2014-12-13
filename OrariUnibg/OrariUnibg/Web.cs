@@ -71,7 +71,7 @@ namespace OrariUnibg
             return s;
         }
 
-        public static List<CorsoGiornaliero> GetSingleOrarioGiornaliero(string html, int order)
+        public static List<CorsoGiornaliero> GetSingleOrarioGiornaliero(string html, int order, DateTime date)
         {
             List<CorsoGiornaliero> listaCorso = new List<CorsoGiornaliero>();
             var doc = new HtmlDocument();
@@ -90,7 +90,8 @@ namespace OrariUnibg
                     Codice = col[1].InnerText.Trim(),
                     Docente = col[2].InnerText.Trim(),
                     AulaOra = col[3].InnerText.Trim(),
-                    Note = col[4].InnerText.Trim()
+                    Note = col[4].InnerText.Trim(),
+                    Date = date
                 };
                 listaCorso.Add(orario);
             }

@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 using OrariUnibg.Services;
-using OrariUnibg.View.ViewCells;
+using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 
-namespace OrariUnibg.View
+namespace OrariUnibg.Views
 {
     class OrarioCompletoGroup : ContentPage
     {

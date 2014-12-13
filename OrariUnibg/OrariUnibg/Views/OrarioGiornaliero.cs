@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
-using OrariUnibg.View.ViewCells;
+using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 using OrariUnibg.Services.Database;
 
-namespace OrariUnibg.View
+namespace OrariUnibg.Views
 {
     class OrarioGiornaliero : ContentPage
     {
@@ -90,7 +90,7 @@ namespace OrariUnibg.View
 
             MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", x);
             DbSQLite db = new DbSQLite();
-            MieiCorsi favourite = new MieiCorsi() { Codice = x.Codice, Insegnamento = x.Insegnamento, Docente = x.Docente };
+            MieiCorsi favourite = new MieiCorsi() { Codice = x.Codice, Insegnamento = x.Insegnamento, Docente = x.Docente, Notify = false };
             db.Insert(favourite);
 
             System.Diagnostics.Debug.WriteLine(db.GetItems().Count());
@@ -98,8 +98,6 @@ namespace OrariUnibg.View
                 System.Diagnostics.Debug.WriteLine(item.Insegnamento);
             ((ListView)sender).SelectedItem = null;
         }
-
-
 
     }
 }

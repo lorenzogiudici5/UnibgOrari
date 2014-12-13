@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Support.V4.App;
 using OrariUnibg.Models;
+using OrariUnibg.Services.Database;
 using OrariUnibg.View;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,17 @@ using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
-namespace OrariUnibg.Droid.Services
+namespace OrariUnibg.Droid.Services.Notifications
 {
     [Service]
     public class SampleSchedulingService : IntentService
     {
+        private DbSQLite db;
         private Intent _intent;
         public SampleSchedulingService() { }
         protected override async void OnHandleIntent(Android.Content.Intent intent)
         {
+            db = new DbSQLite();
             System.Diagnostics.Debug.WriteLine("START SERVICE");
             _intent = intent;
             DateTime date;
@@ -37,11 +40,15 @@ namespace OrariUnibg.Droid.Services
             
             foreach (var l in lista)
             {
-                if (l.Note == "Sospensione lezione")
+                foreach(var x in db.GetItems())
                 {
-                    string longMess = "La lezione del corso " + l.Insegnamento + " delle ore " + l.Ora + " è stata sospesa";
-                    SendNotification(l);
+                    if (l.Insegnamento == x.Insegnamento)
+                    {
+                        x.
+                        SendNotification(l);
+                    }
                 }
+
             }
 
             // Release the wake lock provided by the BroadcastReceiver.

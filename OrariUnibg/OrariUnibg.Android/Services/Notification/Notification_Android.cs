@@ -14,8 +14,8 @@ using OrariUnibg.Services;
 using Java.Util;
 
 
-[assembly: Dependency(typeof(OrariUnibg.Droid.Services.Notification_Android))]
-namespace OrariUnibg.Droid.Services
+[assembly: Dependency(typeof(OrariUnibg.Droid.Services.Notifications.Notification_Android))]
+namespace OrariUnibg.Droid.Services.Notifications
 {
     public class Notification_Android : INotification
     {

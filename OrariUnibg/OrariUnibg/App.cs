@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OrariUnibg.Helpers;
+using OrariUnibg.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +13,15 @@ namespace OrariUnibg
     {
         public static Page GetMainPage()
         {
-            //GetString();
-            //await GetString();
-            var nav = new NavigationPage(new MainPage())
+
+            //return new MasterDetailView();
+            var nav = new NavigationPage(new InformationView())
             {
-                BarBackgroundColor = Color.FromHex("10528c"),
-                BarTextColor = Color.White
+                BarBackgroundColor = ColorHelper.Blue,
+                BarTextColor = ColorHelper.White
             };
             return nav;
+            
         }
 
     }
