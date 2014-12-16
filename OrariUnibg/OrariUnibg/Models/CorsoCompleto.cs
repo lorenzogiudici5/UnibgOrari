@@ -29,5 +29,25 @@ namespace OrariUnibg.Models
                 _inizioFine = _inizio + " - " + _fine;
             }
         }
+
+        public DateTime Inizio
+        {
+            get { return new DateTime(int.Parse(_inizio.Split('/')[2]), int.Parse(_inizio.Split('/')[1]), int.Parse(_inizio.Split('/')[0])); }
+        }
+
+        public DateTime Fine
+        {
+            get { return new DateTime(int.Parse(_fine.Split('/')[2]), int.Parse(_fine.Split('/')[1]), int.Parse(_fine.Split('/')[0])); }
+        }
+
+        public int Semestre
+        {
+            get 
+            {
+                if (Inizio.Month > 8)
+                    return 1;
+                else return 2;
+            }
+        }
     }
 }

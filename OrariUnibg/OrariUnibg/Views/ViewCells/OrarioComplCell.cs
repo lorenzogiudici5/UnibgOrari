@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Xamarin.Forms;
+using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -12,12 +13,11 @@ namespace OrariUnibg.Views.ViewCells
     {
         public OrarioComplCell()
         {
-            
 
             var lblCorso = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
-                TextColor = Color.Blue,
+                TextColor = ColorHelper.Blue,
             };
 
             var lblDocente = new Label()

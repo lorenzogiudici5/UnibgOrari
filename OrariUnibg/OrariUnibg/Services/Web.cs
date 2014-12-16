@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 
-namespace OrariUnibg
+namespace OrariUnibg.Services
 {
     public static class Web
     {
@@ -60,7 +60,6 @@ namespace OrariUnibg
                 s = s.Replace("&nbsp;", "");
                 s = s.Replace("&agrave;", "à");
                 s = s.Replace("&egrave;", "è");
-
             }
             catch (Exception ex)
             {

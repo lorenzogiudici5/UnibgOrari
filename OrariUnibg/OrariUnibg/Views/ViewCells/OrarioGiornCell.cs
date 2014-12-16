@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Xamarin.Forms;
+using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -30,7 +31,7 @@ namespace OrariUnibg.Views.ViewCells
             lblCorso = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
-                TextColor = Color.Blue,
+                TextColor = ColorHelper.Blue,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
@@ -86,7 +87,7 @@ namespace OrariUnibg.Views.ViewCells
                 }
             };
 
-            //layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
+            layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
 
             MessagingCenter.Subscribe<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", (sender, arg) =>
             {

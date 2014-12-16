@@ -89,13 +89,7 @@ namespace OrariUnibg.Views
             var x = (CorsoGiornaliero)lv.SelectedItem;
 
             MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", x);
-            DbSQLite db = new DbSQLite();
-            MieiCorsi favourite = new MieiCorsi() { Codice = x.Codice, Insegnamento = x.Insegnamento, Docente = x.Docente, Notify = false };
-            db.Insert(favourite);
 
-            System.Diagnostics.Debug.WriteLine(db.GetItems().Count());
-            foreach (var item in db.GetItems())
-                System.Diagnostics.Debug.WriteLine(item.Insegnamento);
             ((ListView)sender).SelectedItem = null;
         }
 

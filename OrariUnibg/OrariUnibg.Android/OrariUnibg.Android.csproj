@@ -141,6 +141,30 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_next.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_next.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_next.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_next.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_completo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_esami.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_home.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_completo.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_esami.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_home.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_completo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_esami.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_home.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_completo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_esami.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_home.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrariUnibg\OrariUnibg.csproj">

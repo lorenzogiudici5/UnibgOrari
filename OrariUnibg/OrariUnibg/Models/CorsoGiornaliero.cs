@@ -12,10 +12,7 @@ namespace OrariUnibg.Models
         private string _aula;
         private string _ora;
         private string _aulaOra;
-        public CorsoGiornaliero()
-        {
-
-        }
+        public CorsoGiornaliero(){ }
         public string AulaOra 
         {
             get { return _aulaOra; }

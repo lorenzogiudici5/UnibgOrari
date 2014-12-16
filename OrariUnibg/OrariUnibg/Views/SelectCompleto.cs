@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OrariUnibg.Helpers;
 using OrariUnibg.Models;
 using Xamarin.Forms;
+using OrariUnibg.Services;
 
 namespace OrariUnibg.Views
 {
@@ -59,7 +60,7 @@ namespace OrariUnibg.Views
             };
 
             pickerAnno = new Picker() { Title = "Ordina per..", };
-            anni = new String[] { "TUTTI gli anni", "I Anno", "II Anno", "III Anno"};
+            anni = new String[] { "TUTTI gli anni", "1° Anno", "2° Anno", "3° Anno"};
 
             pickerSemestre = new Picker() { Title = "Semestre" };
             sem = new Dictionary<string, string>()
@@ -79,12 +80,14 @@ namespace OrariUnibg.Views
             foreach (var g in ragg)
                 pickerRaggruppa.Items.Add(g);
 
-            pickerFacoltà.SelectedIndex = Settings.Facolta;
-            if(Settings.Laurea == 0)
+            pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
+
+            if (Settings.LaureaIndex == 0)
                 pickerLaurea.SelectedIndex = 0;
             else 
-                pickerLaurea.SelectedIndex = Settings.Laurea - 1;
-            pickerAnno.SelectedIndex = Settings.Anno;
+                pickerLaurea.SelectedIndex = Settings.LaureaIndex - 1;
+
+            pickerAnno.SelectedIndex = Settings.AnnoIndex;
             pickerSemestre.SelectedIndex = 0;
             pickerRaggruppa.SelectedIndex = Settings.Raggruppa;
 
@@ -139,9 +142,9 @@ namespace OrariUnibg.Views
 
             activityIndicator.IsVisible = true;
 
-            Settings.Facolta = pickerFacoltà.SelectedIndex;
-            Settings.Laurea = pickerLaurea.SelectedIndex;
-            Settings.Anno = anno;
+            Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
+            Settings.LaureaIndex = pickerLaurea.SelectedIndex;
+            Settings.AnnoIndex = anno;
             Settings.Raggruppa = pickerRaggruppa.SelectedIndex;
 
             string s = await Web.GetOrarioCompleto(semestre, db, facolta, laureaId, anno);

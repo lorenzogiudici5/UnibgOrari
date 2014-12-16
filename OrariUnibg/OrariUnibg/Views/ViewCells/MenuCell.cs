@@ -42,7 +42,7 @@ namespace OrariUniBg.Views.ViewCells
                 Orientation = StackOrientation.Horizontal,
                 Padding = new Thickness(15, 10, 15, 10),
                 //VerticalOptions = LayoutOptions.CenterAndExpand,
-                Spacing = 10,
+                Spacing = 15,
                 Children = { _image, _lblTitle }
             };
 

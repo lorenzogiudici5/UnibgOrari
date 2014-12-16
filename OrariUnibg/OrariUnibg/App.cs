@@ -1,4 +1,5 @@
 ﻿using OrariUnibg.Helpers;
+using OrariUnibg.Services.Database;
 using OrariUnibg.Views;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,25 @@ namespace OrariUnibg
     {
         public static Page GetMainPage()
         {
-
-            //return new MasterDetailView();
-            var nav = new NavigationPage(new InformationView())
+            if(Settings.PrimoAvvio)
             {
-                BarBackgroundColor = ColorHelper.Blue,
-                BarTextColor = ColorHelper.White
-            };
-            return nav;
-            
+                var nav = new NavigationPage(new InformationView())
+                {
+                    BarBackgroundColor = ColorHelper.Blue,
+                    BarTextColor = ColorHelper.White
+                };
+                return nav;
+            }
+            else
+                return new MasterDetailView();
         }
+
+        public static void Init(ISQLite sqlite)
+        {
+            SQLite = sqlite;
+        }
+
+        public static ISQLite SQLite { get; private set; }
 
     }
 }

@@ -29,7 +29,7 @@ namespace OrariUnibg.Views
             NavigationPage.SetHasNavigationBar(this, false);
             Master = master = new MasterView(ViewModel);
 
-            var homeNav = new NavigationPage(new MainPage())
+            var homeNav = new NavigationPage(new TabbedHomeView())
             {
                 BarBackgroundColor = ColorHelper.Blue,
                 BarTextColor = ColorHelper.White
@@ -71,7 +71,7 @@ namespace OrariUnibg.Views
         private Page pageSelection;
         private MenuType menuType = MenuType.Home;
         private ListView _listView;
-        private MainPage mainView;
+        private TabbedHomeView mainView;
         private SelectCompleto selectCompletoView;
         private SelectGiornaliero selectGiornView;
         #endregion
@@ -136,7 +136,7 @@ namespace OrariUnibg.Views
                 {
                     case MenuType.Home:
                         if (mainView == null)
-                            mainView = new MainPage();
+                            mainView = new TabbedHomeView();
 
                         PageSelection = mainView;
                         break;

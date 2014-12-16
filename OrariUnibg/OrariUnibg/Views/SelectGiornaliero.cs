@@ -7,6 +7,7 @@ using OrariUnibg.Helpers;
 using OrariUnibg.Models;
 using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
+using OrariUnibg.Services;
 
 namespace OrariUnibg.Views
 {
@@ -65,9 +66,8 @@ namespace OrariUnibg.Views
             foreach (var x in ordina)
                 pickerOrder.Items.Add(x);
 
-            pickerFacoltà.SelectedIndex = Settings.Facolta;
-            System.Diagnostics.Debug.WriteLine("FACOLTA: " + Settings.Facolta);
-            pickerLaurea.SelectedIndex = Settings.Laurea;
+            pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
+            pickerLaurea.SelectedIndex = Settings.LaureaIndex;
             pickerOrder.SelectedIndex = Settings.Order;
 
             var btn = new Button()
@@ -122,8 +122,8 @@ namespace OrariUnibg.Views
 
             string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data);
 
-            Settings.Facolta = pickerFacoltà.SelectedIndex;
-            Settings.Laurea = pickerLaurea.SelectedIndex;
+            Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
+            Settings.LaureaIndex = pickerLaurea.SelectedIndex;
             Settings.Order = order;
 
             if (s == string.Empty)
