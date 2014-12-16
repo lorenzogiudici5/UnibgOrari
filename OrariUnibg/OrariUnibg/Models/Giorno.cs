@@ -10,7 +10,6 @@ namespace OrariUnibg.Models
 {
     class Giorno : NotifyPropertyChangedBase
     {
-        private DbSQLite db;
         private IEnumerable<Orari> _list;
         public string Day
         {

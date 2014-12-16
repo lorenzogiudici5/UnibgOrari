@@ -1,4 +1,5 @@
 ﻿using OrariUnibg.Helpers;
+using OrariUnibg.Models;
 using OrariUnibg.Services.Database;
 using OrariUnibg.Views.ViewCells;
 using System;
@@ -25,6 +26,7 @@ namespace OrariUnibg.Views
         private Label _lblDay;
         private Label _lblDate;
         private Label _lblInfo;
+        private ActivityIndicator _activityIndicator;
         #endregion
 
         #region Private Methods
@@ -59,6 +61,14 @@ namespace OrariUnibg.Views
                 HasUnevenRows = true,
             };
             _listView.SetBinding(ListView.ItemsSourceProperty, "ListaLezioni");
+            _listView.ItemSelected += _listView_ItemSelected;
+
+            _activityIndicator = new ActivityIndicator()
+            {
+                IsRunning = false,
+                IsVisible = false,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+            };
 
             var layout = new StackLayout()
             {
@@ -70,12 +80,23 @@ namespace OrariUnibg.Views
                 {
                     new StackLayout() {Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
-                    _listView
+                    _listView,
+                    _activityIndicator
                 }
             };
 
-            MessagingCenter.Subscribe<TabbedHomeView>(this, "sync", (sender) => 
+            MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", (sender, arg) => 
             {
+                if(arg)
+                {
+                    _activityIndicator.IsRunning = true;
+                    _activityIndicator.IsVisible = true;
+                }
+                else
+                {
+                    _activityIndicator.IsRunning = false;
+                    _activityIndicator.IsVisible = false;
+                }
 
             });
 
@@ -83,6 +104,18 @@ namespace OrariUnibg.Views
         }
         #endregion
 
+        #region Handlers
+        void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
+                return;
+            var x = (Orari)_listView.SelectedItem;
+
+            MessagingCenter.Send<TabbedDayView, Orari>(this, "orari_clicked", x);
+
+            ((ListView)sender).SelectedItem = null;
+        }
+        #endregion
     }
 
     public class IsVisibleCountConverter : IValueConverter

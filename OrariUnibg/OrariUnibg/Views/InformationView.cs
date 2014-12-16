@@ -209,6 +209,7 @@ namespace OrariUnibg.Views
 
                 Settings.LaureaIndex = _pickLaurea.SelectedIndex;
                 Settings.FacoltaIndex = _pickFacolta.SelectedIndex;
+                Settings.AnnoIndex = anno;
 
                 string completo = await Web.GetOrarioCompleto("completo", db, facolta, laurea, anno);
                 string secondo = await Web.GetOrarioCompleto("secondo", db, facolta, laurea, anno);

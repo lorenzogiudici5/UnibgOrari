@@ -14,7 +14,7 @@ namespace OrariUnibg
     {
         public static Page GetMainPage()
         {
-            if(Settings.PrimoAvvio)
+            if (Settings.PrimoAvvio)
             {
                 var nav = new NavigationPage(new InformationView())
                 {

@@ -16,13 +16,6 @@ namespace OrariUnibg.Models
         {
             Lunedi = 0, Martedi = 1, Mercoledi = 2, Giovedi = 3, Venerdi = 4, Sabato = 5
         }
-
-        //public enum Day
-        //{
-        //    ALunedi, BMartedi, CMercoledi, DGiovedi,  EVenerdi, FSabato
-        //}
-
-        private string _giorno;
         public int _day;
         public Lezione()
         {
@@ -30,35 +23,6 @@ namespace OrariUnibg.Models
         }
         public int day { get { return _day; } }
         public Day Giorno { get; set; }
-        //public String Giorno
-        //{
-        //    get { return _giorno; }
-        //    set
-        //    {
-        //        _day = int.Parse(value);
-        //        switch (value)
-        //        {
-        //            case "0":
-        //                _giorno = Day.Lunedi.ToString();
-        //                break;
-        //            case "1":
-        //                _giorno = Day.Martedi.ToString();
-        //                break;
-        //            case "2":
-        //                _giorno = Day.Mercoledi.ToString();
-        //                break;
-        //            case "3":
-        //                _giorno = Day.Giovedi.ToString();
-        //                break;
-        //            case "4":
-        //                _giorno = Day.Venerdi.ToString();
-        //                break;
-        //            default:
-        //                _giorno = Day.Sabato.ToString();
-        //                break;
-        //        }
-        //    }
-        //}
         public string AulaOra
         {
             get { return _aulaOra; }

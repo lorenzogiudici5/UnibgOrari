@@ -67,16 +67,16 @@ namespace OrariUnibg.Views
                 pickerOrder.Items.Add(x);
 
             pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
-            pickerLaurea.SelectedIndex = Settings.LaureaIndex;
+            pickerLaurea.SelectedIndex = Settings.LaureaIndex + 1;
             pickerOrder.SelectedIndex = Settings.Order;
 
             var btn = new Button()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
                 Text = "Ricerca",
-                BackgroundColor = Color.FromHex("10528c"),
-                TextColor = Color.White,
-                BorderColor = Color.White,
+                BackgroundColor = ColorHelper.Blue,
+                TextColor = ColorHelper.White,
+                BorderColor = ColorHelper.White,
             };
 
             activityIndicator = new ActivityIndicator()
@@ -89,7 +89,7 @@ namespace OrariUnibg.Views
             lblError = new Label()
             {
                 Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
-                TextColor = Color.Red,
+                TextColor = ColorHelper.Red,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 Font = Font.SystemFontOfSize(NamedSize.Small),
                 IsVisible = false,
@@ -123,7 +123,7 @@ namespace OrariUnibg.Views
             string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data);
 
             Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
-            Settings.LaureaIndex = pickerLaurea.SelectedIndex;
+            Settings.LaureaIndex = pickerLaurea.SelectedIndex - 1;
             Settings.Order = order;
 
             if (s == string.Empty)

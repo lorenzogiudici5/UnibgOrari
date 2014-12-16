@@ -62,6 +62,7 @@ namespace OrariUnibg.Views
 
             ToolbarItem tbiSync = new ToolbarItem("Sync", "ic_sync.png", async () =>
             {
+                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
                 var _listOrariGiorno = _db.GetAllOrari();
                 foreach (var l in _listOrariGiorno)
                 {
@@ -89,11 +90,12 @@ namespace OrariUnibg.Views
                         new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0) },
                     };
                     this.ItemsSource = list;
-                    // MessagingCenter.Send<TabbedHomeView>(this, "sync");
-
                 }
-                    //DependencyService.Get<INotification>().Notify();
+                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+                
+                //DependencyService.Get<INotification>().Notify();
             }, 0, 0); 
+
             ToolbarItems.Add(tbiSync);
         }
         #endregion

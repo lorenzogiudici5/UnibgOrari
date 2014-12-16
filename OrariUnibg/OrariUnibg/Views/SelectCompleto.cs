@@ -85,7 +85,7 @@ namespace OrariUnibg.Views
             if (Settings.LaureaIndex == 0)
                 pickerLaurea.SelectedIndex = 0;
             else 
-                pickerLaurea.SelectedIndex = Settings.LaureaIndex - 1;
+                pickerLaurea.SelectedIndex = Settings.LaureaIndex;
 
             pickerAnno.SelectedIndex = Settings.AnnoIndex;
             pickerSemestre.SelectedIndex = 0;
@@ -95,9 +95,9 @@ namespace OrariUnibg.Views
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
                 Text = "Ricerca",
-                BackgroundColor = Color.FromHex("10528c"),
-                TextColor = Color.White,
-                BorderColor = Color.White,
+                BackgroundColor = ColorHelper.Blue,
+                TextColor = ColorHelper.White,
+                BorderColor = ColorHelper.White,
             };
             btn.Clicked += btn_Clicked;
 

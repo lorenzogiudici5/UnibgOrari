@@ -71,7 +71,7 @@ namespace OrariUnibg.Views.ViewCells
             MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "select_fav", (sender, arg) =>
             {
                 if(arg.Insegnamento == _lblInsegnamento.Text)
-                    _layout.BackgroundColor = ColorHelper.Green;
+                    _layout.BackgroundColor = ColorHelper.LightBlue;
             });
             MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "deselect_fav", (sender, arg) =>
             {

@@ -8,7 +8,6 @@ namespace OrariUnibg.Models
 {
     public class Facolta
     {
-        private string _db;
         public Facolta() {}
         public string Nome { get; set; }
         public string DB { get; set; }

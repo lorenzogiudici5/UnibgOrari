@@ -104,7 +104,6 @@ namespace OrariUnibg.Views
                 return;
             var selected = (CorsoCompleto)_list.SelectedItem;
 
-            
             MieiCorsi newFavourite = new MieiCorsi() { Codice = selected.Codice, Insegnamento = selected.Insegnamento, Docente = selected.Docente };
             int index = _preferiti.FindIndex(f => f.Insegnamento == newFavourite.Insegnamento);
             if (index >= 0)
