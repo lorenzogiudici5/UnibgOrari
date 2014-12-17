@@ -3,9 +3,40 @@
     <!-- <item name="android:windowBackground">@drawable/splash</item> -->
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowFullscreen">true</item>
-    <item name="android:background">#10528c</item>
+    <item name="android:background">@color/blue</item>
     <!--<item name="android:windowIsTranslucent">false</item> -->
     <!--<item name="android:windowIsFloating">false</item> -->
     <!--<item name="android:backgroundDimEnabled">true</item>-->
   </style>
+
+  <style name="ActionBarCustomHeader" parent="@android:style/Theme.Holo.Light">
+      <!--<item name="android:actionBarStyle">@style/ActionBarCustomStyle</item>-->
+      <item name="android:actionBarTabStyle">@style/ActionBarCustomTabStyle</item>
+      <item name="android:actionBarTabBarStyle">@style/ActionBarCustomTabBarStyle</item>
+      <item name="android:actionBarTabTextStyle">@style/ActionBarCustomTabTextStyle</item>
+      <item name="android:colorPressedHighlight">@color/lightblue</item>
+    </style>
+
+
+    <!--<style name="ActionBarCustomStyle" parent="@android:style/Widget.Holo.ActionBar">
+      <item name="android:background">@drawable/actionbarcustombackground</item>
+      <item name="android:displayOptions">useLogo|showHome</item>
+      <item name="android:windowContentOverlay">@null</item>
+    </style>-->
+
+    <style name="ActionBarCustomTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+      <item name="android:background">@drawable/tab_bar_background</item>
+    </style>
+
+    <style name="ActionBarCustomTabBarStyle" parent="@android:style/Widget.Holo.ActionBar.TabBar">
+      <item name="android:divider">@color/transparent</item>
+      <item name="android:dividerPadding">5dp</item>
+    </style>
+
+    <style name="ActionBarCustomTabTextStyle" parent="android:style/Widget.Holo.Light.ActionBar.TabText">
+      <!--<item name="android:textColor">#ffffff</item>-->
+      <item name="android:textColor">@drawable/tab_bar_text</item>
+    </style>
+
+
 </resources>

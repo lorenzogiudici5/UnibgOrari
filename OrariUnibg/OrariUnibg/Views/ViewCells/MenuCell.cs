@@ -1,4 +1,5 @@
 ﻿using OrariUnibg.Helpers;
+using OrariUnibg.Views;
 using OrariUniBg.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,14 @@ namespace OrariUniBg.Views.ViewCells
                 Spacing = 15,
                 Children = { _image, _lblTitle }
             };
+
+            //MessagingCenter.Subscribe<MasterView, Page>(this, "menuItem_clicked", (sender, arg) =>
+            //{
+            //    if(arg.Title == _lblTitle.Text)
+            //    {
+            //        layout.BackgroundColor = ColorHelper.LightBlue;
+            //    }
+            //});
 
             return layout;
         }

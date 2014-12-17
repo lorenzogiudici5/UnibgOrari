@@ -43,6 +43,34 @@ namespace OrariUnibg.Droid
 			}
 		}
 		
+		public partial class Color
+		{
+			
+			// aapt resource value: 0x7f050004
+			public const int blue = 2131034116;
+			
+			// aapt resource value: 0x7f050003
+			public const int lightblue = 2131034115;
+			
+			// aapt resource value: 0x7f050001
+			public const int semitranspwhite = 2131034113;
+			
+			// aapt resource value: 0x7f050000
+			public const int transparent = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int white = 2131034114;
+			
+			static Color()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Color()
+			{
+			}
+		}
+		
 		public partial class Drawable
 		{
 			
@@ -74,7 +102,22 @@ namespace OrariUnibg.Droid
 			public const int LogoUnibg = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int UnibgOk = 2130837513;
+			public const int selectable_background_example = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int tab_bar_background = 2130837514;
+			
+			// aapt resource value: 0x7f02000b
+			public const int tab_bar_background_selected = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int tab_bar_background_selected_pressed = 2130837516;
+			
+			// aapt resource value: 0x7f02000d
+			public const int tab_bar_text = 2130837517;
+			
+			// aapt resource value: 0x7f02000e
+			public const int UnibgOk = 2130837518;
 			
 			static Drawable()
 			{
@@ -89,8 +132,8 @@ namespace OrariUnibg.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int splash_layout = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int splash_layout = 2131165184;
 			
 			static Id()
 			{
@@ -140,8 +183,20 @@ namespace OrariUnibg.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int Theme_Splash = 2131034112;
+			// aapt resource value: 0x7f060001
+			public const int ActionBarCustomHeader = 2131099649;
+			
+			// aapt resource value: 0x7f060003
+			public const int ActionBarCustomTabBarStyle = 2131099651;
+			
+			// aapt resource value: 0x7f060002
+			public const int ActionBarCustomTabStyle = 2131099650;
+			
+			// aapt resource value: 0x7f060004
+			public const int ActionBarCustomTabTextStyle = 2131099652;
+			
+			// aapt resource value: 0x7f060000
+			public const int Theme_Splash = 2131099648;
 			
 			static Style()
 			{

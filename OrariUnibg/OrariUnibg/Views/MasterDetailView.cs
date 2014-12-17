@@ -131,37 +131,40 @@ namespace OrariUnibg.Views
         void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var menuItem = _listView.SelectedItem as MenuItem;
-                menuType = menuItem.MenuType;
-                switch (menuItem.MenuType)
-                {
-                    case MenuType.Home:
-                        if (mainView == null)
-                            mainView = new TabbedHomeView();
+            menuType = menuItem.MenuType;
+            switch (menuItem.MenuType)
+            {
+                case MenuType.Home:
+                    if (mainView == null)
+                        mainView = new TabbedHomeView();
 
-                        PageSelection = mainView;
-                        break;
+                    PageSelection = mainView;
+                    break;
 
-                    case MenuType.Giornaliero:
-                        if (selectGiornView == null)
-                            selectGiornView = new SelectGiornaliero();
+                case MenuType.Giornaliero:
+                    if (selectGiornView == null)
+                        selectGiornView = new SelectGiornaliero();
 
-                        PageSelection = selectGiornView;
-                        break;
+                    PageSelection = selectGiornView;
+                    break;
 
-                    case MenuType.Completo:
-                        if (selectCompletoView == null)
-                            selectCompletoView = new SelectCompleto();
+                case MenuType.Completo:
+                    if (selectCompletoView == null)
+                        selectCompletoView = new SelectCompleto();
 
-                        PageSelection = selectCompletoView;
-                        break;
+                    PageSelection = selectCompletoView;
+                    break;
 
-                    //case MenuType.Esami:
-                    //    if (downloadView == null)
-                    //        downloadView = new DownloadView();
+                //case MenuType.Esami:
+                //    if (downloadView == null)
+                //        downloadView = new DownloadView();
 
-                    //    PageSelection = downloadView;
-                    //    break;
-                }
+                //    PageSelection = downloadView;
+                //    break;
+            }
+            //Page p = PageSelection;
+
+            //MessagingCenter.Send<MasterView, Page>(this, "menuItem_clicked", p);
         }
     }
 }

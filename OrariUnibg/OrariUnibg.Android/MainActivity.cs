@@ -12,7 +12,7 @@ using OrariUnibg.Droid.Services.Database;
 
 namespace OrariUnibg.Droid
 {
-    [Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/ActionBarCustomHeader")]
     public class MainActivity : AndroidActivity
     {
         protected override void OnCreate(Bundle bundle)

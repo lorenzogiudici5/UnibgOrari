@@ -129,8 +129,7 @@ namespace OrariUnibg.Views
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
-            var x = (CorsoCompleto)lv.SelectedItem;
-            DateTime date = new DateTime(2014, 11, 24, 17, 33, 0);          
+            //var x = (CorsoCompleto)lv.SelectedItem;        
 
             ((ListView)sender).SelectedItem = null;
         }

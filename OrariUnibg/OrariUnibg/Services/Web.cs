@@ -82,17 +82,27 @@ namespace OrariUnibg.Services
 
             foreach (var item in row)
             {
+                int debug = 0;
                 HtmlNode[] col = item.Descendants().Where(x => (x.Name == "td")).ToArray();
-                CorsoGiornaliero orario = new CorsoGiornaliero() 
+                if (col.Count() >= 4)
                 {
-                    Insegnamento = col[0].InnerText.Trim(),
-                    Codice = col[1].InnerText.Trim(),
-                    Docente = col[2].InnerText.Trim(),
-                    AulaOra = col[3].InnerText.Trim(),
-                    Note = col[4].InnerText.Trim(),
-                    Date = date
-                };
-                listaCorso.Add(orario);
+                    
+                    CorsoGiornaliero orario = new CorsoGiornaliero()
+                    {
+                        Insegnamento = col[0].InnerText.Trim(),
+                        Codice = col[1].InnerText.Trim(),
+                        Docente = col[2].InnerText.Trim(),
+                        AulaOra = col[3].InnerText.Trim(),
+                        Note = col[4].InnerText.Trim(),
+                        Date = date
+                    };
+                    listaCorso.Add(orario);
+                }
+                else
+                {
+                    debug++;
+                }
+               
             }
 
             switch (order)
