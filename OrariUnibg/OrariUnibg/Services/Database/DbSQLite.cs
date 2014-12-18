@@ -13,10 +13,17 @@ namespace OrariUnibg.Services.Database
     public class DbSQLite
     {
         #region Constructor
+        public DbSQLite(SQLiteConnection sqliteConnection)
+        {
+            db = sqliteConnection;
+           // db = DependencyService.Get<ISQLite>().GetConnection();
+            //db = App.SQLite.GetConnection();
+            db.CreateTable<MieiCorsi>();
+            db.CreateTable<Orari>();
+        }
         public DbSQLite()
         {
-            //db = DependencyService.Get<ISQLite>().GetConnection();
-            db = App.SQLite.GetConnection();
+            db = DependencyService.Get<ISQLite>().GetConnection();
             db.CreateTable<MieiCorsi>();
             db.CreateTable<Orari>();
         }
@@ -137,9 +144,20 @@ namespace OrariUnibg.Services.Database
     [Table("Orari")]
     public class Orari : CorsoGiornaliero
     {
+        private bool _notify;
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id { get; set; }
-        public bool Notify { get; set; }
+        public bool Notify 
+        {
+            get { return _notify; }
+            set 
+            {
+                if (value == null)
+                    _notify = false;
+                else
+                    _notify = value;
+                } 
+        }
         //public string Codice { get; set; }
         //public string Insegnamento { get; set; }
         //public string Docente { get; set; }

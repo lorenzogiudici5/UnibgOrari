@@ -82,9 +82,21 @@ namespace OrariUnibg.Views
 
                     foreach (var l in listaCorsi)
                     {
-                        if (_db.CheckAppartieneMieiCorsi(l))
+                        var corso = l;
+                        if (_db.CheckAppartieneMieiCorsi(corso))
                         {
-                            _db.InsertUpdate(l);
+                            var orario = new Orari()
+                            {
+                                Insegnamento = corso.Insegnamento,
+                                Codice = corso.Codice,
+                                AulaOra = corso.AulaOra,
+                                Note = corso.Note,
+                                Date = corso.Date,
+                                Docente = corso.Docente,
+                                Notify = false,
+                            };
+
+                            _db.Insert(orario);
                         }
                     }
                 }

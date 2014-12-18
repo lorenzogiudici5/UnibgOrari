@@ -72,14 +72,54 @@ namespace OrariUnibg.Views
 
                 foreach (var x in list)
                 {
-                    string s = await Web.GetOrarioGiornaliero("IN", 1, 0, x.DateString);
+                    string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, x.DateString);
                     List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, x.Data);
 
                     foreach (var l in listaCorsi)
                     {
+                        var corso = l;
+
                         if (_db.CheckAppartieneMieiCorsi(l))
                         {
-                            _db.InsertUpdate(l);
+                            //_db.InsertUpdate(l);
+                            var orario = new Orari()
+                            {
+                                Insegnamento = corso.Insegnamento,
+                                Codice = corso.Codice,
+                                AulaOra = corso.AulaOra,
+                                Note = corso.Note,
+                                Date = corso.Date,
+                                Docente = corso.Docente,
+                            };
+
+                            if (_db.AppartieneOrari(orario)) //l'orario è già presente
+                            {
+                                if ((string.Compare(orario.Note, corso.Note) != 0) || !orario.Notify)
+                                {
+                                    orario.Note = corso.Note;
+                                    orario.AulaOra = corso.AulaOra;
+                                    if (orario.Note != null && orario.Note != "")
+                                    {
+                                        DependencyService.Get<INotification>().SendNotification(corso);
+                                        //SendNotification(corso);
+                                        orario.Notify = true;
+                                    }
+                                    _db.Update(orario);
+                                }
+                            }
+                            else // l'orario non è presente nel mio db
+                            {
+                                orario.Notify = false;
+
+                                if (orario.Note != null && orario.Note != "")
+                                {
+                                    DependencyService.Get<INotification>().SendNotification(corso);
+                                    //SendNotification(corso);
+                                    orario.Notify = true;
+                                }
+
+                                _db.Insert(orario);
+                            }
                         }
                     }
 

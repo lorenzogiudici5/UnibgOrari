@@ -9,6 +9,7 @@ using Xamarin.Forms.Platform.Android;
 using Android.App;
 using Android.Content.PM;
 using OrariUnibg.Droid.Services.Database;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Droid
 {
@@ -20,7 +21,8 @@ namespace OrariUnibg.Droid
             base.OnCreate(bundle);
             Xamarin.Forms.Forms.Init(this, bundle);
 
-            App.Init(new SQLite_Android());
+            //App.Init(new DbSQLite());
+            App.Init(new DbSQLite(new SQLite_Android().GetConnection()));
 
             SetPage(App.GetMainPage());
         }

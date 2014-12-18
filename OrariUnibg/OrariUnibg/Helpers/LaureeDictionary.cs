@@ -42,23 +42,23 @@ namespace OrariUnibg.Helpers
 
             laurea = new Laurea() { Nome = "Generale", Id = 0 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "Ingegneria Edile", Id = 5 };
+            laurea = new Laurea() { Nome = "Ingegneria Edile", Id = 5, Anni = 3 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "Ingegneria Gestionale", Id = 1 };
+            laurea = new Laurea() { Nome = "Ingegneria Gestionale", Id = 1, Anni = 3 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "Ingegneria Informatica", Id = 3 };
+            laurea = new Laurea() { Nome = "Ingegneria Informatica", Id = 3, Anni = 3 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "Ingegneria Meccanica", Id = 4 };
+            laurea = new Laurea() { Nome = "Ingegneria Meccanica", Id = 4, Anni = 3 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "LM - Ingegneria Edile", Id = 17 };
+            laurea = new Laurea() { Nome = "LM - Ingegneria Edile", Id = 17, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "LM - Ingegneria Gestionale", Id = 18 };
+            laurea = new Laurea() { Nome = "LM - Ingegneria Gestionale", Id = 18, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "LM - Ingegneria Informatica", Id = 19 };
+            laurea = new Laurea() { Nome = "LM - Ingegneria Informatica", Id = 19, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "LM - Ingegneria Meccanica", Id = 20 };
+            laurea = new Laurea() { Nome = "LM - Ingegneria Meccanica", Id = 20, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
-            laurea = new Laurea() { Nome = "Management Engineering", Id = 21 };
+            laurea = new Laurea() { Nome = "Management Engineering", Id = 21, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
 
             return dictionary;

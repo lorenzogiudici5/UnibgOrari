@@ -16,6 +16,8 @@ namespace OrariUnibg.Models
         public string Nome { get; set; }
         public int Id { get; set; }
 
+        public int Anni { get; set; }
+
 
     }
 }

@@ -12,6 +12,7 @@ namespace OrariUnibg.Models
         private string _aula;
         private string _ora;
         private string _aulaOra;
+        private string _note;
         public CorsoGiornaliero(){ }
         public string AulaOra 
         {
@@ -37,7 +38,17 @@ namespace OrariUnibg.Models
         {
             get { return _ora; }
         }
-        public string Note { get; set; }
+        public string Note 
+        {
+            get { return _note; }
+            set 
+            { 
+                if (value == null) 
+                    _note = ""; 
+                else 
+                    _note = value; 
+            }
+        }
         public DateTime Date { get; set; }
 
     }

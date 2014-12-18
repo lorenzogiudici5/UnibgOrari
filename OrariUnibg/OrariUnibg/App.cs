@@ -27,12 +27,19 @@ namespace OrariUnibg
                 return new MasterDetailView();
         }
 
-        public static void Init(ISQLite sqlite)
+        //public static void Init(ISQLite sqlite)
+        //{
+        //    SQLite = sqlite;
+        //}
+
+        //public static ISQLite SQLite { get; private set; }
+
+        public static void Init(DbSQLite sqlite)
         {
-            SQLite = sqlite;
+            Database = sqlite;
         }
 
-        public static ISQLite SQLite { get; private set; }
+        public static DbSQLite Database { get; set; }
 
     }
 }
