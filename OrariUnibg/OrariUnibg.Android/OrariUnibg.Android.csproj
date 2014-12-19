@@ -37,7 +37,7 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidLinkSkip />
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -185,6 +185,11 @@
     <AndroidResource Include="Resources\Drawable\selectable_background_example.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_notification_school.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_notification_school.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_notification_school.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_notification_school.png" />
+    <AndroidResource Include="Resources\Drawable\splash.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrariUnibg\OrariUnibg.csproj">

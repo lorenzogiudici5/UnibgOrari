@@ -26,6 +26,8 @@ namespace OrariUnibg.Views
         private Label _lblDay;
         private Label _lblDate;
         private Label _lblInfo;
+        private Label _lblTitleUtenza;
+        private Label _lblUtenza;
         private ActivityIndicator _activityIndicator;
         #endregion
 
@@ -63,6 +65,21 @@ namespace OrariUnibg.Views
             _listView.SetBinding(ListView.ItemsSourceProperty, "ListaLezioni");
             _listView.ItemSelected += _listView_ItemSelected;
 
+            _lblTitleUtenza = new Label()
+            {
+                Text = "USO UTENZA: ",
+                Font = Font.SystemFontOfSize(NamedSize.Small),
+                VerticalOptions = LayoutOptions.EndAndExpand,
+            };
+            _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("UsoUtenza", converter: new IsVisibleUsoUtenza()));
+            _lblUtenza = new Label()
+            {
+                Font = Font.SystemFontOfSize(NamedSize.Small),
+                VerticalOptions = LayoutOptions.EndAndExpand,
+            };
+            _lblUtenza.SetBinding(Label.TextProperty, "UsoUtenza");
+            _lblUtenza.SetBinding(Label.IsVisibleProperty, new Binding("UsoUtenza", converter: new IsVisibleUsoUtenza()));
+
             _activityIndicator = new ActivityIndicator()
             {
                 IsRunning = false,
@@ -72,7 +89,7 @@ namespace OrariUnibg.Views
 
             var layout = new StackLayout()
             {
-                Padding = new Thickness(10),
+                Padding = new Thickness(0, 10, 0, 10),
                 Spacing = 10,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
@@ -81,7 +98,8 @@ namespace OrariUnibg.Views
                     new StackLayout() {Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
-                    _activityIndicator
+                    _activityIndicator,
+                    new StackLayout() { Padding = new Thickness(10, 5, 10, 0), Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblTitleUtenza, _lblUtenza}}
                 }
             };
 
@@ -118,6 +136,29 @@ namespace OrariUnibg.Views
         #endregion
     }
 
+    #region Converter
+    public class IsVisibleUsoUtenza : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string)
+            {
+                var x = (string)value;
+                if (x == null || x == string.Empty)
+                    return false;
+                else return true;
+            }
+
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class IsVisibleCountConverter : IValueConverter
     {
 
@@ -143,4 +184,5 @@ namespace OrariUnibg.Views
             throw new NotImplementedException();
         }
     }
+    #endregion 
 }

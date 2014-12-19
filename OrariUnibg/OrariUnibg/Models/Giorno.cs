@@ -10,7 +10,14 @@ namespace OrariUnibg.Models
 {
     class Giorno : NotifyPropertyChangedBase
     {
-        private IEnumerable<Orari> _list;
+        #region Private Fields
+        private IEnumerable<Orari> _listOrari;
+        private IEnumerable<Utenza> _listUtenza;
+        private string _aula;
+        private string _ora;
+        private string _aulaOra;
+        #endregion
+
         public string Day
         {
             get;
@@ -22,13 +29,35 @@ namespace OrariUnibg.Models
         {
             get
             {
-                return _list;
+                return _listOrari;
                 //db = new DbSQLite();
                 //var l =  db.GetItems().OrderBy(x => x.Ora).Where(dateX => DateTime.Compare(Data, dateX.Date) == 0);
                 //return l;
             }
-            set { SetProperty<IEnumerable<Orari>>(ref _list, value, "ListaLezioni"); }
+            set { SetProperty<IEnumerable<Orari>>(ref _listOrari, value, "ListaLezioni"); }
         }
         public String DateString { get { return Data.ToString("dd'/'MM'/'yyyy");} }
+
+        public IEnumerable<Utenza> ListUtenza 
+        {
+            get
+            {
+                return _listUtenza;
+                //db = new DbSQLite();
+                //var l =  db.GetItems().OrderBy(x => x.Ora).Where(dateX => DateTime.Compare(Data, dateX.Date) == 0);
+                //return l;
+            }
+            set { SetProperty<IEnumerable<Utenza>>(ref _listUtenza, value, "ListUtenza"); }
+        }
+        public String UsoUtenza 
+        {
+            get 
+            {
+                if (ListUtenza.Count() > 0)
+                    return ListUtenza.FirstOrDefault().Aulaora;
+                else
+                    return string.Empty;
+            }
+        }
     }
 }

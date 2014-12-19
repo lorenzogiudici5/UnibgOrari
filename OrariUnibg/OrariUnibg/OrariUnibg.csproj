@@ -49,6 +49,7 @@
     <Compile Include="Models\Lezione.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Models\Utenza.cs" />
     <Compile Include="Services\Database\DbSQLite.cs" />
     <Compile Include="Services\Database\ISQLite.cs" />
     <Compile Include="Services\INotification.cs" />

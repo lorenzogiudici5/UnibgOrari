@@ -20,6 +20,7 @@ namespace OrariUnibg.Services.Database
             //db = App.SQLite.GetConnection();
             db.CreateTable<MieiCorsi>();
             db.CreateTable<Orari>();
+            db.CreateTable<Utenza>();
         }
         public DbSQLite()
         {
@@ -132,6 +133,17 @@ namespace OrariUnibg.Services.Database
         }
         #endregion
 
+        #region Utenza
+        public void Insert(Utenza item)
+        {
+            db.Insert(item);
+        }
+
+        public IEnumerable<Utenza> GetAllUtenze()
+        {
+            return (from i in db.Table<Utenza>() select i).ToList();
+        }
+        #endregion
     }
 
     [Table("MieiCorsi")]

@@ -9,7 +9,7 @@ namespace OrariUnibg.Services
 {
     public interface INotification
     {
-        void Notify();
+        void BackgroundSync();
         void SendNotification(CorsoGiornaliero corso);
     }
 }

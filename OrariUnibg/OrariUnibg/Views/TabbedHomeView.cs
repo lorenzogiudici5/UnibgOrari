@@ -44,9 +44,9 @@ namespace OrariUnibg.Views
 
             List<Giorno> list = new List<Giorno>()
             {
-                new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0)},
-                new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0)},
-                new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0) },
+                new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateOggi)},
+                new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateDomani)},
+                new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateDopodomani) },
 
                 //new Giorno() {Day = _oggi, Data = _dateOggi},
                 //new Giorno() {Day = _domani, Data = _dateDomani},
@@ -70,10 +70,11 @@ namespace OrariUnibg.Views
                         _db.DeleteSingleOrari(l.Id);
                 };
 
-                foreach (var x in list)
+                foreach (var d in list)
                 {
-                    string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, x.DateString);
-                    List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, x.Data);
+                    //CHECK CORSI
+                    string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, d.DateString);
+                    List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d.Data);
 
                     foreach (var l in listaCorsi)
                     {
@@ -94,24 +95,25 @@ namespace OrariUnibg.Views
 
                             if (_db.AppartieneOrari(orario)) //l'orario è già presente
                             {
-                                if ((string.Compare(orario.Note, corso.Note) != 0) || !orario.Notify)
+                                var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date == orario.Date);
+                                if ((string.Compare(o.Note, corso.Note) != 0) || !o.Notify)
                                 {
-                                    orario.Note = corso.Note;
-                                    orario.AulaOra = corso.AulaOra;
-                                    if (orario.Note != null && orario.Note != "")
+                                    o.Note = corso.Note;
+                                    o.AulaOra = corso.AulaOra;
+                                    if (o.Note != null && o.Note != "" && !o.Notify)
                                     {
                                         DependencyService.Get<INotification>().SendNotification(corso);
                                         //SendNotification(corso);
-                                        orario.Notify = true;
+                                        o.Notify = true;
                                     }
-                                    _db.Update(orario);
+                                    _db.Update(o);
                                 }
                             }
                             else // l'orario non è presente nel mio db
                             {
                                 orario.Notify = false;
 
-                                if (orario.Note != null && orario.Note != "")
+                                if (orario.Note != null && orario.Note != "" && !orario.Notify)
                                 {
                                     DependencyService.Get<INotification>().SendNotification(corso);
                                     //SendNotification(corso);
@@ -123,17 +125,29 @@ namespace OrariUnibg.Views
                         }
                     }
 
-                    list = new List<Giorno>()
+                    //CHECK USO UTENZA
+                    string s_ut = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.DateString);
+                    List<CorsoGiornaliero> listaUtenze = Web.GetSingleOrarioGiornaliero(s, 0, d.Data);
+
+                    foreach (var u in listaUtenze)
                     {
-                        new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0)},
-                        new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0)},
-                        new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0) },
-                    };
-                    this.ItemsSource = list;
+                        var utenza = u;
+                        if (utenza.Insegnamento.Contains("Utenza"))
+                            _db.Insert(new Utenza() { Data = utenza.Date, Aulaora = utenza.AulaOra });
+                    }
                 }
+
+                list = new List<Giorno>()
+                {
+                    new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateOggi)},
+                    new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateDomani)},
+                    new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateDopodomani) },
+
+                };
+                this.ItemsSource = list;
                 MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
-                
-                //DependencyService.Get<INotification>().Notify();
+
+                DependencyService.Get<INotification>().BackgroundSync();
             }, 0, 0); 
 
             ToolbarItems.Add(tbiSync);

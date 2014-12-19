@@ -84,11 +84,9 @@ namespace OrariUnibg.Views.ViewCells
             
             //lblAula.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             
-           
-
             var grid = new Grid()
             {
-                Padding = new Thickness(10, 10, 10, 10),
+                Padding = new Thickness(15, 10, 15, 10),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 RowSpacing = 0,

@@ -54,6 +54,8 @@ namespace OrariUnibg.Views
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Placeholder = "Cognome"
             };
+
+            _entryCognome.TextChanged += _entryCognome_TextChanged;
             _entryMail = new Entry()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -189,41 +191,7 @@ namespace OrariUnibg.Views
             grid.Children.Add(_switchNotific, 1, 2, 6, 7);
             grid.Children.Add(_activityIndicator, 0, 2, 7, 8);
 
-            ToolbarItem tbiNext = new ToolbarItem("Avanti", "ic_next.png", async () =>
-            {
-                _activityIndicator.IsVisible = true;
-                Facolta fac = listFacolta.Where(x => x.Nome == _pickFacolta.Items[_pickFacolta.SelectedIndex]).First();
-                int facolta = fac.IdFacolta;
-                string db = fac.DB;
-                int laurea = dictionaryLauree.Where(x => x.Key == _pickLaurea.Items[_pickLaurea.SelectedIndex]).First().Value;
-                int anno = _pickAnno.SelectedIndex + 1;
-                Settings.Nome = _entryNome.Text;
-                Settings.Cognome = _entryCognome.Text;
-                Settings.Email = _entryMail.Text + _lblMail.Text;
-                Settings.Facolta = facolta;
-                Settings.DBfacolta = db;
-                Settings.Laurea = laurea;
-                Settings.Anno = anno;
-                Settings.BackgroundSync = _switchSync.IsToggled;
-                Settings.Notify = _switchNotific.IsToggled;
-
-                Settings.LaureaIndex = _pickLaurea.SelectedIndex;
-                Settings.FacoltaIndex = _pickFacolta.SelectedIndex;
-                Settings.AnnoIndex = anno;
-
-                string completo = await Web.GetOrarioCompleto("completo", db, facolta, laurea, anno);
-                string secondo = await Web.GetOrarioCompleto("secondo", db, facolta, laurea, anno);
-
-                List<CorsoCompleto> lista_completo = Web.GetSingleOrarioCompleto(completo);
-                List<CorsoCompleto> lista_secondo = Web.GetSingleOrarioCompleto(secondo);
-
-                lista_completo.AddRange(lista_secondo);
-                _activityIndicator.IsVisible = false;
-
-                Settings.PrimoAvvio = false;
-                await Navigation.PushAsync(new ListaCorsi(lista_completo));
-                    //Navigation.PopModalAsync();
-            }, 0, 0); 
+            ToolbarItem tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
             //if (Device.OS == TargetPlatform.Android)
             //{ // BUG: Android doesn't support the icon being null
             //    tbiNext = new ToolbarItem("Avanti", "ic_menu.png", () =>
@@ -241,6 +209,60 @@ namespace OrariUnibg.Views
             ToolbarItems.Add(tbiNext);
             return grid;
         }
+
+
+        #endregion
+
+        #region Event Handlers
+        private async void toolbarItem_next()
+        {
+            _activityIndicator.IsVisible = true;
+            Facolta fac = listFacolta.Where(x => x.Nome == _pickFacolta.Items[_pickFacolta.SelectedIndex]).First();
+            int facolta = fac.IdFacolta;
+            string db = fac.DB;
+            int laurea = dictionaryLauree.Where(x => x.Key == _pickLaurea.Items[_pickLaurea.SelectedIndex]).First().Value;
+            int anno = _pickAnno.SelectedIndex + 1;
+            Settings.Nome = _entryNome.Text;
+            Settings.Cognome = _entryCognome.Text;
+            Settings.Email = _entryMail.Text + _lblMail.Text;
+            Settings.Facolta = facolta;
+            Settings.DBfacolta = db;
+            Settings.Laurea = laurea;
+            Settings.Anno = anno;
+            Settings.BackgroundSync = _switchSync.IsToggled;
+            Settings.Notify = _switchNotific.IsToggled;
+
+            Settings.LaureaIndex = _pickLaurea.SelectedIndex;
+            Settings.FacoltaIndex = _pickFacolta.SelectedIndex;
+            Settings.AnnoIndex = anno;
+
+            string completo = await Web.GetOrarioCompleto("completo", db, facolta, laurea, anno);
+            string secondo = await Web.GetOrarioCompleto("secondo", db, facolta, laurea, anno);
+
+            List<CorsoCompleto> lista_completo = Web.GetSingleOrarioCompleto(completo);
+            List<CorsoCompleto> lista_secondo = Web.GetSingleOrarioCompleto(secondo);
+
+            lista_completo.AddRange(lista_secondo);
+            _activityIndicator.IsVisible = false;
+
+            Settings.PrimoAvvio = false;
+            await Navigation.PushAsync(new ListaCorsi(lista_completo));
+            //Navigation.PopModalAsync();
+        }
+        void _entryCognome_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var s = (Entry)sender;
+            string cognome = "";
+            char nome = ' ';
+            if (_entryNome.Text != string.Empty)
+                nome = _entryNome.Text[0];
+            if (s.Text != string.Empty)
+                cognome = s.Text;
+
+            if (_entryNome.Text != string.Empty && _entryCognome.Text != string.Empty)
+                _entryMail.Text = string.Format("{0}.{1}", nome.ToString().ToLower(), cognome.ToLower());
+        }
+
         #endregion
     }
 }
