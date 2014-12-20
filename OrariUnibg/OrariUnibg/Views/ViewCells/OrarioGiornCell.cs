@@ -42,7 +42,6 @@ namespace OrariUnibg.Views.ViewCells
             {
                 Font = Font.SystemFontOfSize(NamedSize.Micro),
                 TextColor = ColorHelper.Gray,
-                IsVisible = false,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
             _lblCodice.SetBinding(Label.TextProperty, "Codice");
@@ -76,9 +75,9 @@ namespace OrariUnibg.Views.ViewCells
                 Font = Font.SystemFontOfSize(NamedSize.Small),
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
-                IsVisible = false,
             };
             _lblNote.SetBinding(Label.TextProperty, "Note");
+            _lblNote.SetBinding(Label.IsVisibleProperty, new Binding("Note", converter: new NoteIsVisibleConverter()));
 
             //lblOra.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             
@@ -131,53 +130,54 @@ namespace OrariUnibg.Views.ViewCells
 
             //layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
 
-            MessagingCenter.Subscribe<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", (sender, arg) =>
-            {
-                if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
-                {
-                    if (_lblNote.Text != String.Empty)
-                    {
-                        if (_lblNote.IsVisible)
-                            _lblNote.IsVisible = false;
-                        else
-                            _lblNote.IsVisible = true;
-                    }
+            //MessagingCenter.Subscribe<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", (sender, arg) =>
+            //{
+            //    //if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
+            //    //{
+            //    //    ////DOUBLE TAPPED?!
+            //    //    ////if (_lblNote.Text != String.Empty)
+            //    //    ////{
+            //    //    ////    if (_lblNote.IsVisible)
+            //    //    ////        _lblNote.IsVisible = false;
+            //    //    ////    else
+            //    //    ////        _lblNote.IsVisible = true;
+            //    //    ////}
 
-                    if (_lblCodice.IsVisible)
-                        _lblCodice.IsVisible = false;
-                    else
-                        _lblCodice.IsVisible = true;
-                }
-                else
-                    return;
-            });
+            //    //    ////if (_lblCodice.IsVisible)
+            //    //    ////    _lblCodice.IsVisible = false;
+            //    //    ////else
+            //    //    ////    _lblCodice.IsVisible = true;
+            //    //}
+            //    //else
+            //    //    return;
+            //});
 
-            MessagingCenter.Subscribe<TabbedDayView, Orari>(this, "orari_clicked", (sender, arg) =>
-            {
-                if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
-                {
-                    if (_lblNote.Text != String.Empty)
-                    {
-                        if (_lblNote.IsVisible)
-                            _lblNote.IsVisible = false;
-                        else
-                            _lblNote.IsVisible = true;
-                    }
+            //MessagingCenter.Subscribe<TabbedDayView, Orari>(this, "orari_clicked", (sender, arg) =>
+            //{
+            //    if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
+            //    {
+            //        if (_lblNote.Text != String.Empty)
+            //        {
+            //            if (_lblNote.IsVisible)
+            //                _lblNote.IsVisible = false;
+            //            else
+            //                _lblNote.IsVisible = true;
+            //        }
 
-                    if (_lblCodice.IsVisible)
-                        _lblCodice.IsVisible = false;
-                    else
-                        _lblCodice.IsVisible = true;
+            //        if (_lblCodice.IsVisible)
+            //            _lblCodice.IsVisible = false;
+            //        else
+            //            _lblCodice.IsVisible = true;
 
-                }
-                else
-                    return;
-            });
+            //    }
+            //    else
+            //        return;
+            //});
 
             return grid;
         }
         #endregion
-        
+
     }
 
     public class NoteBackgroundConverter : IValueConverter
@@ -209,6 +209,28 @@ namespace OrariUnibg.Views.ViewCells
             }
 
             return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class NoteIsVisibleConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string)
+            {
+                if ( (string)value != string.Empty)
+                    return true;
+                else 
+                    return false;
+            }
+
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

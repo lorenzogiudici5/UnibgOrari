@@ -16,6 +16,7 @@ namespace OrariUnibg.Views
         #region Constructor
         public TabbedDayView()
         {
+            _db = new DbSQLite();
             this.SetBinding(ContentPage.TitleProperty, "Day");
             Content = getView();
         }
@@ -29,6 +30,7 @@ namespace OrariUnibg.Views
         private Label _lblTitleUtenza;
         private Label _lblUtenza;
         private ActivityIndicator _activityIndicator;
+        private DbSQLite _db;
         #endregion
 
         #region Private Methods
@@ -120,19 +122,45 @@ namespace OrariUnibg.Views
 
             return layout;
         }
+
+
         #endregion
 
         #region Handlers
-        void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
-            var x = (Orari)_listView.SelectedItem;
+            var orario = (Orari)_listView.SelectedItem;
 
-            MessagingCenter.Send<TabbedDayView, Orari>(this, "orari_clicked", x);
+            string action;
+            //if(_db.CheckAppartieneMieiCorsi(orario))
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+                
+            //else
+            //    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+
+            switch (action)
+            {
+                case "Rimuovi dai preferiti":
+                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                    _db.DeleteMieiCorsi(corso);
+                    MessagingCenter.Send<TabbedDayView>(this, "delete_corso");
+                    break;
+                case "Aggiungi ai preferiti":
+                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento});
+                    break;
+                default:
+                case "Dettagli":
+                    break;
+            }
+
+            //MessagingCenter.Send<TabbedDayView, Orari>(this, "orari_clicked", orario);
 
             ((ListView)sender).SelectedItem = null;
         }
+
+
         #endregion
     }
 

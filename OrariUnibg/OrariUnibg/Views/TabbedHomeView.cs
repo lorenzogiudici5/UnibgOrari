@@ -19,38 +19,41 @@ namespace OrariUnibg.Views
         public TabbedHomeView()
         {
             _db = new DbSQLite();
-            System.Diagnostics.Debug.WriteLine("COUNT: " + _db.GetItemsMieiCorsi().Count());
+            System.Diagnostics.Debug.WriteLine("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
             BackgroundColor = ColorHelper.White;
 
             if(DateTime.Now.Hour < 18)
             {
-                _oggi = "OGGI";
                 _dateOggi = DateTime.Today;
-                _domani = "DOMANI";
-                _dateDomani = DateTime.Today.AddDays(1);
-                _dateDopodomani = DateTime.Today.AddDays(2);
-                _dopodomani = _dateDopodomani.ToString("dddd", new CultureInfo("it-IT")).ToUpper();
+                _dateDomani = _dateOggi.AddDays(1);
+                _dateDopodomani = _dateOggi.AddDays(2);
             }
             else
             {
-                _oggi = "DOMANI";
                 _dateOggi = DateTime.Today.AddDays(1);
-                _dateDomani = DateTime.Today.AddDays(2);
-                _domani = _dateDomani.ToString("dddd", new CultureInfo("it-IT")).ToUpper();
-                _dateDopodomani = DateTime.Today.AddDays(3);
-                _dopodomani = _dateDopodomani.ToString("dddd", new CultureInfo("it-IT")).ToUpper();
+                _dateDomani = _dateOggi.AddDays(1);
+                _dateDopodomani = _dateDomani.AddDays(1);
             }
 
-            List<Giorno> list = new List<Giorno>()
-            {
-                new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateOggi)},
-                new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateDomani)},
-                new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dateDopodomani) },
+            _oggi = new Giorno() { Data = DateTime.Today };
+            _oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data, dateX.Date) == 0);
+            _oggi.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _oggi.Data);
+            
+            _domani = new Giorno() { Data = _oggi.Data.AddDays(1)};
+            _domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data, dateX.Date) == 0);
+            _domani.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _domani.Data);
+            
+            _dopodomani = new Giorno() { Data = _domani.Data.AddDays(1)};
+            _dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data, dateX.Date) == 0);
+            _dopodomani.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dopodomani.Data);
+            //var oggi = new Giorno() { Data = DateTime.Today };
+            //var domani = new Giorno() { Data = oggi.Data.AddDays(1) };
+            //var dopodomani = new Giorno() { Data = domani.Data.AddDays(1)};
 
-                //new Giorno() {Day = _oggi, Data = _dateOggi},
-                //new Giorno() {Day = _domani, Data = _dateDomani},
-                //new Giorno() {Day = _dopodomani, Data =_dateDpodomani },
+            list = new List<Giorno>()
+            {
+                _oggi, _domani, _dopodomani
             };
             this.ItemsSource = list;
             
@@ -137,35 +140,56 @@ namespace OrariUnibg.Views
                     }
                 }
 
-                list = new List<Giorno>()
-                {
-                    new Giorno() {Day = _oggi, Data = _dateOggi, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateOggi, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateOggi)},
-                    new Giorno() {Day = _domani, Data = _dateDomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateDomani)},
-                    new Giorno() {Day = _dopodomani, Data =_dateDopodomani, ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dateDopodomani, dateX.Date) == 0), ListUtenza = _db.GetAllUtenze().Where(z => z.Data == _dateDopodomani) },
-
-                };
+                LoadListGiorno();
                 this.ItemsSource = list;
                 MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
 
-                DependencyService.Get<INotification>().BackgroundSync();
+                //DependencyService.Get<INotification>().BackgroundSync();
             }, 0, 0); 
 
             ToolbarItems.Add(tbiSync);
+
+            MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", deleteMioCorso);
         }
         #endregion
 
         #region Private Fields
-        private String _oggi;
-        private String _domani;
-        private String _dopodomani;
         private DateTime _dateOggi;
         private DateTime _dateDomani;
         private DateTime _dateDopodomani;
         private DbSQLite _db;
+        private List<Giorno> list;
+        private Giorno _oggi;
+        private Giorno _domani;
+        private Giorno _dopodomani;
         #endregion
 
         #region Private Methods
 
+        private void LoadListGiorno()
+        {
+            _oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data, dateX.Date) == 0);
+            _oggi.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _oggi.Data);
+
+            _domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data, dateX.Date) == 0);
+            _domani.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _domani.Data);
+
+            _dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data, dateX.Date) == 0);
+            _dopodomani.ListUtenza = _db.GetAllUtenze().Where(x => x.Data == _dopodomani.Data);
+        }
+        protected override void OnAppearing()
+        {
+            //dovrebbe scaricare i nuovi orari
+            LoadListGiorno();
+            base.OnAppearing();
+        }
+        #endregion
+
+        #region Event Handlers
+        private void deleteMioCorso(TabbedDayView obj)
+        {
+            LoadListGiorno();
+        }
         #endregion
     }
 }

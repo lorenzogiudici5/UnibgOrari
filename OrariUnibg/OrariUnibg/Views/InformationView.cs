@@ -25,7 +25,7 @@ namespace OrariUnibg.Views
         private Entry _entryNome;
         private Entry _entryCognome;
         private Entry _entryMail;
-        private Label _lblMail;
+        private Entry _entryMatricola;
         private Picker _pickFacolta;
         private Picker _pickLaurea;
         private Picker _pickAnno;
@@ -61,12 +61,10 @@ namespace OrariUnibg.Views
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Placeholder = "n.cognome2"
             };
-            _lblMail = new Label()
+            _entryMatricola = new Entry()
             {
+                Placeholder = "Matr.",
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                Text = "@studenti.unibg.it"
             };
 
             _pickFacolta = new Picker()
@@ -159,7 +157,7 @@ namespace OrariUnibg.Views
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 RowSpacing = 8,
-                ColumnSpacing = 5,
+                ColumnSpacing = 8,
                 RowDefinitions = 
                 {
                      new RowDefinition { Height = GridLength.Auto },
@@ -181,7 +179,7 @@ namespace OrariUnibg.Views
             grid.Children.Add(_entryNome, 0, 2, 0, 1);
             grid.Children.Add(_entryCognome, 0, 2, 1, 2);
             grid.Children.Add(_entryMail, 0, 1, 2, 3);
-            grid.Children.Add(_lblMail, 1, 2, 2, 3);
+            grid.Children.Add(_entryMatricola, 1, 2, 2, 3);
             grid.Children.Add(_pickFacolta, 0, 2, 3, 4);
             grid.Children.Add(_pickLaurea, 0, 1, 4, 5);
             grid.Children.Add(_pickAnno, 1, 2, 4, 5);
@@ -224,7 +222,8 @@ namespace OrariUnibg.Views
             int anno = _pickAnno.SelectedIndex + 1;
             Settings.Nome = _entryNome.Text;
             Settings.Cognome = _entryCognome.Text;
-            Settings.Email = _entryMail.Text + _lblMail.Text;
+            Settings.Email = _entryMail.Text + "@studenti.unibg.it";
+            Settings.Matricola = _entryMatricola.Text;
             Settings.Facolta = facolta;
             Settings.DBfacolta = db;
             Settings.Laurea = laurea;

@@ -35,7 +35,7 @@ namespace OrariUnibg.Services.Database
         #endregion 
 
         #region MieiCorsi
-        public IEnumerable<MieiCorsi> GetItemsMieiCorsi()
+        public IEnumerable<MieiCorsi> GetAllMieiCorsi()
         {
             return (from i in db.Table<MieiCorsi>() select i).ToList();
         }
@@ -69,9 +69,10 @@ namespace OrariUnibg.Services.Database
         {
             db.Insert(item);
         }
-        public int DeleteItem(int id)
+        public int DeleteMieiCorsi(MieiCorsi corso)
         {
-            return db.Delete<MieiCorsi>(id);
+            DeleteOrari(corso);
+            return db.Delete<MieiCorsi>(corso.Id);
         }
         #endregion
 
@@ -127,6 +128,13 @@ namespace OrariUnibg.Services.Database
                 Insegnamento = item.Insegnamento, Codice = item.Codice, AulaOra = item.AulaOra, Note = item.Note, Date = item.Date, Docente = item.Docente
             });
         }
+        private void DeleteOrari(MieiCorsi corso)
+        {
+            var list = GetAllOrari().Where(x => x.Insegnamento == corso.Insegnamento);
+            foreach (var x in list)
+                db.Delete<Orari>(x.Id);
+        }
+
         public int DeleteSingleOrari(int id)
         {
             return db.Delete<Orari>(id);

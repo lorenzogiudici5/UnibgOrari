@@ -2,37 +2,51 @@
 using OrariUniBg.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OrariUnibg.Models
 {
-    class Giorno : NotifyPropertyChangedBase
+    public class Giorno : NotifyPropertyChangedBase
     {
         #region Private Fields
         private IEnumerable<Orari> _listOrari;
         private IEnumerable<Utenza> _listUtenza;
-        private string _aula;
-        private string _ora;
-        private string _aulaOra;
+        private DateTime _day;
+        private DbSQLite _db;
         #endregion
 
-        public string Day
+        public string Day 
         {
-            get;
-            set;
+            get 
+            {
+                if (Data == DateTime.Today)
+                    return "OGGI";
+                else if (Data == DateTime.Today.AddDays(1))
+                    return "DOMANI";
+                else
+                    return Data.ToString("dddd", new CultureInfo("it-IT")).ToUpper();
+            }
         }
-        public DateTime Data { get; set; }
+        public DateTime Data 
+        {
+            get { return _day; } 
+            set
+            {
+                if (value.ToString("dddd", new CultureInfo("it-IT")).ToLower() == "domenica")
+                    _day = value.AddDays(1);
+                else
+                    _day = value;
+            }
+        }
 
         public IEnumerable<Orari> ListaLezioni 
         {
             get
             {
                 return _listOrari;
-                //db = new DbSQLite();
-                //var l =  db.GetItems().OrderBy(x => x.Ora).Where(dateX => DateTime.Compare(Data, dateX.Date) == 0);
-                //return l;
             }
             set { SetProperty<IEnumerable<Orari>>(ref _listOrari, value, "ListaLezioni"); }
         }
@@ -43,9 +57,6 @@ namespace OrariUnibg.Models
             get
             {
                 return _listUtenza;
-                //db = new DbSQLite();
-                //var l =  db.GetItems().OrderBy(x => x.Ora).Where(dateX => DateTime.Compare(Data, dateX.Date) == 0);
-                //return l;
             }
             set { SetProperty<IEnumerable<Utenza>>(ref _listUtenza, value, "ListUtenza"); }
         }

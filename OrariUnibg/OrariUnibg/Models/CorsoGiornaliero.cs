@@ -42,10 +42,10 @@ namespace OrariUnibg.Models
         {
             get { return _note; }
             set 
-            { 
-                if (value == null) 
-                    _note = ""; 
-                else 
+            {
+                if (value == null)
+                    _note = string.Empty;
+                else
                     _note = value; 
             }
         }

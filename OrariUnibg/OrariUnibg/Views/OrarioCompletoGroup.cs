@@ -7,21 +7,19 @@ using OrariUnibg.Models;
 using OrariUnibg.Services;
 using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Views
 {
     class OrarioCompletoGroup : ContentPage
     {
-        ListView lv;
-        List<CorsoCompleto> lista;
-        bool group;
-        List<CorsoCompleto> OriginalList;
+        #region Constructor
         public OrarioCompletoGroup(List<CorsoCompleto> list, string facolta, string laurea, string anno, string semestre, bool g)
         {
             OriginalList = list;
             lista = list;
             group = g;
-            
+
             Title = facolta;
             var lblOrario = new Label()
             {
@@ -44,8 +42,8 @@ namespace OrariUnibg.Views
                 TextColor = Color.Navy,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
-            
-            lv = new ListView(){ HasUnevenRows = true};
+
+            lv = new ListView() { HasUnevenRows = true };
             lv.ItemSelected += lv_ItemSelected;
             setUpListView();
 
@@ -55,20 +53,32 @@ namespace OrariUnibg.Views
                 VerticalOptions = LayoutOptions.EndAndExpand
             };
             searchbar.TextChanged += searchbar_TextChanged;
-            
 
-            var l = new StackLayout() { 
-                Padding = new Thickness(5, 5, 5, 5), 
+
+            var l = new StackLayout()
+            {
+                Padding = new Thickness(5, 5, 5, 5),
                 Spacing = 0,
-                Children = { lblOrario, lblLaurea, lblAnno } };
+                Children = { lblOrario, lblLaurea, lblAnno }
+            };
             Content = new StackLayout()
             {
                 Padding = new Thickness(5, 5, 5, 5),
                 Orientation = StackOrientation.Vertical,
-                Children = { l, lv, searchbar}
+                Children = { l, lv, searchbar }
             };
         }
+        #endregion
 
+        #region Private Fields
+        private ListView lv;
+        private List<CorsoCompleto> lista;
+        private bool group;
+        private List<CorsoCompleto> OriginalList;
+        private DbSQLite _db;
+        #endregion
+
+        #region Event Handlers
         void searchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
@@ -80,21 +90,10 @@ namespace OrariUnibg.Views
                 lista = OriginalList.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.Lezioni.Any(y => y.AulaOra.ToUpper().Contains(searchText) || y.Note.ToUpper().Contains(searchText))).ToList();
 
             setUpListView();
-        }
+        }        
+        #endregion
 
-        //void searchbar_SearchButtonPressed(object sender, EventArgs e)
-        //{
-        //    // Get the search text.
-        //    SearchBar searchBar = (SearchBar)sender;
-        //    string searchText = searchBar.Text.ToUpper();
-
-        //    if (searchText == string.Empty)
-        //        lista = OriginalList;
-        //    else
-        //        lista = OriginalList.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText)).ToList();
-        //    setUpListView();
-        //}
-
+        #region Private Methods
         private void setUpListView()
         {
             if (group)
@@ -125,14 +124,35 @@ namespace OrariUnibg.Views
 
         }
 
-        void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
-            //var x = (CorsoCompleto)lv.SelectedItem;        
+            var o = (CorsoCompleto)lv.SelectedItem;
+            var orario = new CorsoGiornaliero() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
+            string action;
+            if (_db.CheckAppartieneMieiCorsi(orario))
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+
+            else
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+
+            switch (action)
+            {
+                case "Rimuovi dai preferiti":
+                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                    _db.DeleteMieiCorsi(corso);
+                    break;
+                case "Aggiungi ai preferiti":
+                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                    break;
+                default:
+                case "Dettagli":
+                    break;
+            }
 
             ((ListView)sender).SelectedItem = null;
         }
-        
+        #endregion
     }
 }

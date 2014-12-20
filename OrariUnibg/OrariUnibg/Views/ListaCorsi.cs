@@ -29,9 +29,13 @@ namespace OrariUnibg.Views
         private List<MieiCorsi> _preferiti;
         private ListView _list;
         private DbSQLite _db;
-        private DateTime _dateOggi;
-        private DateTime _dateDomani;
-        private DateTime _dateDopodomani;
+        //private DateTime _dateOggi;
+        //private DateTime _dateDomani;
+        //private DateTime _dateDopodomani;
+        private ActivityIndicator _activityIndicator;
+        private Giorno _oggi;
+        private Giorno _domani;
+        private Giorno _dopodomani;
         #endregion
 
         #region Private Methods
@@ -53,11 +57,24 @@ namespace OrariUnibg.Views
 
             _list.ItemSelected += _list_ItemSelected;
 
+            _activityIndicator = new ActivityIndicator()
+            {
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                IsRunning = false,
+                IsVisible = false
+            };
+
             ToolbarItem tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0);
 
-
             ToolbarItems.Add(tbiNext);
-            return _list;
+
+            var layout = new StackLayout()
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Spacing = 5,
+                Children = { _list, _activityIndicator}
+            };
+            return layout;
         }
 
         void _list_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -87,27 +104,35 @@ namespace OrariUnibg.Views
         #region Event Handlers
         private async void toolbarItem_next()
         {
+            _activityIndicator.IsRunning = true;
+            _activityIndicator.IsVisible = true;
+
             foreach (var i in _preferiti)
                 _db.Insert(i);
 
             if (DateTime.Now.Hour < 18)
             {
-                _dateOggi = DateTime.Today;
-                _dateDomani = DateTime.Today.AddDays(1);
-                _dateDopodomani = DateTime.Today.AddDays(2);
+                _oggi = new Giorno() { Data = DateTime.Today };
+                _domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
+                _dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
             }
             else
             {
-                _dateOggi = DateTime.Today.AddDays(1);
-                _dateDomani = DateTime.Today.AddDays(2);
-                _dateDopodomani = DateTime.Today.AddDays(3);
+                _oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
+                _domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
+                _dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
             }
 
-            DateTime[] arrayDate = new DateTime[] { _dateOggi, _dateDomani, _dateDopodomani };
+            DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
             foreach (var d in arrayDate)
             {
-                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, d.ToString("dd'/'MM'/'yyyy"));
+                //Corsi generale, utenza + corsi
+                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.ToString("dd'/'MM'/'yyyy"));
                 List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
+
+                //CERCA SOLO TRA CORSI DI QUELLA LAUREA
+                //string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, d.ToString("dd'/'MM'/'yyyy"));
+                //List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
                 foreach (var l in listaCorsi)
                 {
@@ -127,20 +152,25 @@ namespace OrariUnibg.Views
 
                         _db.Insert(orario);
                     }
+                    else if (corso.Insegnamento.Contains("Utenza"))
+                        _db.Insert(new Utenza() { Data = corso.Date, Aulaora = corso.AulaOra });
                 }
 
-                string s_ut = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.ToString("dd'/'MM'/'yyyy"));
-                List<CorsoGiornaliero> listaUtenze = Web.GetSingleOrarioGiornaliero(s, 0, d);
+                //CERCA TRA I CORSI IN GENERALE, USO UTENZA
+                //string s_ut = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.ToString("dd'/'MM'/'yyyy"));
+                //List<CorsoGiornaliero> listaUtenze = Web.GetSingleOrarioGiornaliero(s, 0, d);
                 
-                foreach(var u in listaUtenze)
-                {
-                    var utenza = u;
-                    if (utenza.Insegnamento.Contains("Utenza"))
-                        _db.Insert(new Utenza() { Data = utenza.Date, Aulaora = utenza.AulaOra });
-                }
+                //foreach(var u in listaUtenze)
+                //{
+                //    var utenza = u;
+                //    if (utenza.Insegnamento.Contains("Utenza"))
+                //        _db.Insert(new Utenza() { Data = utenza.Date, Aulaora = utenza.AulaOra });
+                //}
             }
 
-            System.Diagnostics.Debug.WriteLine(_db.GetItemsMieiCorsi().Count());
+            System.Diagnostics.Debug.WriteLine(_db.GetAllMieiCorsi().Count());
+            _activityIndicator.IsRunning = false;
+            _activityIndicator.IsVisible = false;
             await Navigation.PushModalAsync(new MasterDetailView());
 
         }

@@ -12,10 +12,15 @@ namespace OrariUnibg.Views
 {
     class OrarioGiornaliero : ContentPage
     {
-        ListView lv;
-        List<CorsoGiornaliero> OriginalList;
+        #region Private Fields
+        private DbSQLite _db;
+        private ListView lv;
+        private List<CorsoGiornaliero> OriginalList;
+        #endregion
+
         public OrarioGiornaliero(List<CorsoGiornaliero> list, String facolta, String laurea, String data)
         {
+            _db = new DbSQLite();
             Title = facolta;
 
             OriginalList = list;
@@ -82,13 +87,34 @@ namespace OrariUnibg.Views
                 lv.ItemsSource = OriginalList.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
         }
 
-        void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
-            var x = (CorsoGiornaliero)lv.SelectedItem;
+            var orario = (CorsoGiornaliero)lv.SelectedItem;
 
-            MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", x);
+            string action;
+            if (_db.CheckAppartieneMieiCorsi(orario))
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+
+            else
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+
+            switch (action)
+            {
+                case "Rimuovi dai preferiti":
+                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                    _db.DeleteMieiCorsi(corso);
+                    break;
+                case "Aggiungi ai preferiti":
+                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                    break;
+                default:
+                case "Dettagli":
+                    break;
+            }
+
+            //MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", orario);
 
             ((ListView)sender).SelectedItem = null;
         }

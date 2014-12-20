@@ -30,6 +30,7 @@ namespace OrariUnibg.Helpers
     private const string NomeKey = "nome_key";
     private const string CognomeKey = "cognome_key";
     private const string MailKey = "mail_key";
+    private const string MatricolaKey = "matricola_key";
 
     private const string SyncKey = "sync_key";
     private const string NotifyKey = "notify_key";
@@ -115,6 +116,17 @@ namespace OrariUnibg.Helpers
         set
         {
             AppSettings.AddOrUpdateValue(MailKey, value);
+        }
+    }
+    public static string Matricola
+    {
+        get
+        {
+            return AppSettings.GetValueOrDefault(MatricolaKey, DefaultString);
+        }
+        set
+        {
+            AppSettings.AddOrUpdateValue(MatricolaKey, value);
         }
     }
     public static int Facolta

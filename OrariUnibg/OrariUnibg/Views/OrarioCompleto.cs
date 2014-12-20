@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using OrariUnibg.Models;
 using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Views
 {
     class OrarioCompleto : ContentPage
     {
-        ListView lv;
+        #region Constructor
         public OrarioCompleto(List<CorsoCompleto> list, string facolta, string laurea, string anno, string semestre)
         {
             Title = facolta;
@@ -36,7 +37,7 @@ namespace OrariUnibg.Views
                 TextColor = Color.Navy,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
-            
+
             lv = new ListView()
             {
                 ItemTemplate = new DataTemplate(typeof(OrarioComplCell)),
@@ -44,57 +45,75 @@ namespace OrariUnibg.Views
             };
             lv.ItemSelected += lv_ItemSelected;
 
-            var l = new StackLayout() { 
-                Padding = new Thickness(5, 5, 5, 5), 
+            var l = new StackLayout()
+            {
+                Padding = new Thickness(5, 5, 5, 5),
                 Spacing = 0,
-                Children = { lblOrario, lblLaurea, lblAnno } };
+                Children = { lblOrario, lblLaurea, lblAnno }
+            };
             Content = new StackLayout()
             {
                 Padding = new Thickness(5, 5, 5, 5),
                 Orientation = StackOrientation.Vertical,
-                Children = { l, lv}
+                Children = { l, lv }
             };
-            //Grid grid = new Grid()
-            //{
-            //    VerticalOptions = LayoutOptions.FillAndExpand,
-            //    HorizontalOptions = LayoutOptions.FillAndExpand,
-            //    ColumnDefinitions = 
-            //    { 
-            //        new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //    }
-            //};
 
-            //for (int i = 0; i < list.Count; i++)
-            //{
-            //    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            //    grid.Children.Add(new Label() { Text = list[i].Insegnamento }, 0, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[0].AulaOra }, 1, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[1].AulaOra }, 2, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[2].AulaOra }, 3, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[3].AulaOra }, 4, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[4].AulaOra }, 5, i);
-            //    grid.Children.Add(new Label() { Font = Font.SystemFontOfSize(NamedSize.Micro), Text = list[i].Lezioni[5].AulaOra }, 6, i);
-            //};
-
-            //Content = grid;
         }
 
-        void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        #endregion
+
+        #region Private Fields
+        private ListView lv;
+        private DbSQLite _db;
+        #endregion
+
+
+        #region Private Methods
+        async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
-            var x = (CorsoCompleto)lv.SelectedItem;
+            var o = (CorsoCompleto)lv.SelectedItem;
+            var orario = new CorsoGiornaliero() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
+            string action;
+            if (_db.CheckAppartieneMieiCorsi(orario))
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
 
-            MessagingCenter.Send<OrarioCompleto, CorsoCompleto>(this, "completo_clicked", x);
+            else
+                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+
+            switch (action)
+            {
+                case "Rimuovi dai preferiti":
+                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                    _db.DeleteMieiCorsi(corso);
+                    break;
+                case "Aggiungi ai preferiti":
+                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                    break;
+                default:
+                case "Dettagli":
+                    break;
+            }
 
             ((ListView)sender).SelectedItem = null;
         }
-        
+        #endregion
+
+        #region Event Handlers
+        void searchbar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //DA AGGIUNGERE!! 
+            //SearchBar searchBar = (SearchBar)sender;
+            //string searchText = searchBar.Text.ToUpper();
+
+            //if (searchText == string.Empty)
+            //    lista = OriginalList;
+            //else
+            //    lista = OriginalList.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.Lezioni.Any(y => y.AulaOra.ToUpper().Contains(searchText) || y.Note.ToUpper().Contains(searchText))).ToList();
+
+            //setUpListView();
+        }
+        #endregion
     }
 }
