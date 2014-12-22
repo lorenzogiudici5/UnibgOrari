@@ -7,11 +7,13 @@ using OrariUnibg.Helpers;
 using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Services;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views
 {
     class SelectCompleto : ContentPage
     {
+        #region Private Fields
         Picker pickerFacoltà;
         Picker pickerLaurea;
         Picker pickerAnno;
@@ -19,11 +21,14 @@ namespace OrariUnibg.Views
         Picker pickerRaggruppa;
         ActivityIndicator activityIndicator;
         Label lblError;
-        String[] anni;
-        String[] ragg;
+        private int limit = 3;
+        private String[] anni;
+        private String[] ragg;
         List<Facolta> listFacolta = new List<Facolta>();
         Dictionary<string, int> dictionaryLauree = new Dictionary<string, int>();
         Dictionary<string, string> sem;
+        #endregion
+
         public SelectCompleto()
         {
             Title = "Completo";
@@ -59,8 +64,34 @@ namespace OrariUnibg.Views
                 pickerLaurea.SelectedIndex = 0;
             };
 
+            anni = new String[] {"TUTTI gli anni", "1° Anno", "2° Anno", "3° Anno", "4° Anno", "5° Anno" };
+            pickerLaurea.SelectedIndexChanged += (sender, args) =>
+            {
+                int i = 0;
+                pickerAnno.IsEnabled = true;
+
+                if (pickerLaurea.Items.Count > 0)
+                {
+                    if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("Magistrale"))
+                        limit = 5;
+                    else if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("LM"))
+                        limit = 2;
+                    else limit = 3;
+
+                    pickerAnno.Items.Clear();
+                    foreach (var x in anni)
+                    {
+                        if (i > limit)
+                            break;
+                        pickerAnno.Items.Add(x);
+                        i++;
+                    }
+                    pickerAnno.SelectedIndex = 0;
+                }
+
+            };
+
             pickerAnno = new Picker() { Title = "Ordina per..", };
-            anni = new String[] { "TUTTI gli anni", "1° Anno", "2° Anno", "3° Anno"};
 
             pickerSemestre = new Picker() { Title = "Semestre" };
             sem = new Dictionary<string, string>()
@@ -159,7 +190,14 @@ namespace OrariUnibg.Views
             activityIndicator.IsVisible = false;
 
             if (lista.Count > 0)
-                await this.Navigation.PushAsync(new OrarioCompletoGroup(lista, fac.Nome, laurea, annoString, semestreString, group));
+            {
+                var completoViewModel = new OrariCompletoViewModel() { Facolta = fac, LaureaString = laurea, Anno = annoString, Semestre = semestreString, ListOrari = lista, Group = group };
+                var nav = new OrarioCompletoGroup();
+                nav.BindingContext = completoViewModel;
+                await this.Navigation.PushAsync(nav);
+
+                //                await this.Navigation.PushAsync(new OrarioCompletoGroup(lista, fac.Nome, laurea, annoString, semestreString, group));
+            }
             else
             {
                 lblError.IsVisible = true;

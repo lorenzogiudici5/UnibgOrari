@@ -55,19 +55,6 @@ namespace OrariUnibg.Views.ViewCells
 
             _lblAulaOra.SetBinding(Label.TextProperty, "AulaOra");
 
-            //MessagingCenter.Subscribe<OrarioCompleto, CorsoCompleto>(this, "completo_clicked", (sender, arg) =>
-            //{
-            //    if (arg.Insegnamento == lblCorso.Text)
-            //    {
-            //        if (lblInizioFine.IsVisible)
-            //            lblInizioFine.IsVisible = false;
-            //        else
-            //            lblInizioFine.IsVisible = true;
-            //    }
-            //    else
-            //        return;
-            //});
-
             MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "select_fav", (sender, arg) =>
             {
                 if(arg.Insegnamento == _lblInsegnamento.Text)

@@ -8,14 +8,12 @@ namespace OrariUnibg.Models
 {
     public class CorsoCompleto : Corso
     {
+        #region Private Fields
         private string _inizio;
         private string _fine;
         private string _inizioFine;
-        public CorsoCompleto()
-        {
+        #endregion
 
-        }
-       
         public List<Lezione> Lezioni { get { return _lezioni; } }
         public List<Lezione> _lezioni = new List<Lezione>(); 
         

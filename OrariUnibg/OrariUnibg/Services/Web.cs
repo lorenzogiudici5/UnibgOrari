@@ -13,6 +13,8 @@ namespace OrariUnibg.Services
 {
     public static class Web
     {
+        #region Private Fields
+        #endregion
         //public async Task<Earthquake[]> GetEarthquakes()
         //{
         //    var client = new HttpClient();
@@ -23,11 +25,11 @@ namespace OrariUnibg.Services
         //    return rootobject.earthquakes;
         //}
 
-        public static async Task<string> GetOrarioGiornaliero(string db, int facolta, int laurea, string data)
+        public static async Task<string> GetOrarioGiornaliero(string db, int fac, int laurea, string data)
         {
             string tipo = laurea == 0 ? "LCSDIPRXE" : "LCSDR";
             string s = null;
-            String uri = string.Format("http://www03.unibg.it/orari/orario_giornaliero.php?db={0}&idfacolta={1}&idlaurea={2}&data={3}&tipo={4}", db, facolta, laurea, data, tipo);
+            String uri = string.Format("http://www03.unibg.it/orari/orario_giornaliero.php?db={0}&idfacolta={1}&idlaurea={2}&data={3}&tipo={4}", db, fac, laurea, data, tipo);
             try
             {
                 var httpClient = new HttpClient();
@@ -47,10 +49,10 @@ namespace OrariUnibg.Services
             return s;
         }
 
-        public static async Task<string> GetOrarioCompleto(string semestre, string db, int facolta, int laurea, int anno)
+        public static async Task<string> GetOrarioCompleto(string semestre, string db, int fac, int laurea, int anno)
         {
             string s = null;
-            string uri = string.Format("http://www03.unibg.it/orari/orario_{0}.php?db={1}&idfacolta={2}&idlaurea={3}&anno={4}", semestre, db, facolta, laurea, anno);
+            string uri = string.Format("http://www03.unibg.it/orari/orario_{0}.php?db={1}&idfacolta={2}&idlaurea={3}&anno={4}", semestre, db, fac, laurea, anno);
             try
             {
                 var httpClient = new HttpClient();
@@ -94,7 +96,7 @@ namespace OrariUnibg.Services
                         Docente = col[2].InnerText.Trim(),
                         AulaOra = col[3].InnerText.Trim(),
                         Note = col[4].InnerText.Trim(),
-                        Date = date
+                        Date = date,
                     };
                     listaCorso.Add(orario);
                 }
@@ -141,7 +143,7 @@ namespace OrariUnibg.Services
                     //Giovedi = col[6].InnerText.Trim(),
                     //Venerdi = col[7].InnerText.Trim(),
                     //Sabato = col[8].InnerText.Trim(),
-                    InizioFine = col[9].InnerText.Trim()
+                    InizioFine = col[9].InnerText.Trim(),
                 };
                 for (int i = 3; i <= 8; i++)
                 {

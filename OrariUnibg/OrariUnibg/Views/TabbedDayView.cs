@@ -31,6 +31,7 @@ namespace OrariUnibg.Views
         private Label _lblUtenza;
         private ActivityIndicator _activityIndicator;
         private DbSQLite _db;
+        private ListView _listUtenze;
         #endregion
 
         #region Private Methods
@@ -67,20 +68,32 @@ namespace OrariUnibg.Views
             _listView.SetBinding(ListView.ItemsSourceProperty, "ListaLezioni");
             _listView.ItemSelected += _listView_ItemSelected;
 
+            _listUtenze = new ListView()
+            {
+                ItemTemplate = new DataTemplate(typeof(UtenzaCell)),
+                HasUnevenRows = true,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                IsEnabled = false,
+            };
+            _listUtenze.SetBinding(ListView.ItemsSourceProperty, "ListUtenza");
+            _listUtenze.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleListUtenze()));
+
             _lblTitleUtenza = new Label()
             {
-                Text = "USO UTENZA: ",
+                Text = "USO UTENZA",
                 Font = Font.SystemFontOfSize(NamedSize.Small),
-                VerticalOptions = LayoutOptions.EndAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand
             };
-            _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("UsoUtenza", converter: new IsVisibleUsoUtenza()));
+            _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
+
             _lblUtenza = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
-                VerticalOptions = LayoutOptions.EndAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand
             };
-            _lblUtenza.SetBinding(Label.TextProperty, "UsoUtenza");
-            _lblUtenza.SetBinding(Label.IsVisibleProperty, new Binding("UsoUtenza", converter: new IsVisibleUsoUtenza()));
+            _lblUtenza.SetBinding(Label.TextProperty, "AulaOra");
+            _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
+
 
             _activityIndicator = new ActivityIndicator()
             {
@@ -101,32 +114,16 @@ namespace OrariUnibg.Views
                     _lblInfo,
                     _listView,
                     _activityIndicator,
-                    new StackLayout() { Padding = new Thickness(10, 5, 10, 0), Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblTitleUtenza, _lblUtenza}}
+                    new StackLayout() { Padding = new Thickness(15, 5, 15, 0), Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblTitleUtenza, _lblUtenza}},
+                    _listUtenze,
                 }
             };
 
-            MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", (sender, arg) => 
-            {
-                if(arg)
-                {
-                    _activityIndicator.IsRunning = true;
-                    _activityIndicator.IsVisible = true;
-                }
-                else
-                {
-                    _activityIndicator.IsRunning = false;
-                    _activityIndicator.IsVisible = false;
-                }
-
-            });
+            MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", sync); 
 
             return layout;
         }
 
-
-        #endregion
-
-        #region Handlers
         async void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
@@ -135,8 +132,8 @@ namespace OrariUnibg.Views
 
             string action;
             //if(_db.CheckAppartieneMieiCorsi(orario))
-                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
-                
+            action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+
             //else
             //    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
 
@@ -148,10 +145,13 @@ namespace OrariUnibg.Views
                     MessagingCenter.Send<TabbedDayView>(this, "delete_corso");
                     break;
                 case "Aggiungi ai preferiti":
-                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento});
+                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
                     break;
                 default:
                 case "Dettagli":
+                    var nav = new DettagliCorsoView();
+                    //nav.BindingContext = 
+                    await this.Navigation.PushAsync(nav);
                     break;
             }
 
@@ -162,23 +162,62 @@ namespace OrariUnibg.Views
 
 
         #endregion
+
+        #region Event Handlers
+        private void sync(TabbedHomeView arg1, bool arg2)
+        {
+            if (arg2)
+            {
+                _activityIndicator.IsRunning = true;
+                _activityIndicator.IsVisible = true;
+            }
+            else
+            {
+                _activityIndicator.IsRunning = false;
+                _activityIndicator.IsVisible = false;
+            }
+        }
+
+        #endregion
     }
 
     #region Converter
+    public class IsVisibleListUtenze : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is IEnumerable<Utenza>)
+            {
+                var x = (IEnumerable<Utenza>)value;
+                if (x.Count() > 1)
+                    return true;
+                else return false;
+            }
+
+            return true;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class IsVisibleUsoUtenza : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is string)
+            if (value is IEnumerable<Utenza>)
             {
-                var x = (string)value;
-                if (x == null || x == string.Empty)
+                var x = (IEnumerable<Utenza>)value;
+                if (x.Count() > 1 || x.Count() == 0)
                     return false;
                 else return true;
             }
 
-            return false;
+            return true;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

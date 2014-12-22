@@ -8,6 +8,7 @@ using OrariUnibg.Models;
 using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 using OrariUnibg.Services;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views
 {
@@ -117,10 +118,10 @@ namespace OrariUnibg.Views
             string db = fac.DB;
             int laureaId = dictionaryLauree.Where(x => x.Key == pickerLaurea.Items[pickerLaurea.SelectedIndex]).First().Value;
             string laurea = dictionaryLauree.Where(x => x.Key == pickerLaurea.Items[pickerLaurea.SelectedIndex]).First().Key;
-            string data = pickData.Date.ToString("dd'/'MM'/'yyyy");
+            DateTime data = pickData.Date;
             int order = pickerOrder.SelectedIndex;
 
-            string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data);
+            string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data.ToString("dd'/'MM'/'yyyy"));
 
             Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
             Settings.LaureaIndex = pickerLaurea.SelectedIndex - 1;
@@ -133,10 +134,16 @@ namespace OrariUnibg.Views
                 return;
             }
 
-            List<CorsoGiornaliero> lista = Web.GetSingleOrarioGiornaliero(s, order, pickData.Date);
+            List<CorsoGiornaliero> lista = Web.GetSingleOrarioGiornaliero(s, order, data);
             activityIndicator.IsVisible = false;
             if (lista.Count > 0)
-                await this.Navigation.PushAsync(new OrarioGiornaliero(lista, fac.Nome, laurea, data));
+            {
+                OrariGiornoViewModel orariViewModel = new OrariGiornoViewModel() { Facolta = fac, LaureaString = laurea.ToUpper(), Data = data, ListOrari = lista };
+                var nav = new OrarioGiornaliero();
+                nav.BindingContext = orariViewModel;
+                await this.Navigation.PushAsync(nav);
+            }
+               
             else
             {
                 lblError.IsVisible = true;

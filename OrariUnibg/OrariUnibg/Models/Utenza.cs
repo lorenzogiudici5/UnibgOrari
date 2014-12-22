@@ -12,7 +12,7 @@ namespace OrariUnibg.Models
         private string _ora;
         private string _aulaOra;
 
-        public String Aulaora 
+        public String AulaOra 
         {
             get { return _aulaOra; }
             set
@@ -20,7 +20,7 @@ namespace OrariUnibg.Models
                 if (value != null)
                 {
                     _aula = value.Substring(0, value.Length - 11);
-                    _ora = value.Substring(Aulaora.Length);
+                    _ora = value.Substring(_aula.Length);
                     if (_aula.Substring(_aula.Length - 1, 1) == " ")
                         _aulaOra = _aula + _ora;
                     else

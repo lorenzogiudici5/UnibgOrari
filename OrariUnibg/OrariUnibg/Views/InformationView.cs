@@ -128,7 +128,6 @@ namespace OrariUnibg.Views
                     }
                     _pickAnno.SelectedIndex = 0;
                 }
-                
             };
 
             _lblNotific = new Label()

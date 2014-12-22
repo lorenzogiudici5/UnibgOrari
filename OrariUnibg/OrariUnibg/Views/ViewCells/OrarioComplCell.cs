@@ -84,19 +84,6 @@ namespace OrariUnibg.Views.ViewCells
             lblSabato.SetBinding(Label.IsVisibleProperty, "Lezioni[5].isVisible");
             Sabato.SetBinding(Label.IsVisibleProperty, "Lezioni[5].isVisible");
 
-            MessagingCenter.Subscribe<OrarioCompleto, CorsoCompleto>(this, "completo_clicked", (sender, arg) =>
-            {
-                if (arg.Insegnamento == lblCorso.Text)
-                {
-                    if (lblInizioFine.IsVisible)
-                        lblInizioFine.IsVisible = false;
-                    else
-                        lblInizioFine.IsVisible = true;
-                }
-                else
-                    return;
-            });
-
             var label = new StackLayout()
             {
                 Orientation = StackOrientation.Vertical,

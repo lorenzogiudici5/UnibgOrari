@@ -29,9 +29,6 @@ namespace OrariUnibg.Views
         private List<MieiCorsi> _preferiti;
         private ListView _list;
         private DbSQLite _db;
-        //private DateTime _dateOggi;
-        //private DateTime _dateDomani;
-        //private DateTime _dateDopodomani;
         private ActivityIndicator _activityIndicator;
         private Giorno _oggi;
         private Giorno _domani;
@@ -109,6 +106,7 @@ namespace OrariUnibg.Views
 
             foreach (var i in _preferiti)
                 _db.Insert(i);
+            Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
             if (DateTime.Now.Hour < 18)
             {
@@ -152,8 +150,8 @@ namespace OrariUnibg.Views
 
                         _db.Insert(orario);
                     }
-                    else if (corso.Insegnamento.Contains("Utenza"))
-                        _db.Insert(new Utenza() { Data = corso.Date, Aulaora = corso.AulaOra });
+                    else if (corso.Insegnamento.Contains("UTENZA"))
+                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
                 }
 
                 //CERCA TRA I CORSI IN GENERALE, USO UTENZA

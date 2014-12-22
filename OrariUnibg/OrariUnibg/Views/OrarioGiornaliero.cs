@@ -7,45 +7,56 @@ using OrariUnibg.Models;
 using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 using OrariUnibg.Services.Database;
+using OrariUnibg.ViewModels;
+using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Views
 {
     class OrarioGiornaliero : ContentPage
     {
+        #region Constructor
+        public OrarioGiornaliero()
+        {
+            _db = new DbSQLite();
+            this.SetBinding(ContentPage.TitleProperty, "FacoltaString");
+
+            Content = getView();
+        }
+
+        #endregion
         #region Private Fields
         private DbSQLite _db;
         private ListView lv;
-        private List<CorsoGiornaliero> OriginalList;
+        private OrariGiornoViewModel _viewModel;
         #endregion
 
-        public OrarioGiornaliero(List<CorsoGiornaliero> list, String facolta, String laurea, String data)
-        {
-            _db = new DbSQLite();
-            Title = facolta;
+        #region Private Methods
 
-            OriginalList = list;
+        private View getView()
+        {
+            
             var lblData = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
-                Text = "ORARIO DEL GIORNO: " + data,
-                TextColor = Color.Navy,
+                TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
+            lblData.SetBinding(Label.TextProperty, "DataString");
 
             var lblLaurea = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
-                Text = laurea.ToUpper(),
-                TextColor = Color.Navy,
+                TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
+            lblLaurea.SetBinding(Label.TextProperty, "LaureaString");
 
             lv = new ListView()
             {
-                ItemsSource = list,
                 ItemTemplate = new DataTemplate(typeof(OrarioGiornCell)),
                 HasUnevenRows = true,
             };
+            lv.SetBinding(ListView.ItemsSourceProperty, "ListOrari");
             lv.ItemSelected += lv_ItemSelected;
 
             var searchbar = new SearchBar()
@@ -72,19 +83,8 @@ namespace OrariUnibg.Views
                 Children = { layoutLabel, lv, searchbar }
             };
 
-            Content = l;
+            return l;
 
-        }
-
-        void searchbar_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SearchBar searchBar = (SearchBar)sender;
-            string searchText = searchBar.Text.ToUpper();
-
-            if (searchText == string.Empty)
-                lv.ItemsSource = OriginalList;
-            else
-                lv.ItemsSource = OriginalList.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
         }
 
         async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -93,31 +93,66 @@ namespace OrariUnibg.Views
                 return;
             var orario = (CorsoGiornaliero)lv.SelectedItem;
 
-            string action;
-            if (_db.CheckAppartieneMieiCorsi(orario))
-                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
-
-            else
-                action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
-
-            switch (action)
+            //if(il numero di facoltà presa dal ViewModel è uguale a Settings.Facolta allora displasy actionsheet) sennò vai direttamente alla pagina del corso
+            if(_viewModel.Facolta.IdFacolta != Settings.Facolta)
             {
-                case "Rimuovi dai preferiti":
-                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-                    _db.DeleteMieiCorsi(corso);
-                    break;
-                case "Aggiungi ai preferiti":
-                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-                    break;
-                default:
-                case "Dettagli":
-                    break;
+                var nav = new DettagliCorsoView();
+
+                await this.Navigation.PushAsync(nav);
             }
+            else
+            {
+                string action;
+                if (_db.CheckAppartieneMieiCorsi(orario))
+                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+                else
+                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+
+                switch (action)
+                {
+                    case "Rimuovi dai preferiti":
+                        var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                        _db.DeleteMieiCorsi(corso);
+                        break;
+                    case "Aggiungi ai preferiti":
+                        _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                        break;
+                    case "Dettagli":
+                        var nav = new DettagliCorsoView();
+                        //nav.BindingContext = 
+                        await this.Navigation.PushAsync(nav);
+                        break;
+                }
+            }
+            
 
             //MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", orario);
 
             ((ListView)sender).SelectedItem = null;
         }
+
+        #endregion
+
+        #region Event Handlers
+        void searchbar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+            string searchText = searchBar.Text.ToUpper();
+
+            if (searchText == string.Empty)
+                lv.ItemsSource = _viewModel.ListOrari;
+            else
+                lv.ItemsSource = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
+        }
+        #endregion
+
+        #region Overrides
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            _viewModel = (OrariGiornoViewModel)BindingContext;
+        }
+        #endregion
 
     }
 }

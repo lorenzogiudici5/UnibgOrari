@@ -11,6 +11,7 @@ namespace OrariUnibg.Helpers
     {
         //public static Color Blue = Color.FromHex("10528c");
         public static Color LightBlue = Color.FromHex("29b6f6");
+        public static Color DarkBlue = Color.FromHex("01579b");
         public static Color Blue = Color.FromHex("0277bd");
         public static Color White = Color.White;
         public static Color Green = Color.Green;

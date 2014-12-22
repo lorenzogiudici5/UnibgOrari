@@ -65,7 +65,7 @@ namespace OrariUnibg.Models
             get 
             {
                 if (ListUtenza.Count() > 0)
-                    return ListUtenza.FirstOrDefault().Aulaora;
+                    return ListUtenza.FirstOrDefault().AulaOra;
                 else
                     return string.Empty;
             }

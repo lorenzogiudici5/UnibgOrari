@@ -11,44 +11,45 @@ namespace OrariUnibg.Helpers
   /// </summary>
   public static class Settings
   {
-    private static ISettings AppSettings
-    {
-      get
+      private static ISettings AppSettings
       {
-        return CrossSettings.Current;
+          get
+          {
+              return CrossSettings.Current;
+          }
       }
-    }
+      
+      #region Setting Constants
+      
+      private const string SettingsKey = "settings_key";
+      private const string PrimoAvvioKey = "primoAvvio_key";
+      private const string FacoltaKey = "facolta_key";
+      private const string DBFacoltaKey = "DBfacolta_key";
+      private const string LaureaKey = "laurea_key";
+      private const string AnnoKey = "anno_key";
+      private const string NomeKey = "nome_key";
+      private const string CognomeKey = "cognome_key";
+      private const string MailKey = "mail_key";
+      private const string MatricolaKey = "matricola_key";
 
-    #region Setting Constants
+      private const string SyncKey = "sync_key";
+      private const string NotifyKey = "notify_key";
 
-    private const string SettingsKey = "settings_key";
-    private const string PrimoAvvioKey = "primoAvvio_key";
-    private const string FacoltaKey = "facolta_key";
-    private const string DBFacoltaKey = "DBfacolta_key";
-    private const string LaureaKey = "laurea_key";
-    private const string AnnoKey = "anno_key";
-    private const string NomeKey = "nome_key";
-    private const string CognomeKey = "cognome_key";
-    private const string MailKey = "mail_key";
-    private const string MatricolaKey = "matricola_key";
+      private const string FacoltaIndexKey = "facIndex_key";
+      private const string LaureaIndexKey = "laureaIndex_key";
+      private const string AnnoIndexKey = "annoIndex_key";
+      private const string OrderKey = "order_key";
+      private const string RaggruppaKey = "raggruppa_key";
 
-    private const string SyncKey = "sync_key";
-    private const string NotifyKey = "notify_key";
+      private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-    private const string FacoltaIndexKey = "facIndex_key";
-    private const string LaureaIndexKey = "laureaIndex_key";
-    private const string AnnoIndexKey = "annoIndex_key";
-    private const string OrderKey = "order_key";
-    private const string RaggruppaKey = "raggruppa_key";
+      private static readonly string DefaultString = string.Empty;
+      private static readonly int DefaultValue = 0;
+      private static readonly bool DefaultBool = true;
 
-    private static readonly string DefaultString = string.Empty;
-    private static readonly int DefaultValue = 0;
-    private static readonly bool DefaultBool = true;
-
-    #endregion
-
-
-    #region Settings
+      #endregion
+      
+      #region Settings
     public static bool PrimoAvvio
     {
         get
@@ -82,9 +83,10 @@ namespace OrariUnibg.Helpers
             AppSettings.AddOrUpdateValue(NotifyKey, value);
         }
     }
-
+    
     #endregion
-    #region PersonalInformation
+      
+      #region PersonalInformation
     public static string Nome
     {
         get
@@ -176,64 +178,80 @@ namespace OrariUnibg.Helpers
 
     #endregion
 
-    #region PickerIndex
-    public static int FacoltaIndex
-    {
-        get
+      #region PickerIndex
+        public static int FacoltaIndex
         {
-            return AppSettings.GetValueOrDefault(FacoltaIndexKey, DefaultValue);
+            get
+            {
+                return AppSettings.GetValueOrDefault(FacoltaIndexKey, DefaultValue);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(FacoltaIndexKey, value);
+            }
         }
-        set
+        public static int LaureaIndex
         {
-            AppSettings.AddOrUpdateValue(FacoltaIndexKey, value);
+            get
+            {
+                return AppSettings.GetValueOrDefault(LaureaIndexKey, DefaultValue);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(LaureaIndexKey, value);
+            }
         }
-    }
-    public static int LaureaIndex
-    {
-        get
+        public static int AnnoIndex
         {
-            return AppSettings.GetValueOrDefault(LaureaIndexKey, DefaultValue);
+            get
+            {
+                return AppSettings.GetValueOrDefault(AnnoIndexKey, DefaultValue);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(AnnoIndexKey, value);
+            }
         }
-        set
+        public static int Order
         {
-            AppSettings.AddOrUpdateValue(LaureaIndexKey, value);
+            get
+            {
+                return AppSettings.GetValueOrDefault(OrderKey, DefaultValue);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(OrderKey, value);
+            }
         }
-    }
-    public static int AnnoIndex
-    {
-        get
+        public static int Raggruppa
         {
-            return AppSettings.GetValueOrDefault(AnnoIndexKey, DefaultValue);
+            get
+            {
+                return AppSettings.GetValueOrDefault(RaggruppaKey, DefaultValue);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(RaggruppaKey, value);
+            }
         }
-        set
-        {
-            AppSettings.AddOrUpdateValue(AnnoIndexKey, value);
-        }
-    }
-    public static int Order
-    {
-        get
-        {
-            return AppSettings.GetValueOrDefault(OrderKey, DefaultValue);
-        }
-        set
-        {
-            AppSettings.AddOrUpdateValue(OrderKey, value);
-        }
-    }
-    public static int Raggruppa
-    {
-        get
-        {
-            return AppSettings.GetValueOrDefault(RaggruppaKey, DefaultValue);
-        }
-        set
-        {
-            AppSettings.AddOrUpdateValue(RaggruppaKey, value);
-        }
-    }
+      
+      #endregion
 
-    #endregion
+      #region DB
+      public static int MieiCorsiCount
+      {
+          get
+          {
+              return AppSettings.GetValueOrDefault(MieiCorsiCountKey, DefaultValue);
+          }
+          set
+          {
+              AppSettings.AddOrUpdateValue(MieiCorsiCountKey, value);
+          }
+      }
+      #endregion
+
+
 
   }
 }

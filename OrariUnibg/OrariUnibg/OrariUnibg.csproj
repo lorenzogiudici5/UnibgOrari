@@ -54,13 +54,16 @@
     <Compile Include="Services\Database\ISQLite.cs" />
     <Compile Include="Services\INotification.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CorsoCompletoGroupViewModel.cs" />
     <Compile Include="ViewModels\MasterDetailViewModel.cs" />
+    <Compile Include="ViewModels\OrariGiornoViewModel.cs" />
+    <Compile Include="ViewModels\OrariCompletoViewModel.cs" />
     <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\DettagliCorsoView.cs" />
     <Compile Include="Views\InformationView.cs" />
     <Compile Include="Views\ListaCorsi.cs" />
     <Compile Include="Views\MasterDetailView.cs" />
     <Compile Include="Views\OrarioCompletoGroup.cs" />
-    <Compile Include="Views\OrarioCompleto.cs" />
     <Compile Include="Views\OrarioGiornaliero.cs" />
     <Compile Include="Views\SelectCompleto.cs" />
     <Compile Include="Views\TabbedDayView.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Views\SelectGiornaliero.cs" />
     <Compile Include="Views\ViewCells\OrarioComplCell.cs" />
     <Compile Include="Services\Web.cs" />
+    <Compile Include="Views\ViewCells\UtenzaCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">
