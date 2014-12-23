@@ -64,32 +64,33 @@ namespace OrariUnibg.Views
                 pickerLaurea.SelectedIndex = 0;
             };
 
-            //anni = new String[] {"TUTTI gli anni", "1° Anno", "2° Anno", "3° Anno", "4° Anno", "5° Anno" };
-            //pickerLaurea.SelectedIndexChanged += (sender, args) =>
-            //{
-            //    int i = 0;
-            //    pickerAnno.IsEnabled = true;
+            anni = new String[] {"TUTTI gli anni", "1° Anno", "2° Anno", "3° Anno", "4° Anno", "5° Anno" };
 
-            //    if (pickerLaurea.Items.Count > 0)
-            //    {
-            //        if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("Magistrale"))
-            //            limit = 5;
-            //        else if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("LM"))
-            //            limit = 2;
-            //        else limit = 3;
+            pickerLaurea.SelectedIndexChanged += (sender, args) =>
+            {
+                int i = 0;
+                pickerAnno.IsEnabled = true;
 
-            //        pickerAnno.Items.Clear();
-            //        foreach (var x in anni)
-            //        {
-            //            if (i > limit)
-            //                break;
-            //            pickerAnno.Items.Add(x);
-            //            i++;
-            //        }
-            //        pickerAnno.SelectedIndex = 0;
-            //    }
+                if (pickerLaurea.Items.Count > 0)
+                {
+                    if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("Magistrale"))
+                        limit = 5;
+                    else if (pickerLaurea.Items[pickerLaurea.SelectedIndex].Contains("LM"))
+                        limit = 2;
+                    else limit = 3;
 
-            //};
+                    pickerAnno.Items.Clear();
+                    foreach (var x in anni)
+                    {
+                        if (i > limit)
+                            break;
+                        pickerAnno.Items.Add(x);
+                        i++;
+                    }
+                    pickerAnno.SelectedIndex = 0;
+                }
+
+            };
 
             pickerAnno = new Picker() { Title = "Ordina per..", };
 
@@ -116,7 +117,7 @@ namespace OrariUnibg.Views
             if (Settings.LaureaIndex == 0)
                 pickerLaurea.SelectedIndex = 0;
             else 
-                pickerLaurea.SelectedIndex = Settings.LaureaIndex -1;
+                pickerLaurea.SelectedIndex = Settings.LaureaIndex;
 
             pickerAnno.SelectedIndex = Settings.AnnoIndex;
             pickerSemestre.SelectedIndex = 0;

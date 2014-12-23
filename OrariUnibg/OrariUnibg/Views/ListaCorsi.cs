@@ -67,6 +67,7 @@ namespace OrariUnibg.Views
 
             var layout = new StackLayout()
             {
+                Padding = new Thickness(15, 10, 15, 10),
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Spacing = 5,
                 Children = { _list, _activityIndicator}

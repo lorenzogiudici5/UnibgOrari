@@ -213,6 +213,13 @@ namespace OrariUnibg.Views
         #region Event Handlers
         private async void toolbarItem_next()
         {
+
+            if (_entryNome.Text == string.Empty || _entryCognome.Text == string.Empty || _entryMatricola.Text == string.Empty || _pickFacolta.SelectedIndex < 0)
+            {
+                await DisplayAlert("ATTENZIONE", "Occorre compilare tutti i campi correttmente prima di procedere.", "OK");
+                return;
+            }
+
             _activityIndicator.IsVisible = true;
             Facolta fac = listFacolta.Where(x => x.Nome == _pickFacolta.Items[_pickFacolta.SelectedIndex]).First();
             int facolta = fac.IdFacolta;
@@ -240,10 +247,13 @@ namespace OrariUnibg.Views
             List<CorsoCompleto> lista_completo = Web.GetSingleOrarioCompleto(completo);
             List<CorsoCompleto> lista_secondo = Web.GetSingleOrarioCompleto(secondo);
 
-            lista_completo.AddRange(lista_secondo);
+            if(lista_completo.FirstOrDefault().Semestre == 1)
+                lista_completo.AddRange(lista_secondo);
+
             _activityIndicator.IsVisible = false;
 
             Settings.PrimoAvvio = false;
+
             await Navigation.PushAsync(new ListaCorsi(lista_completo));
             //Navigation.PopModalAsync();
         }

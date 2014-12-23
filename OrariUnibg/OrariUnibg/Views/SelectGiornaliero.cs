@@ -124,7 +124,7 @@ namespace OrariUnibg.Views
             string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data.ToString("dd'/'MM'/'yyyy"));
 
             Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
-            Settings.LaureaIndex = pickerLaurea.SelectedIndex - 1;
+            Settings.LaureaIndex = pickerLaurea.SelectedIndex == 0 ? pickerLaurea.SelectedIndex : pickerLaurea.SelectedIndex - 1;
             Settings.Order = order;
 
             if (s == string.Empty)
