@@ -13,10 +13,10 @@ using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Views
 {
-    class OrarioCompletoGroup : ContentPage
+    class OrarioCompleto : ContentPage
     {
         #region Constructor
-        public OrarioCompletoGroup()
+        public OrarioCompleto()
         {
             _db = new DbSQLite();
             this.SetBinding(ContentPage.TitleProperty, "FacoltaString");
@@ -135,34 +135,36 @@ namespace OrariUnibg.Views
                 orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
             }
                 
-            if (_viewModel.Facolta.IdFacolta != Settings.Facolta)
-            {
-                var nav = new DettagliCorsoView();
-                //nav.BindingContext = 
-                await this.Navigation.PushAsync(nav);
-            }
-            else
+            if (_viewModel.Facolta.IdFacolta == Settings.Facolta)
             {
                 string action;
                 if (_db.CheckAppartieneMieiCorsi(orario))
-                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
                 else
-                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
+                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Aggiungi ai preferiti");
 
                 switch (action)
                 {
                     case "Rimuovi dai preferiti":
-                        var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-                        _db.DeleteMieiCorsi(corso);
+                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Annulla", "Conferma");
+                        if (conferma)
+                        {
+                            var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                            _db.DeleteMieiCorsi(corso);
+                        }
+                        else
+                            return;
+
                         break;
                     case "Aggiungi ai preferiti":
                         _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                        await DisplayAlert("PREFERITO AGGIUNTO!", "Complimenti! Hai aggiunto il corso di {0} ai preferiti!", "OK");
                         break;
                     default:
-                    case "Dettagli":
-                        var nav = new DettagliCorsoView();
-                        //nav.BindingContext = 
-                        await this.Navigation.PushAsync(nav);
+                    //case "Dettagli":
+                    //    var nav = new DettagliCorsoView();
+                    //    //nav.BindingContext = 
+                    //    await this.Navigation.PushAsync(nav);
                         break;
                 }
             }

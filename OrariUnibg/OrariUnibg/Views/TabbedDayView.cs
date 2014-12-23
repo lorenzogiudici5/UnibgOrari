@@ -132,7 +132,7 @@ namespace OrariUnibg.Views
 
             string action;
             //if(_db.CheckAppartieneMieiCorsi(orario))
-            action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Rimuovi dai preferiti");
+            action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
 
             //else
             //    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
@@ -140,18 +140,24 @@ namespace OrariUnibg.Views
             switch (action)
             {
                 case "Rimuovi dai preferiti":
-                    var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-                    _db.DeleteMieiCorsi(corso);
-                    MessagingCenter.Send<TabbedDayView>(this, "delete_corso");
+                    var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Annulla", "Conferma");
+                    if (conferma)
+                    {
+                        var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+                        _db.DeleteMieiCorsi(corso);
+                        MessagingCenter.Send<TabbedDayView>(this, "delete_corso");
+                    }
+                    else
+                        return;
                     break;
-                case "Aggiungi ai preferiti":
-                    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-                    break;
+                //case "Aggiungi ai preferiti":
+                //    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                //    break;
                 default:
-                case "Dettagli":
-                    var nav = new DettagliCorsoView();
-                    //nav.BindingContext = 
-                    await this.Navigation.PushAsync(nav);
+                //case "Dettagli":
+                //    var nav = new DettagliCorsoView();
+                //    //nav.BindingContext = 
+                //    await this.Navigation.PushAsync(nav);
                     break;
             }
 

@@ -63,7 +63,7 @@
     <Compile Include="Views\InformationView.cs" />
     <Compile Include="Views\ListaCorsi.cs" />
     <Compile Include="Views\MasterDetailView.cs" />
-    <Compile Include="Views\OrarioCompletoGroup.cs" />
+    <Compile Include="Views\OrarioCompleto.cs" />
     <Compile Include="Views\OrarioGiornaliero.cs" />
     <Compile Include="Views\SelectCompleto.cs" />
     <Compile Include="Views\TabbedDayView.cs" />
