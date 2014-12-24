@@ -28,13 +28,14 @@ namespace OrariUnibg.Views
         private DbSQLite _db;
         private ListView lv;
         private OrariGiornoViewModel _viewModel;
+        private ToolbarItem tbiShowFav;
+        private ToolbarItem tbiShowAll;
         #endregion
 
         #region Private Methods
 
         private View getView()
         {
-            
             var lblData = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium),
@@ -82,6 +83,12 @@ namespace OrariUnibg.Views
                 Orientation = StackOrientation.Vertical,
                 Children = { layoutLabel, lv, searchbar }
             };
+
+            tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
+            tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
+
+            ToolbarItems.Add(tbiShowFav);
+            ToolbarItems.Add(tbiShowAll);
 
             return l;
 
@@ -136,6 +143,19 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
+
+        private void showAll()
+        {
+            ToolbarItems.Clear();
+            ToolbarItems.Add(tbiShowFav);
+            lv.ItemsSource = _viewModel.ListOrari;
+        }
+        private void showFavourites()
+        {
+            ToolbarItems.Clear();
+            ToolbarItems.Add(tbiShowAll);
+            lv.ItemsSource = _viewModel.ListOrari.Where(x => x.MioCorso).ToList();
+        }
         void searchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
@@ -144,7 +164,7 @@ namespace OrariUnibg.Views
             if (searchText == string.Empty)
                 lv.ItemsSource = _viewModel.ListOrari;
             else
-                lv.ItemsSource = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
+                _viewModel.ListOrari = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
         }
         #endregion
 

@@ -122,6 +122,7 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\drawable-hdpi\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
@@ -190,6 +191,14 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_notification_school.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_notification_school.png" />
     <AndroidResource Include="Resources\Drawable\splash.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_nostar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_star.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_nostar.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_star.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_nostar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_star.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_nostar.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_star.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrariUnibg\OrariUnibg.csproj">

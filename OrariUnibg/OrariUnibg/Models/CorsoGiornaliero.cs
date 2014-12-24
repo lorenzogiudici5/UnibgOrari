@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrariUnibg.Services.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,17 @@ namespace OrariUnibg.Models
             }
         }
         public DateTime Date { get; set; }
+
+        public bool MioCorso 
+        {
+            get 
+            { 
+                var _db = new DbSQLite();
+                if (_db.CheckAppartieneMieiCorsi(this))
+                    return true;
+                else return false;
+            }
+        }
 
     }
 }

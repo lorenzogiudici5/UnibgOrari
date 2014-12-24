@@ -30,6 +30,9 @@ namespace OrariUnibg.Views
         private List<CorsoCompleto> OriginalList;
         private DbSQLite _db;
         private OrariCompletoViewModel _viewModel;
+        private ToolbarItem tbiShowFav;
+        private ToolbarItem tbiShowAll;
+
         #endregion
 
         #region Private Methods
@@ -81,6 +84,12 @@ namespace OrariUnibg.Views
                 Orientation = StackOrientation.Vertical,
                 Children = { l, lv, searchbar }
             };
+
+            tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
+            tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
+
+            ToolbarItems.Add(tbiShowFav);
+            //ToolbarItems.Add(tbiShowAll);
 
             return layout;
         }
@@ -158,7 +167,7 @@ namespace OrariUnibg.Views
                         break;
                     case "Aggiungi ai preferiti":
                         _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-                        await DisplayAlert("PREFERITO AGGIUNTO!", "Complimenti! Hai aggiunto il corso di {0} ai preferiti!", "OK");
+                        await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
                         break;
                     default:
                     //case "Dettagli":
@@ -174,6 +183,22 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
+        private void showAll()
+        {
+            ToolbarItems.Clear();
+            ToolbarItems.Add(tbiShowFav);
+            lista = _viewModel.ListOrari;
+
+            setUpListView();
+        }
+        private void showFavourites()
+        {
+            ToolbarItems.Clear();
+            ToolbarItems.Add(tbiShowAll);
+            lista = _viewModel.ListOrari.Where(x => x.MioCorso).ToList();
+
+            setUpListView();
+        }
         void searchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;

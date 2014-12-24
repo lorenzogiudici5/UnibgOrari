@@ -9,6 +9,7 @@ using OrariUnibg.Views.ViewCells;
 using Xamarin.Forms;
 using OrariUnibg.Services;
 using OrariUnibg.ViewModels;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Views
 {
@@ -22,8 +23,10 @@ namespace OrariUnibg.Views
         Label lblError;
         List<Facolta> listFacolta = new List<Facolta>();
         Dictionary<string, int> dictionaryLauree = new Dictionary<string, int>();
+        DbSQLite _db;
         public SelectGiornaliero()
         {
+            _db = new DbSQLite();
             Title = "Giornaliero";
             listFacolta = Facolta.facolta;
             pickerFacoltà = new Picker()

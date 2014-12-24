@@ -8,13 +8,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Services
 {
     public static class Web
     {
-        #region Private Fields
-        #endregion
         //public async Task<Earthquake[]> GetEarthquakes()
         //{
         //    var client = new HttpClient();
@@ -74,6 +73,7 @@ namespace OrariUnibg.Services
 
         public static List<CorsoGiornaliero> GetSingleOrarioGiornaliero(string html, int order, DateTime date)
         {
+            DbSQLite _db = new DbSQLite();
             List<CorsoGiornaliero> listaCorso = new List<CorsoGiornaliero>();
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -88,7 +88,6 @@ namespace OrariUnibg.Services
                 HtmlNode[] col = item.Descendants().Where(x => (x.Name == "td")).ToArray();
                 if (col.Count() >= 4)
                 {
-                    
                     CorsoGiornaliero orario = new CorsoGiornaliero()
                     {
                         Insegnamento = col[0].InnerText.Trim(),
@@ -98,6 +97,8 @@ namespace OrariUnibg.Services
                         Note = col[4].InnerText.Trim(),
                         Date = date,
                     };
+                    //if (_db.CheckAppartieneMieiCorsi(orario))
+                    //    orario.MioCorso = true;
                     listaCorso.Add(orario);
                 }
                 else
