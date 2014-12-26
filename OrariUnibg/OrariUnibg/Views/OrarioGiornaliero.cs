@@ -102,7 +102,7 @@ namespace OrariUnibg.Views
             var orario = (CorsoGiornaliero)lv.SelectedItem;
 
             //if(il numero di facoltà presa dal ViewModel è uguale a Settings.Facolta allora displasy actionsheet) sennò vai direttamente alla pagina del corso
-            if(_viewModel.Facolta.IdFacolta == Settings.Facolta)
+            if(_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
             {
                 string action;
                 if (_db.CheckAppartieneMieiCorsi(orario))

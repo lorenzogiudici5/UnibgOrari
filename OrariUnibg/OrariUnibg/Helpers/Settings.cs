@@ -35,6 +35,8 @@ namespace OrariUnibg.Helpers
       private const string SyncKey = "sync_key";
       private const string NotifyKey = "notify_key";
 
+      private const string FacoltaIdKey = "facId_key";
+      private const string LaureaIdKey = "laureaId_key";
       private const string FacoltaIndexKey = "facIndex_key";
       private const string LaureaIndexKey = "laureaIndex_key";
       private const string AnnoIndexKey = "annoIndex_key";
@@ -131,33 +133,56 @@ namespace OrariUnibg.Helpers
             AppSettings.AddOrUpdateValue(MatricolaKey, value);
         }
     }
-    public static int Facolta
+    public static string Facolta
     {
         get
         {
-            return AppSettings.GetValueOrDefault(FacoltaKey, DefaultValue);
+            return AppSettings.GetValueOrDefault(FacoltaKey, DefaultString);
         }
         set
         {
             AppSettings.AddOrUpdateValue(FacoltaKey, value);
         }
     }
-    public static int Laurea
+
+    public static int FacoltaId
     {
         get
         {
-            return AppSettings.GetValueOrDefault(LaureaKey, DefaultValue);
+            return AppSettings.GetValueOrDefault(FacoltaIdKey, DefaultValue);
+        }
+        set
+        {
+            AppSettings.AddOrUpdateValue(FacoltaIdKey, value);
+        }
+    }
+    public static int LaureaId
+    {
+        get
+        {
+            return AppSettings.GetValueOrDefault(LaureaIdKey, DefaultValue);
+        }
+        set
+        {
+            AppSettings.AddOrUpdateValue(LaureaIdKey, value);
+        }
+    }
+    public static string Laurea
+    {
+        get
+        {
+            return AppSettings.GetValueOrDefault(LaureaKey, DefaultString);
         }
         set
         {
             AppSettings.AddOrUpdateValue(LaureaKey, value);
         }
     }
-    public static int Anno
+    public static string Anno
     {
         get
         {
-            return AppSettings.GetValueOrDefault(AnnoKey, DefaultValue);
+            return AppSettings.GetValueOrDefault(AnnoKey, DefaultString);
         }
         set
         {
@@ -175,6 +200,7 @@ namespace OrariUnibg.Helpers
             AppSettings.AddOrUpdateValue(DBFacoltaKey, value);
         }
     }
+
 
     #endregion
 

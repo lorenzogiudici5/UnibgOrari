@@ -92,23 +92,38 @@ namespace OrariUnibg.Views
             BindingContext = viewModel;
             Icon = "ic_menu.png";
             //this.Icon = "ic_navigation_drawer.png";
-
-            var layout = new StackLayout { BackgroundColor = ColorHelper.Blue, Orientation = StackOrientation.Vertical };
-
-            var label = new ContentView
+            var _lblUtente = new Label()
             {
-                Padding = new Thickness(10, 20, 0, 10),
-                BackgroundColor = Color.Transparent,
-                Content = new Label
-                {
-                    Text = "MENU",
-                    TextColor = Color.White,
-                    Font = Font.SystemFontOfSize(NamedSize.Medium),
-                }
+                Text = string.Format("{0} {1}", Settings.Nome, Settings.Cognome),
+                TextColor = ColorHelper.White,
+            };
+            var _lblMail = new Label()
+            {
+                Text = string.Format("{0} - {1}", Settings.Matricola, Settings.Email),
+                TextColor = ColorHelper.White,
+            };
+            var _lblFacoltà = new Label()
+            {
+                Text = Settings.Facolta,
+                TextColor = ColorHelper.White,
+            };
+            var _lblLaurea = new Label()
+            {
+                Text = string.Format("{0} - {1}", Settings.Laurea, Settings.Anno),
+                TextColor = ColorHelper.White,
             };
 
-            layout.Children.Add(label);
-
+            //var _lblMenu = new ContentView
+            //{
+            //    Padding = new Thickness(10, 20, 0, 10),
+            //    BackgroundColor = Color.Transparent,
+            //    Content = new Label
+            //    {
+            //        Text = "MENU",
+            //        TextColor = Color.White,
+            //        Font = Font.SystemFontOfSize(NamedSize.Medium),
+            //    }
+            //};
 
             _listView = new ListView()
             {
@@ -123,7 +138,33 @@ namespace OrariUnibg.Views
             _listView.ItemSelected += _listView_ItemSelected;
             _listView.SelectedItem = viewModel.MenuItems[0];
 
-            layout.Children.Add(_listView);
+            var layoutUser = new StackLayout()
+            {
+                Padding = new Thickness(10, 20, 0, 10),
+                Spacing = 0,
+                BackgroundColor = ColorHelper.Blue,
+                Children = { _lblUtente, _lblMail, _lblFacoltà, _lblLaurea }
+            };
+
+
+            //var _lblMenu = new ContentView
+            //{
+            //    Padding = new Thickness(10, 20, 0, 10),
+            //    BackgroundColor = Color.Transparent,
+            //    Content = new Label
+            //    {
+            //        Text = "MENU",
+            //        TextColor = Color.White,
+            //        Font = Font.SystemFontOfSize(NamedSize.Medium),
+            //    }
+            //};
+
+            var layout = new StackLayout 
+            {
+                BackgroundColor = ColorHelper.White, 
+                Orientation = StackOrientation.Vertical,
+                Children = { layoutUser, _listView}
+            };
 
             Content = layout;
         }

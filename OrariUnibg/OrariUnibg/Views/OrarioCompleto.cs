@@ -151,7 +151,7 @@ namespace OrariUnibg.Views
                 orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
             }
                 
-            if (_viewModel.Facolta.IdFacolta == Settings.Facolta)
+            if (_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
             {
                 string action;
                 if (_db.CheckAppartieneMieiCorsi(orario))
