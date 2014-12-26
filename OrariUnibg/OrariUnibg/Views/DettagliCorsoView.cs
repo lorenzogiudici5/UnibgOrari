@@ -18,9 +18,9 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Private Fields
-        private Label _lblInsegnamento;
-        private Label _lblDocente;
-        private Label _lblCodice;
+        //private Label _lblInsegnamento;
+        //private Label _lblDocente;
+        //private Label _lblCodice;
         #endregion
 
         #region Private Methods

@@ -130,7 +130,7 @@ namespace OrariUnibg.Views
 
         void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var menuItem = _listView.SelectedItem as MenuItem;
+            var menuItem = _listView.SelectedItem as OrariUnibg.Models.MenuItem;
             menuType = menuItem.MenuType;
             switch (menuItem.MenuType)
             {

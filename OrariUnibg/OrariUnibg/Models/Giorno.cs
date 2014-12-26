@@ -15,7 +15,6 @@ namespace OrariUnibg.Models
         private IEnumerable<Orari> _listOrari;
         private IEnumerable<Utenza> _listUtenza;
         private DateTime _day;
-        private DbSQLite _db;
         #endregion
 
         public string Day 

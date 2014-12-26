@@ -27,7 +27,7 @@ namespace OrariUnibg.Views
         #region Private Fields
         private ListView lv;
         private List<CorsoCompleto> lista;
-        private List<CorsoCompleto> OriginalList;
+        //private List<CorsoCompleto> OriginalList;
         private DbSQLite _db;
         private OrariCompletoViewModel _viewModel;
         private ToolbarItem tbiShowFav;
@@ -67,22 +67,29 @@ namespace OrariUnibg.Views
             var searchbar = new SearchBar()
             {
                 Placeholder = "Cerca",
-                VerticalOptions = LayoutOptions.EndAndExpand
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
             };
             searchbar.TextChanged += searchbar_TextChanged;
 
 
             var l = new StackLayout()
             {
-                Padding = new Thickness(5, 5, 5, 5),
+                BackgroundColor = ColorHelper.White,
+                Padding = new Thickness(15, 10, 15, 10),
                 Spacing = 0,
                 Children = { lblOrario, lblLaurea, lblAnno }
             };
             var layout = new StackLayout()
             {
-                Padding = new Thickness(5, 5, 5, 5),
+                Padding = new Thickness(15, 10, 15, 10),
                 Orientation = StackOrientation.Vertical,
-                Children = { l, lv, searchbar }
+                Children = 
+                { 
+                    l, 
+                    lv, 
+                    new StackLayout(){ Children = {searchbar}, BackgroundColor = ColorHelper.White}
+                }
             };
 
             tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
@@ -155,7 +162,7 @@ namespace OrariUnibg.Views
                 switch (action)
                 {
                     case "Rimuovi dai preferiti":
-                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Annulla", "Conferma");
+                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
                         if (conferma)
                         {
                             var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);

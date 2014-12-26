@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrariUnibg.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,7 +39,8 @@ namespace OrariUnibg.Views.ViewCells
 
             var layout = new StackLayout()
             {
-                Padding = new Thickness(15, 5, 15, 0),
+                BackgroundColor = ColorHelper.White,
+                Padding = new Thickness(10, 10, 10, 10),
                 Spacing = 5,
                 Orientation = StackOrientation.Horizontal,
                 Children = { _lblTitleUtenza, _lblAulaOra}

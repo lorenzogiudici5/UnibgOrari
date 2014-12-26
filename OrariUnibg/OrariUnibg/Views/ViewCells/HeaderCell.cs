@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Xamarin.Forms;
+using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -14,8 +15,9 @@ namespace OrariUnibg.Views.ViewCells
         {
             var title = new Label
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Bold),
-                TextColor = Color.Black,
+                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontAttributes =  FontAttributes.Bold,
+                TextColor = ColorHelper.White,
                 VerticalOptions = LayoutOptions.Center
             };
             //title.SetBinding(Label.TextProperty, new Binding("Key", converter: new TitleGiorniConverter()));
@@ -23,8 +25,9 @@ namespace OrariUnibg.Views.ViewCells
 
             View = new StackLayout
             {
+                Padding = new Thickness(10, 5, 10, 5),
+                BackgroundColor = ColorHelper.Blue,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Padding = 5,
                 Orientation = StackOrientation.Horizontal,
                 Children = { title }
             };

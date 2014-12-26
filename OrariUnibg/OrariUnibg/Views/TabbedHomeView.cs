@@ -21,7 +21,7 @@ namespace OrariUnibg.Views
             _db = new DbSQLite();
             System.Diagnostics.Debug.WriteLine("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
-            BackgroundColor = ColorHelper.White;
+            //BackgroundColor = ColorHelper.White;
 
             if (DateTime.Now.Hour < 18)
             {

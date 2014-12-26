@@ -102,19 +102,29 @@ namespace OrariUnibg.Views
                 VerticalOptions = LayoutOptions.EndAndExpand,
             };
 
+            var layoutUtenza = new StackLayout() 
+            { 
+                BackgroundColor = ColorHelper.White, 
+                Padding = new Thickness(15, 5, 15, 0), 
+                Orientation = StackOrientation.Horizontal, 
+                Spacing = 5, 
+                Children = { _lblTitleUtenza, _lblUtenza } 
+            };
+            layoutUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
+
             var layout = new StackLayout()
             {
-                Padding = new Thickness(0, 10, 0, 10),
+                Padding = new Thickness(15, 10, 15, 10),
                 Spacing = 10,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Children = 
                 {
-                    new StackLayout() {Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
+                    new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
                     _activityIndicator,
-                    new StackLayout() { Padding = new Thickness(15, 5, 15, 0), Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblTitleUtenza, _lblUtenza}},
+                    layoutUtenza,
                     _listUtenze,
                 }
             };
@@ -140,7 +150,7 @@ namespace OrariUnibg.Views
             switch (action)
             {
                 case "Rimuovi dai preferiti":
-                    var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Annulla", "Conferma");
+                    var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
                     if (conferma)
                     {
                         var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);

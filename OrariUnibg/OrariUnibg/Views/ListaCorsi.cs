@@ -18,7 +18,7 @@ namespace OrariUnibg.Views
         public ListaCorsi(List<CorsoCompleto> lista_completo)
         {
             Title = "Corsi";
-            BackgroundColor = ColorHelper.White;
+            //BackgroundColor = ColorHelper.White;
             _listSource = lista_completo;
             Content = getView();
         }

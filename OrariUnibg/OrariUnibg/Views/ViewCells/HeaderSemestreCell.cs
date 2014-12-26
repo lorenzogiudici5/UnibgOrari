@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrariUnibg.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,15 +28,18 @@ namespace OrariUnibg.Views.ViewCells
             _lblTitle = new Label
             {
                 Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Bold),
-                TextColor = Color.Black,
+                TextColor = ColorHelper.White,
                 VerticalOptions = LayoutOptions.Center
             };
             _lblTitle.SetBinding(Label.TextProperty, new Binding("Key", converter: new TitleGiorniConverter()));
 
             var view = new StackLayout
             {
+               Padding = new Thickness(10, 5, 10, 5),
+               // BackgroundColor = ColorHelper.White,
+                BackgroundColor = ColorHelper.Blue,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Padding = new Thickness(10),
+                //Padding = new Thickness(10),
                 Children = { _lblTitle }
             };
 

@@ -68,6 +68,7 @@ namespace OrariUnibg.Views.ViewCells
 
             _layout = new StackLayout()
             {
+                BackgroundColor = ColorHelper.White,
                 Padding = new Thickness(10, 10, 10, 10),
                 Children = 
                 { 

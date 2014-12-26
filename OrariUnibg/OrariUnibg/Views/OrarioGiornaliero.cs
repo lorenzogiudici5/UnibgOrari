@@ -71,15 +71,16 @@ namespace OrariUnibg.Views
 
             var layoutLabel = new StackLayout()
             {
+                BackgroundColor = ColorHelper.White,
                 Spacing = 0,
-                Padding = new Thickness(5, 5, 5, 5),
+                Padding = new Thickness(15, 10, 15, 10),
                 Orientation = StackOrientation.Vertical,
                 Children = { lblData, lblLaurea}
             };
 
             var l = new StackLayout()
             {
-                Padding = new Thickness(5,5,5,5),
+                Padding = new Thickness(15, 10, 15, 10),
                 Orientation = StackOrientation.Vertical,
                 Children = { layoutLabel, lv, searchbar }
             };
@@ -112,7 +113,7 @@ namespace OrariUnibg.Views
                 switch (action)
                 {
                     case "Rimuovi dai preferiti":
-                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Annulla", "Conferma");
+                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
                         if (conferma)
                         {
                             var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);

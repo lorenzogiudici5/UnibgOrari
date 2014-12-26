@@ -85,7 +85,8 @@ namespace OrariUnibg.Views.ViewCells
             
             var grid = new Grid()
             {
-                Padding = new Thickness(15, 10, 15, 10),
+                BackgroundColor = ColorHelper.White,
+                Padding = new Thickness(10, 10, 10, 10),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 RowSpacing = 0,

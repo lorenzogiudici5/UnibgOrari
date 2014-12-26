@@ -99,6 +99,7 @@ namespace OrariUnibg.Views.ViewCells
 
             var layout = new StackLayout()
             {
+                BackgroundColor = ColorHelper.White,
                 Padding = new Thickness(10, 10, 10, 10),
                 Children = 
                 { 
