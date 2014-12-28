@@ -74,6 +74,7 @@ namespace OrariUnibg.Views
         private TabbedHomeView mainView;
         private SelectCompleto selectCompletoView;
         private SelectGiornaliero selectGiornView;
+        private MasterDetailViewModel _viewModel;
         #endregion
         
         public Page PageSelection
@@ -89,29 +90,32 @@ namespace OrariUnibg.Views
 
         public MasterView(MasterDetailViewModel viewModel)
         {
+            _viewModel = viewModel;
             BindingContext = viewModel;
             Icon = "ic_menu.png";
             //this.Icon = "ic_navigation_drawer.png";
             var _lblUtente = new Label()
             {
+                Font = Font.SystemFontOfSize(NamedSize.Large),
                 Text = string.Format("{0} {1}", Settings.Nome, Settings.Cognome),
                 TextColor = ColorHelper.White,
+                FontAttributes =  FontAttributes.Bold,
             };
             var _lblMail = new Label()
             {
-                Text = string.Format("{0} - {1}", Settings.Matricola, Settings.Email),
+                Text = string.Format("{0} - {1}", Settings.Email, Settings.Matricola),
                 TextColor = ColorHelper.White,
             };
-            var _lblFacoltà = new Label()
-            {
-                Text = Settings.Facolta,
-                TextColor = ColorHelper.White,
-            };
-            var _lblLaurea = new Label()
-            {
-                Text = string.Format("{0} - {1}", Settings.Laurea, Settings.Anno),
-                TextColor = ColorHelper.White,
-            };
+            //var _lblFacoltà = new Label()
+            //{
+            //    Text = Settings.Facolta,
+            //    TextColor = ColorHelper.White,
+            //};
+            //var _lblLaurea = new Label()
+            //{
+            //    Text = string.Format("{0} - {1}", Settings.Laurea, Settings.Anno),
+            //    TextColor = ColorHelper.White,
+            //};
 
             //var _lblMenu = new ContentView
             //{
@@ -125,11 +129,20 @@ namespace OrariUnibg.Views
             //    }
             //};
 
+            var layoutUser = new StackLayout()
+            {
+                Padding = new Thickness(15, 40, 10, 15),
+                Spacing = 0,
+                BackgroundColor = ColorHelper.Blue,
+                Children = { _lblUtente, _lblMail }
+            };
+
             _listView = new ListView()
             {
                 ItemsSource = viewModel.MenuItems,
                 ItemTemplate = new DataTemplate(typeof(MenuCell)),
                 HasUnevenRows = true,
+                VerticalOptions = LayoutOptions.FillAndExpand,
             };
             //if (mainView == null)
             //    mainView = new MainPage();
@@ -138,12 +151,27 @@ namespace OrariUnibg.Views
             _listView.ItemSelected += _listView_ItemSelected;
             _listView.SelectedItem = viewModel.MenuItems[0];
 
-            var layoutUser = new StackLayout()
+            var _lblImpostazioni = new Label()
             {
-                Padding = new Thickness(10, 20, 0, 10),
-                Spacing = 0,
-                BackgroundColor = ColorHelper.Blue,
-                Children = { _lblUtente, _lblMail, _lblFacoltà, _lblLaurea }
+                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                Text = "Impostazioni",
+                TextColor = ColorHelper.DarkGray,
+            };
+            var _iconImpostazioni = new Image()
+            {
+                Source = "ic_settings_gray.png"
+            };
+
+            var layoutSettings = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                Padding = new Thickness(15, 7, 15, 7),
+                Spacing = 25,
+                BackgroundColor = ColorHelper.LightGray,
+                Children = { _iconImpostazioni, _lblImpostazioni},
+                VerticalOptions = LayoutOptions.EndAndExpand,
             };
 
 
@@ -159,11 +187,20 @@ namespace OrariUnibg.Views
             //    }
             //};
 
+            var scrollview = new ScrollView()
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Content = new StackLayout()
+                {
+                    Children = { _listView, layoutSettings, }
+                }
+            };
+
             var layout = new StackLayout 
             {
                 BackgroundColor = ColorHelper.White, 
                 Orientation = StackOrientation.Vertical,
-                Children = { layoutUser, _listView}
+                Children = { layoutUser, scrollview}
             };
 
             Content = layout;
@@ -171,14 +208,20 @@ namespace OrariUnibg.Views
 
         void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
+                return;
+
             var menuItem = _listView.SelectedItem as OrariUnibg.Models.MenuItem;
             menuType = menuItem.MenuType;
+            foreach (var x in _viewModel.MenuItems)
+                x.Selected = false;
             switch (menuItem.MenuType)
             {
                 case MenuType.Home:
                     if (mainView == null)
                         mainView = new TabbedHomeView();
 
+                    _viewModel.MenuItems[0].Selected = true;
                     PageSelection = mainView;
                     break;
 
@@ -186,6 +229,7 @@ namespace OrariUnibg.Views
                     if (selectGiornView == null)
                         selectGiornView = new SelectGiornaliero();
 
+                    _viewModel.MenuItems[1].Selected = true;
                     PageSelection = selectGiornView;
                     break;
 
@@ -193,6 +237,7 @@ namespace OrariUnibg.Views
                     if (selectCompletoView == null)
                         selectCompletoView = new SelectCompleto();
 
+                    _viewModel.MenuItems[2].Selected = true;
                     PageSelection = selectCompletoView;
                     break;
 
@@ -203,6 +248,8 @@ namespace OrariUnibg.Views
                 //    PageSelection = downloadView;
                 //    break;
             }
+
+            ((ListView)sender).SelectedItem = null;
             //Page p = PageSelection;
 
             //MessagingCenter.Send<MasterView, Page>(this, "menuItem_clicked", p);

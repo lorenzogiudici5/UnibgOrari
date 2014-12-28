@@ -46,6 +46,7 @@ namespace OrariUnibg.Views.ViewCells
 
             _lblAulaOra = new Label()
             {
+                TextColor = ColorHelper.Gray,
                 Font =Font.SystemFontOfSize(NamedSize.Small)
             };
 
@@ -63,7 +64,7 @@ namespace OrariUnibg.Views.ViewCells
             MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "deselect_fav", (sender, arg) =>
             {
                 if (arg.Insegnamento == _lblInsegnamento.Text)
-                    _layout.BackgroundColor = Color.Default;
+                    _layout.BackgroundColor = ColorHelper.White;
             });
 
             _layout = new StackLayout()

@@ -34,26 +34,26 @@ namespace OrariUnibg.Views.ViewCells
                 IsVisible = false,
             };
 
-            var Lunedi = new Label() { Text = "LUNEDI:", Font =Font.SystemFontOfSize(NamedSize.Small)};
-            var Martedi = new Label() { Text = "MARTEDI:", Font =Font.SystemFontOfSize(NamedSize.Small)};
-            var Mercoledi = new Label() { Text = "MERCOLEDI:", Font =Font.SystemFontOfSize(NamedSize.Small)};
-            var Giovedi = new Label() { Text = "GIOVEDI:", Font =Font.SystemFontOfSize(NamedSize.Small)};
-            var Venerdi = new Label() { Text = "VENERDI:", Font =Font.SystemFontOfSize(NamedSize.Small)};
-            var Sabato = new Label() { Text = "SABATO:", Font =Font.SystemFontOfSize(NamedSize.Small)};
+            var Lunedi = new Label() { Text = "LUNEDI:", Font =Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray};
+            var Martedi = new Label() { Text = "MARTEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
+            var Mercoledi = new Label() { Text = "MERCOLEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
+            var Giovedi = new Label() { Text = "GIOVEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
+            var Venerdi = new Label() { Text = "VENERDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
+            var Sabato = new Label() { Text = "SABATO:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
 
             var lblLunedi = new Label()
             {
                 Font =Font.SystemFontOfSize(NamedSize.Small)
             };
-            var lblMartedi = new Label();
+            var lblMartedi = new Label() { TextColor = ColorHelper.Gray };
             lblMartedi.Font =Font.SystemFontOfSize(NamedSize.Small);
-            var lblMercoledi = new Label();
+            var lblMercoledi = new Label() { TextColor = ColorHelper.Gray };
             lblMercoledi.Font =Font.SystemFontOfSize(NamedSize.Small);
-            var lblGiovedi = new Label();
+            var lblGiovedi = new Label() { TextColor = ColorHelper.Gray };
             lblGiovedi.Font =Font.SystemFontOfSize(NamedSize.Small);
-            var lblVenerdi = new Label();
+            var lblVenerdi = new Label() { TextColor = ColorHelper.Gray };
             lblVenerdi.Font =Font.SystemFontOfSize(NamedSize.Small);
-            var lblSabato = new Label();
+            var lblSabato = new Label() { TextColor = ColorHelper.Gray };
             lblSabato.Font = Font.SystemFontOfSize(NamedSize.Small);
 
             lblCorso.SetBinding(Label.TextProperty, "Insegnamento");

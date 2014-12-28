@@ -49,7 +49,7 @@ namespace OrariUnibg.Views.ViewCells
             _lblAula = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
-                TextColor = Color.Gray,
+                TextColor = ColorHelper.Gray,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
             _lblAula.SetBinding(Label.TextProperty, "Aula");
@@ -57,7 +57,7 @@ namespace OrariUnibg.Views.ViewCells
             _lblOra = new Label()
             {
                 Font = Font.SystemFontOfSize(NamedSize.Small),
-                TextColor = Color.Gray,
+                TextColor = ColorHelper.Gray,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
             _lblOra.SetBinding(Label.TextProperty, "Ora");

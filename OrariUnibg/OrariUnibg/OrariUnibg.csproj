@@ -71,7 +71,6 @@
     <Compile Include="Views\ViewCells\FavouriteCell.cs" />
     <Compile Include="Views\ViewCells\HeaderCell.cs" />
     <Compile Include="Views\ViewCells\HeaderSemestreCell.cs" />
-    <Compile Include="Views\ViewCells\ListaCorsiCell.cs" />
     <Compile Include="Views\ViewCells\MenuCell.cs" />
     <Compile Include="Views\ViewCells\OrarioComplCellGroup.cs" />
     <Compile Include="Views\ViewCells\OrarioGiornCell.cs" />

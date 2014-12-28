@@ -16,7 +16,9 @@ namespace OrariUnibg.Helpers
         public static Color White = Color.White;
         public static Color Green = Color.Green;
         public static Color Red = Color.Red;
-        public static Color Gray = Color.Gray;
+        public static Color LightGray = Color.FromRgb(210, 210, 210);
+        public static Color Gray = Color.FromRgb(155, 155, 155);
+        public static Color DarkGray = Color.FromRgb(120, 120, 120);
         public static Color Black = Color.Black;
     }
 }

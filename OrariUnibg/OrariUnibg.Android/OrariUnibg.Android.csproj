@@ -200,6 +200,37 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_nostar.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_star.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_clock_dark.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_completo_dark.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_home_dark.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_clock_dark.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_completo_dark.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_home_dark.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_clock_dark.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_completo_dark.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_home_dark.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock_dark.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_completo_dark.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_home_dark.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_settings_gray.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_settings_gray.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_settings_gray.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_settings_gray.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_clock_blue.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_completo_blue.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_home_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_clock_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_completo_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_home_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_clock_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_completo_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_home_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_completo_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_home_blue.png" />
+    <AndroidResource Include="Resources\Drawable\actionbar_background.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrariUnibg\OrariUnibg.csproj">

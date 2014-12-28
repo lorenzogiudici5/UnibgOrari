@@ -40,6 +40,12 @@ namespace OrariUniBg.ViewModels
         /// Gets or sets the "Icon" of the viewmodel
         /// </summary>
         public const string IconPropertyName = "Icon";
+        public string Icon
+        {
+            get { return icon; }
+            set { SetProperty(ref icon, value, IconPropertyName); }
+        }
+
 
 		private bool isBusy;
 		/// <summary>

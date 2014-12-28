@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrariUniBg.Models
 {
-    public class BaseModel
+    public class BaseModel : NotifyPropertyChangedBase
     {
         public string Title { get; set; }
         public int Id { get; set; }
