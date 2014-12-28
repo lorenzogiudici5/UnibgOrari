@@ -222,10 +222,15 @@ namespace OrariUnibg.Views
 
             _activityIndicator.IsVisible = true;
             Facolta fac = listFacolta.Where(x => x.Nome == _pickFacolta.Items[_pickFacolta.SelectedIndex]).First();
-            int facolta = fac.IdFacolta;
+            int facoltaId = fac.IdFacolta;
+            int facoltaIndex = _pickFacolta.SelectedIndex;
+            string facolta = fac.Nome;
             string db = fac.DB;
-            int laurea = dictionaryLauree.Where(x => x.Key == _pickLaurea.Items[_pickLaurea.SelectedIndex]).First().Value;
-            int anno = _pickAnno.SelectedIndex + 1;
+            int laureaId = dictionaryLauree.Where(x => x.Key == _pickLaurea.Items[_pickLaurea.SelectedIndex]).First().Value;
+            int laureaIndex = _pickLaurea.SelectedIndex;
+            string laurea = _pickLaurea.Items[_pickLaurea.SelectedIndex];
+            int annoIndex = _pickAnno.SelectedIndex + 1;
+            string anno = _pickAnno.Items[annoIndex - 1];
             Settings.Nome = _entryNome.Text;
             Settings.Cognome = _entryCognome.Text;
             Settings.Email = _entryMail.Text + "@studenti.unibg.it";
@@ -237,12 +242,14 @@ namespace OrariUnibg.Views
             Settings.BackgroundSync = _switchSync.IsToggled;
             Settings.Notify = _switchNotific.IsToggled;
 
-            Settings.LaureaIndex = _pickLaurea.SelectedIndex;
-            Settings.FacoltaIndex = _pickFacolta.SelectedIndex;
-            Settings.AnnoIndex = anno;
+            Settings.FacoltaId = facoltaId;
+            Settings.LaureaId = laureaId;
+            Settings.LaureaIndex = laureaIndex;
+            Settings.FacoltaIndex = facoltaIndex;
+            Settings.AnnoIndex = annoIndex;
 
-            string completo = await Web.GetOrarioCompleto("completo", db, facolta, laurea, anno);
-            string secondo = await Web.GetOrarioCompleto("secondo", db, facolta, laurea, anno);
+            string completo = await Web.GetOrarioCompleto("completo", db, facoltaId, laureaId, annoIndex);
+            string secondo = await Web.GetOrarioCompleto("secondo", db, facoltaId, laureaId, annoIndex);
 
             List<CorsoCompleto> lista_completo = Web.GetSingleOrarioCompleto(completo);
             List<CorsoCompleto> lista_secondo = Web.GetSingleOrarioCompleto(secondo);

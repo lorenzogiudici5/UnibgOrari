@@ -126,7 +126,7 @@ namespace OrariUnibg.Views
             foreach (var d in arrayDate)
             {
                 //Corsi generale, utenza + corsi
-                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.ToString("dd'/'MM'/'yyyy"));
+                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
                 List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
                 //CERCA SOLO TRA CORSI DI QUELLA LAUREA

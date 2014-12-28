@@ -174,9 +174,9 @@ namespace OrariUnibg.Views
 
             activityIndicator.IsVisible = true;
 
-            Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
-            Settings.LaureaIndex = pickerLaurea.SelectedIndex;
-            Settings.AnnoIndex = anno;
+            //Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
+            //Settings.LaureaIndex = pickerLaurea.SelectedIndex;
+            //Settings.AnnoIndex = anno;
             Settings.Raggruppa = pickerRaggruppa.SelectedIndex;
 
             string s = await Web.GetOrarioCompleto(semestre, db, facolta, laureaId, anno);
