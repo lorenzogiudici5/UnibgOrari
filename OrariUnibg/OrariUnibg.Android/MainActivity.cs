@@ -14,17 +14,22 @@ using OrariUnibg.Services.Database;
 namespace OrariUnibg.Droid
 {
     [Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/ActionBarCustomHeader")]
-    public class MainActivity : AndroidActivity
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity // superclass new in 1.3
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            Xamarin.Forms.Forms.Init(this, bundle);
+            global::Xamarin.Forms.Forms.Init(this, bundle);
+
+           
+
+            //Xamarin.Forms.Forms.Init(this, bundle);
 
             //App.Init(new DbSQLite());
             App.Init(new DbSQLite(new SQLite_Android().GetConnection()));
 
-            SetPage(App.GetMainPage());
+            //SetPage(App.GetMainPage());
+            LoadApplication(new App()); // method is new in 1.3
         }
     }
 }

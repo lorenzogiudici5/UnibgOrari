@@ -10,9 +10,9 @@ using Xamarin.Forms;
 
 namespace OrariUnibg
 {
-    public class App
+    public class App : Application
     {
-        public static Page GetMainPage()
+        public App()
         {
             if (Settings.PrimoAvvio)
             {
@@ -21,18 +21,30 @@ namespace OrariUnibg
                     BarBackgroundColor = ColorHelper.Blue,
                     BarTextColor = ColorHelper.White
                 };
-                return nav;
+                MainPage = nav;
             }
             else
-                return new MasterDetailView();
+            {
+                MainPage = new MasterDetailView();
+            }
+            
+            
         }
 
-        //public static void Init(ISQLite sqlite)
+        //public static Page GetMainPage()
         //{
-        //    SQLite = sqlite;
+        //    if (Settings.PrimoAvvio)
+        //    {
+        //        var nav = new NavigationPage(new InformationView())
+        //        {
+        //            BarBackgroundColor = ColorHelper.Blue,
+        //            BarTextColor = ColorHelper.White
+        //        };
+        //        return nav;
+        //    }
+        //    else
+        //        return new MasterDetailView();
         //}
-
-        //public static ISQLite SQLite { get; private set; }
 
         public static void Init(DbSQLite sqlite)
         {

@@ -47,13 +47,13 @@ namespace OrariUnibg.Views
             _entryNome = new Entry()
             {
                 Placeholder = "Nome",
-                Text = "Lorenzo",
+                //Text = "Lorenzo",
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
             _entryCognome = new Entry()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = "Giudici",
+                //Text = "Giudici",
                 Placeholder = "Cognome"
             };
 
@@ -61,12 +61,13 @@ namespace OrariUnibg.Views
             _entryMail = new Entry()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
+                //Text = "l.giudici2"
                 Placeholder = "n.cognome2"
             };
             _entryMatricola = new Entry()
             {
                 Placeholder = "Matr.",
-                Text = "1020589",
+                //Text = "1020589",
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 

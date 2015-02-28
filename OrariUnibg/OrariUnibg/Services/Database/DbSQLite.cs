@@ -82,6 +82,7 @@ namespace OrariUnibg.Services.Database
         {
             return (from i in db.Table<Orari>() select i).ToList();
         }
+        
         public bool AppartieneOrari(CorsoGiornaliero item)
         {
             var x = (from i in db.Table<Orari>() where i.Insegnamento == item.Insegnamento && i.Date == item.Date select i).ToList();
@@ -145,6 +146,15 @@ namespace OrariUnibg.Services.Database
         public void Insert(Utenza item)
         {
             db.Insert(item);
+        }
+
+        public bool AppartieneUtenze(Utenza item)
+        {
+            var x = (from i in db.Table<Utenza>() where i.Data == item.Data && i.AulaOra == item.AulaOra select i).ToList();
+            if (x.Count > 0)
+                return true;
+            else
+                return false;
         }
 
         public IEnumerable<Utenza> GetAllUtenze()

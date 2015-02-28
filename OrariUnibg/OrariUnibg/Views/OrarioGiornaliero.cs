@@ -89,7 +89,7 @@ namespace OrariUnibg.Views
             tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
 
             ToolbarItems.Add(tbiShowFav);
-            ToolbarItems.Add(tbiShowAll);
+            //ToolbarItems.Add(tbiShowAll);
 
             return l;
 
@@ -166,6 +166,7 @@ namespace OrariUnibg.Views
                 lv.ItemsSource = _viewModel.ListOrari;
             else
                 _viewModel.ListOrari = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
+            
         }
         #endregion
 

@@ -205,7 +205,7 @@ namespace OrariUnibg.Views.ViewCells
                     case "Recupero lezione":
                         return Color.FromHex("00DD00");
                     default:
-                        return Color.Transparent; // per sfondo layout
+                        return Color.White; // per sfondo layout
                 }
             }
 

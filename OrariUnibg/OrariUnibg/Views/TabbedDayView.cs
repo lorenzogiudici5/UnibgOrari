@@ -95,19 +95,19 @@ namespace OrariUnibg.Views
             _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
 
 
-            _activityIndicator = new ActivityIndicator()
-            {
-                IsRunning = false,
-                IsVisible = false,
-                VerticalOptions = LayoutOptions.EndAndExpand,
-            };
+            //_activityIndicator = new ActivityIndicator()
+            //{
+            //    IsRunning = true,
+            //    IsVisible = true,
+            //    VerticalOptions = LayoutOptions.EndAndExpand,
+            //};
 
             var layoutUtenza = new StackLayout() 
             { 
                 BackgroundColor = ColorHelper.White, 
-                Padding = new Thickness(15, 5, 15, 0), 
                 Orientation = StackOrientation.Horizontal, 
-                Spacing = 5, 
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                Spacing = 0, 
                 Children = { _lblTitleUtenza, _lblUtenza } 
             };
             layoutUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
@@ -123,13 +123,13 @@ namespace OrariUnibg.Views
                     new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
-                    _activityIndicator,
                     layoutUtenza,
                     _listUtenze,
+                    //_activityIndicator,
                 }
             };
 
-            MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", sync); 
+            //MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", sync); 
 
             return layout;
         }
@@ -180,19 +180,19 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
-        private void sync(TabbedHomeView arg1, bool arg2)
-        {
-            if (arg2)
-            {
-                _activityIndicator.IsRunning = true;
-                _activityIndicator.IsVisible = true;
-            }
-            else
-            {
-                _activityIndicator.IsRunning = false;
-                _activityIndicator.IsVisible = false;
-            }
-        }
+        //private void sync(TabbedHomeView arg1, bool arg2)
+        //{
+        //    if (arg2)
+        //    {
+        //        _activityIndicator.IsRunning = true;
+        //        _activityIndicator.IsVisible = true;
+        //    }
+        //    else
+        //    {
+        //        _activityIndicator.IsRunning = false;
+        //        _activityIndicator.IsVisible = false;
+        //    }
+        //}
 
         #endregion
     }
@@ -228,9 +228,9 @@ namespace OrariUnibg.Views
             if (value is IEnumerable<Utenza>)
             {
                 var x = (IEnumerable<Utenza>)value;
-                if (x.Count() > 1 || x.Count() == 0)
-                    return false;
-                else return true;
+                if (x.Count() == 1)
+                    return true;
+                else return false;
             }
 
             return true;

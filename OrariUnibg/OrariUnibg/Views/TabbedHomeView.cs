@@ -58,19 +58,9 @@ namespace OrariUnibg.Views
                 return new TabbedDayView();
             });
 
-            ToolbarItem tbiSync = new ToolbarItem("Sync", "ic_sync.png", () =>
-            {
-                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-
-                updateDbOrariUtenza();
-                loadListGiorno();
-
-                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
-
-                //DependencyService.Get<INotification>().BackgroundSync();
-            }, 0, 0); 
-
+            tbiSync = new ToolbarItem("Sync", "ic_sync.png", sync, 0, 0);
             ToolbarItems.Add(tbiSync);
+
 
             MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", deleteMioCorso);
         }
@@ -82,8 +72,20 @@ namespace OrariUnibg.Views
         private Giorno _oggi;
         private Giorno _domani;
         private Giorno _dopodomani;
+        private ToolbarItem tbiSync;
         #endregion
+        private void sync()
+        {
+            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+            ToolbarItems.Clear();
+           // ToolbarItems.Remove(tbiSync);
 
+            updateDbOrariUtenza();
+            loadListGiorno();
+
+            ToolbarItems.Add(tbiSync);
+            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+        }
         #region Private Methods
         private async void updateDbOrariUtenza()
         {
@@ -146,8 +148,13 @@ namespace OrariUnibg.Views
                             _db.Insert(orario);
                         }
                     }
-                    else if (corso.Insegnamento.Contains("UTENZA"))
-                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
+
+                    else if (corso.Insegnamento.Contains("UTENZA")) //verifico se è un utenza
+                    { 
+                        Utenza ut = new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra};
+                        if(!_db.AppartieneUtenze(ut))
+                            _db.Insert(ut); 
+                    }
                 }
 
                 //CHECK USO UTENZA
