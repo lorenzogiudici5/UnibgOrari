@@ -15,7 +15,7 @@ namespace OrariUnibg.Views.ViewCells
         {
             var title = new Label
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 FontAttributes =  FontAttributes.Bold,
                 TextColor = ColorHelper.White,
                 VerticalOptions = LayoutOptions.Center

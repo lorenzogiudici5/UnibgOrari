@@ -96,7 +96,7 @@ namespace OrariUnibg.Views
             //this.Icon = "ic_navigation_drawer.png";
             var _lblUtente = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Large),
+                FontSize = Device.GetNamedSize(NamedSize.Large, this),
                 Text = string.Format("{0} {1}", Settings.Nome, Settings.Cognome),
                 TextColor = ColorHelper.White,
                 FontAttributes =  FontAttributes.Bold,
@@ -125,7 +125,7 @@ namespace OrariUnibg.Views
             //    {
             //        Text = "MENU",
             //        TextColor = Color.White,
-            //        Font = Font.SystemFontOfSize(NamedSize.Medium),
+            //        FontSize = Device.GetNamedSize(NamedSize.Medium, this),
             //    }
             //};
 
@@ -153,7 +153,7 @@ namespace OrariUnibg.Views
 
             var _lblImpostazioni = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 Text = "Impostazioni",
@@ -183,7 +183,7 @@ namespace OrariUnibg.Views
             //    {
             //        Text = "MENU",
             //        TextColor = Color.White,
-            //        Font = Font.SystemFontOfSize(NamedSize.Medium),
+            //        FontSize = Device.GetNamedSize(NamedSize.Medium, this),
             //    }
             //};
 

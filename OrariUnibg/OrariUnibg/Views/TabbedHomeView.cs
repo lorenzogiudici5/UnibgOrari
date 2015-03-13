@@ -74,20 +74,20 @@ namespace OrariUnibg.Views
         private Giorno _dopodomani;
         private ToolbarItem tbiSync;
         #endregion
-        private void sync()
+        private async void sync()
         {
-            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
             ToolbarItems.Clear();
-           // ToolbarItems.Remove(tbiSync);
+            ToolbarItems.Remove(tbiSync);
 
-            updateDbOrariUtenza();
+            await updateDbOrariUtenza();
             loadListGiorno();
 
             ToolbarItems.Add(tbiSync);
-            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
         }
         #region Private Methods
-        private async void updateDbOrariUtenza()
+        private async Task updateDbOrariUtenza()
         {
             var _listOrariGiorno = _db.GetAllOrari(); //Elimina gli orari già passati
             foreach (var l in _listOrariGiorno)
@@ -184,17 +184,22 @@ namespace OrariUnibg.Views
             _dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data, dateX.Date) == 0);
             _dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _dopodomani.Data);
 
+            list = new List<Giorno>()
+            {
+                _oggi, _domani, _dopodomani
+            };
             this.ItemsSource = list;
         }
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             if(_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount) //ne è stato aggiunto uno nuovo
             {
                 MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-                updateDbOrariUtenza();
+                await updateDbOrariUtenza();
                 Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
                 MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
             }
+
             loadListGiorno();
             base.OnAppearing();
            

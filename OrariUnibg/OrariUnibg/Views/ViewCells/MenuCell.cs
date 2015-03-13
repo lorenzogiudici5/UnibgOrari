@@ -30,7 +30,7 @@ namespace OrariUniBg.Views.ViewCells
             _lblTitle = new Label
             {
                 TextColor = ColorHelper.Black,
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 VerticalOptions = LayoutOptions.CenterAndExpand
             };

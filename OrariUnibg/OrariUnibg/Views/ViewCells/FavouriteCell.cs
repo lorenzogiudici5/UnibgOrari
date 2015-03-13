@@ -26,13 +26,14 @@ namespace OrariUnibg.Views.ViewCells
         {
             _lblInsegn = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Bold)
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                FontAttributes = FontAttributes.Bold
             };
             _lblInsegn.SetBinding(Label.TextProperty, "Insegnamento");
             
             _lblDocente = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small)
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
             };
             _lblDocente.SetBinding(Label.TextProperty, "Docente");
 

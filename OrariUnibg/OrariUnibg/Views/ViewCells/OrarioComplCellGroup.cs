@@ -33,13 +33,14 @@ namespace OrariUnibg.Views.ViewCells
         {
             _lblInsegnamento = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.Blue,
             };
 
             _lblDocente = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
@@ -47,7 +48,7 @@ namespace OrariUnibg.Views.ViewCells
             _lblAulaOra = new Label()
             {
                 TextColor = ColorHelper.Gray,
-                Font =Font.SystemFontOfSize(NamedSize.Small)
+                FontSize = Device.GetNamedSize(NamedSize.Small, this)
             };
 
             _lblInsegnamento.SetBinding(Label.TextProperty, "Insegnamento");

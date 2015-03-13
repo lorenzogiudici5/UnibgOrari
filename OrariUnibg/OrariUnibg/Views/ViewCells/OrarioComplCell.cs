@@ -16,45 +16,47 @@ namespace OrariUnibg.Views.ViewCells
 
             var lblCorso = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.Blue,
             };
 
             var lblDocente = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
 
             var lblInizioFine = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Italic),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Italic,
                 HorizontalOptions = LayoutOptions.Start,
                 IsVisible = false,
             };
 
-            var Lunedi = new Label() { Text = "LUNEDI:", Font =Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray};
-            var Martedi = new Label() { Text = "MARTEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
-            var Mercoledi = new Label() { Text = "MERCOLEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
-            var Giovedi = new Label() { Text = "GIOVEDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
-            var Venerdi = new Label() { Text = "VENERDI:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
-            var Sabato = new Label() { Text = "SABATO:", Font = Font.SystemFontOfSize(NamedSize.Small), TextColor = ColorHelper.Gray };
+            var Lunedi = new Label() { Text = "LUNEDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray};
+            var Martedi = new Label() { Text = "MARTEDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
+            var Mercoledi = new Label() { Text = "MERCOLEDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
+            var Giovedi = new Label() { Text = "GIOVEDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
+            var Venerdi = new Label() { Text = "VENERDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
+            var Sabato = new Label() { Text = "SABATO:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
 
             var lblLunedi = new Label()
             {
-                Font =Font.SystemFontOfSize(NamedSize.Small)
+                FontSize = Device.GetNamedSize(NamedSize.Small, this)
             };
             var lblMartedi = new Label() { TextColor = ColorHelper.Gray };
-            lblMartedi.Font =Font.SystemFontOfSize(NamedSize.Small);
+            lblMartedi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
             var lblMercoledi = new Label() { TextColor = ColorHelper.Gray };
-            lblMercoledi.Font =Font.SystemFontOfSize(NamedSize.Small);
+            lblMercoledi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
             var lblGiovedi = new Label() { TextColor = ColorHelper.Gray };
-            lblGiovedi.Font =Font.SystemFontOfSize(NamedSize.Small);
+            lblGiovedi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
             var lblVenerdi = new Label() { TextColor = ColorHelper.Gray };
-            lblVenerdi.Font =Font.SystemFontOfSize(NamedSize.Small);
+            lblVenerdi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
             var lblSabato = new Label() { TextColor = ColorHelper.Gray };
-            lblSabato.Font = Font.SystemFontOfSize(NamedSize.Small);
+            lblSabato.FontSize = Device.GetNamedSize(NamedSize.Small, this);
 
             lblCorso.SetBinding(Label.TextProperty, "Insegnamento");
             lblDocente.SetBinding(Label.TextProperty, "Docente");

@@ -40,14 +40,14 @@ namespace OrariUnibg.Views
         {
             var lblOrario = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 Text = "ORARIO COMPLETO:",
                 TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
             var lblLaurea = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
@@ -55,13 +55,13 @@ namespace OrariUnibg.Views
 
             var lblAnno = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
             lblAnno.SetBinding(Label.TextProperty, "AnnoSemestre");
 
-            lv = new ListView() { HasUnevenRows = true };
+            lv = new ListView() { HasUnevenRows = true, VerticalOptions = LayoutOptions.FillAndExpand};
             lv.ItemSelected += lv_ItemSelected;
 
             var searchbar = new SearchBar()
@@ -88,7 +88,7 @@ namespace OrariUnibg.Views
                 { 
                     l, 
                     lv, 
-                    new StackLayout(){ Children = {searchbar}, BackgroundColor = ColorHelper.White}
+                    new StackLayout(){ Children = {searchbar}, BackgroundColor = Color.White}
                 }
             };
 
@@ -211,11 +211,11 @@ namespace OrariUnibg.Views
             SearchBar searchBar = (SearchBar)sender;
             string searchText = searchBar.Text.ToUpper();
 
-            if (searchText == string.Empty)
-                lista = _viewModel.ListOrari;
-            else
-                lista = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.Lezioni.Any(y => y.AulaOra.ToUpper().Contains(searchText) || y.Note.ToUpper().Contains(searchText))).ToList();
-
+                if (searchText == string.Empty)
+                    lista = _viewModel.ListOrari;
+                else
+                    lista = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.Lezioni.Any(y => y.AulaOra.ToUpper().Contains(searchText) || y.Note.ToUpper().Contains(searchText))).ToList();
+            
             setUpListView();
         }
         #endregion

@@ -28,6 +28,7 @@ namespace OrariUnibg.Views
         private DbSQLite _db;
         private ListView lv;
         private OrariGiornoViewModel _viewModel;
+        private List<CorsoGiornaliero> _listOriginal;
         private ToolbarItem tbiShowFav;
         private ToolbarItem tbiShowAll;
         #endregion
@@ -38,7 +39,7 @@ namespace OrariUnibg.Views
         {
             var lblData = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
@@ -46,7 +47,7 @@ namespace OrariUnibg.Views
 
             var lblLaurea = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 TextColor = ColorHelper.DarkBlue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
@@ -56,6 +57,7 @@ namespace OrariUnibg.Views
             {
                 ItemTemplate = new DataTemplate(typeof(OrarioGiornCell)),
                 HasUnevenRows = true,
+                VerticalOptions = LayoutOptions.FillAndExpand,
             };
             lv.SetBinding(ListView.ItemsSourceProperty, "ListOrari");
             lv.ItemSelected += lv_ItemSelected;
@@ -63,7 +65,8 @@ namespace OrariUnibg.Views
             var searchbar = new SearchBar()
             {
                 Placeholder = "Cerca",
-                VerticalOptions = LayoutOptions.EndAndExpand
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 
             //searchbar.SearchButtonPressed += searchbar_SearchButtonPressed;
@@ -82,7 +85,12 @@ namespace OrariUnibg.Views
             {
                 Padding = new Thickness(15, 10, 15, 10),
                 Orientation = StackOrientation.Vertical,
-                Children = { layoutLabel, lv, searchbar }
+                Children = 
+                { 
+                    layoutLabel, 
+                    lv, 
+                    new StackLayout(){ Children = {searchbar}, BackgroundColor = Color.White} 
+                }
             };
 
             tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
@@ -125,7 +133,7 @@ namespace OrariUnibg.Views
                         break;
                     case "Aggiungi ai preferiti":
                         _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-                        await DisplayAlert("PREFERITO AGGIUNTO!", "Complimenti! Hai aggiunto il corso di {0} ai preferiti!", "OK");
+                        await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
                         break;
                     case "Dettagli":
                         //var nav = new DettagliCorsoView();
@@ -149,13 +157,13 @@ namespace OrariUnibg.Views
         {
             ToolbarItems.Clear();
             ToolbarItems.Add(tbiShowFav);
-            lv.ItemsSource = _viewModel.ListOrari;
+            _viewModel.ListOrari = _listOriginal;
         }
         private void showFavourites()
         {
             ToolbarItems.Clear();
             ToolbarItems.Add(tbiShowAll);
-            lv.ItemsSource = _viewModel.ListOrari.Where(x => x.MioCorso).ToList();
+            _viewModel.ListOrari = _viewModel.ListOrari.Where(x => x.MioCorso).ToList();
         }
         void searchbar_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -163,7 +171,8 @@ namespace OrariUnibg.Views
             string searchText = searchBar.Text.ToUpper();
 
             if (searchText == string.Empty)
-                lv.ItemsSource = _viewModel.ListOrari;
+                //lv.ItemsSource = _listOriginal;
+                _viewModel.ListOrari = _listOriginal;
             else
                 _viewModel.ListOrari = _viewModel.ListOrari.Where(x => x.Insegnamento.Contains(searchText) || x.Docente.Contains(searchText) || x.AulaOra.ToUpper().Contains(searchText) || x.Note.ToUpper().Contains(searchText)).ToList();
             
@@ -175,6 +184,8 @@ namespace OrariUnibg.Views
         {
             base.OnBindingContextChanged();
             _viewModel = (OrariGiornoViewModel)BindingContext;
+
+            _listOriginal = _viewModel.ListOrari;
         }
         #endregion
 

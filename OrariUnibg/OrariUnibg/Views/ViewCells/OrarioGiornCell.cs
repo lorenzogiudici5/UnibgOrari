@@ -32,7 +32,7 @@ namespace OrariUnibg.Views.ViewCells
         {
             _lblCorso = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Default, this),
                 TextColor = ColorHelper.Blue,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
@@ -40,7 +40,7 @@ namespace OrariUnibg.Views.ViewCells
 
             _lblCodice = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Micro),
+                FontSize = Device.GetNamedSize(NamedSize.Micro, this),
                 TextColor = ColorHelper.Gray,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
@@ -48,7 +48,7 @@ namespace OrariUnibg.Views.ViewCells
             
             _lblAula = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 TextColor = ColorHelper.Gray,
                 //HorizontalOptions = LayoutOptions.FillAndExpand
             };
@@ -56,7 +56,7 @@ namespace OrariUnibg.Views.ViewCells
 
             _lblOra = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 TextColor = ColorHelper.Gray,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
@@ -64,7 +64,8 @@ namespace OrariUnibg.Views.ViewCells
            
             _lblDocente = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
@@ -72,7 +73,7 @@ namespace OrariUnibg.Views.ViewCells
 
             _lblNote = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
             };

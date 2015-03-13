@@ -95,13 +95,14 @@ namespace OrariUnibg.Views
                 Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
                 TextColor = ColorHelper.Red,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 IsVisible = false,
             };
             
             btn.Clicked += btn_Clicked;
             var layout = new StackLayout()
             {
+                BackgroundColor = ColorHelper.White,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = new Thickness(10, 10, 10, 10),
                 Orientation = StackOrientation.Vertical,

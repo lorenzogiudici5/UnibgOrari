@@ -39,21 +39,23 @@ namespace OrariUnibg.Views
         {
             _lblDay = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Large, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
             };
             _lblDay.SetBinding(Label.TextProperty, "Day");
 
             _lblDate = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Large, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
             };
             _lblDate.SetBinding(Label.TextProperty, "DateString");
 
             _lblInfo = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 Text = "Rilassati! Non hai lezioni!",
                 TextColor = ColorHelper.Green,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -81,33 +83,33 @@ namespace OrariUnibg.Views
             _lblTitleUtenza = new Label()
             {
                 Text = "USO UTENZA",
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 VerticalOptions = LayoutOptions.EndAndExpand
             };
             _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
 
             _lblUtenza = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small),
-                VerticalOptions = LayoutOptions.EndAndExpand
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                VerticalOptions = LayoutOptions.EndAndExpand,
             };
-            _lblUtenza.SetBinding(Label.TextProperty, "AulaOra");
+            _lblUtenza.SetBinding(Label.TextProperty, "UsoUtenza");
             _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
 
 
-            //_activityIndicator = new ActivityIndicator()
-            //{
-            //    IsRunning = true,
-            //    IsVisible = true,
-            //    VerticalOptions = LayoutOptions.EndAndExpand,
-            //};
+            _activityIndicator = new ActivityIndicator()
+            {
+                IsRunning = false,
+                IsVisible = false,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+            };
 
             var layoutUtenza = new StackLayout() 
             { 
                 BackgroundColor = ColorHelper.White, 
                 Orientation = StackOrientation.Horizontal, 
                 VerticalOptions = LayoutOptions.EndAndExpand,
-                Spacing = 0, 
+                Spacing = 5, 
                 Children = { _lblTitleUtenza, _lblUtenza } 
             };
             layoutUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
@@ -125,11 +127,11 @@ namespace OrariUnibg.Views
                     _listView,
                     layoutUtenza,
                     _listUtenze,
-                    //_activityIndicator,
+                    _activityIndicator,
                 }
             };
 
-            //MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", sync); 
+            MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", sync); 
 
             return layout;
         }
@@ -180,19 +182,19 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
-        //private void sync(TabbedHomeView arg1, bool arg2)
-        //{
-        //    if (arg2)
-        //    {
-        //        _activityIndicator.IsRunning = true;
-        //        _activityIndicator.IsVisible = true;
-        //    }
-        //    else
-        //    {
-        //        _activityIndicator.IsRunning = false;
-        //        _activityIndicator.IsVisible = false;
-        //    }
-        //}
+        private void sync(TabbedHomeView arg1, bool arg2)
+        {
+            if (arg2)
+            {
+                _activityIndicator.IsRunning = true;
+                _activityIndicator.IsVisible = true;
+            }
+            else
+            {
+                _activityIndicator.IsRunning = false;
+                _activityIndicator.IsVisible = false;
+            }
+        }
 
         #endregion
     }

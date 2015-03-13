@@ -27,7 +27,8 @@ namespace OrariUnibg.Views.ViewCells
         {
             _lblTitle = new Label
             {
-                Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Bold),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                FontAttributes = FontAttributes.Bold,
                 TextColor = ColorHelper.White,
                 VerticalOptions = LayoutOptions.Center
             };

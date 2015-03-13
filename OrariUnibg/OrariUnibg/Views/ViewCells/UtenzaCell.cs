@@ -28,12 +28,12 @@ namespace OrariUnibg.Views.ViewCells
             _lblTitleUtenza = new Label()
             {
                 Text = "USO UTENZA:",
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this)
             };
 
             _lblAulaOra = new Label()
             {
-                Font = Font.SystemFontOfSize(NamedSize.Small),
+                FontSize = Device.GetNamedSize(NamedSize.Small, this)
             };
             _lblAulaOra.SetBinding(Label.TextProperty, "AulaOra");
 

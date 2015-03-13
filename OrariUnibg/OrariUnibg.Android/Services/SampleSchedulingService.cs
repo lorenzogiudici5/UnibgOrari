@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OrariUnibg.Droid.Services.Notifications
@@ -29,7 +30,7 @@ namespace OrariUnibg.Droid.Services.Notifications
         #endregion 
 
         public SampleSchedulingService() { }
-        protected override void OnHandleIntent(Android.Content.Intent intent)
+        protected async override void OnHandleIntent(Android.Content.Intent intent)
         {
             System.Diagnostics.Debug.WriteLine("CREATING DB");
             //SendNotification();
@@ -58,7 +59,7 @@ namespace OrariUnibg.Droid.Services.Notifications
             * lista dei corsi salvati. Scandisco ogni elemento della lista con la lista di tutti i corsi di giornata
             * se insegnamento+ora sono uguali, verifico se le Note cambiano. Se cambiano, la salvo nel database e invio la notifica
             * */
-            updateDbOrariUtenza();
+            await updateDbOrariUtenza();
 
 
             // Release the wake lock provided by the BroadcastReceiver.
@@ -67,7 +68,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 
 
         #region Private Methods
-        private async void updateDbOrariUtenza()
+        private async Task updateDbOrariUtenza()
         {
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
 
