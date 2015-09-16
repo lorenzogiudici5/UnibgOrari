@@ -22,6 +22,7 @@ namespace OrariUnibg.Services.Database
             db.CreateTable<Orari>();
             db.CreateTable<Utenza>();
         }
+
         public DbSQLite()
         {
             db = DependencyService.Get<ISQLite>().GetConnection();
@@ -58,7 +59,16 @@ namespace OrariUnibg.Services.Database
         //}
         public bool CheckAppartieneMieiCorsi(Corso item)
         {
-            var list = db.Table<MieiCorsi>().Where(x => x.Insegnamento == item.Insegnamento).ToList();
+			System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: dentro il check appartiene");
+
+//			if(db == null)
+//				System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: db_SQLITE null");
+//			else
+//				System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: db_SQLITE NOT NULL");
+
+			var list = GetAllMieiCorsi().Where(x => x.Insegnamento == item.Insegnamento).ToList();
+//            var list = db.Table<MieiCorsi>().Where(x => x.Insegnamento == item.Insegnamento).ToList();
+
             if (list.Count > 0)
                 return true;
             else
@@ -80,13 +90,20 @@ namespace OrariUnibg.Services.Database
         #region Orari
         public IEnumerable<Orari> GetAllOrari()
         {
-            return (from i in db.Table<Orari>() select i).ToList();
+			var o = (from i in db.Table<Orari>() select i).ToList();
+			return o;
         }
         
         public bool AppartieneOrari(CorsoGiornaliero item)
         {
-            var x = (from i in db.Table<Orari>() where i.Insegnamento == item.Insegnamento && i.Date == item.Date select i).ToList();
-            if (x.Count > 0)
+			var count = db.Table<Orari> ().ToList ();
+//			var x = (from i in db.Table<Orari> ()
+//					 where i.Insegnamento == item.Insegnamento && i.Date == item.Date
+//			         select i).ToList ();
+			
+			var y = GetAllOrari().Where (c=> c.Insegnamento == item.Insegnamento && c.Date.Date == item.Date.Date).FirstOrDefault ();
+
+			if (y != null)
                 return true;
             else
                 return false;
@@ -104,6 +121,7 @@ namespace OrariUnibg.Services.Database
 
         public void Insert(Orari item)
         {
+			item.Date = item.Date.AddDays (1); //quando aggiungo un orario me lo sposta indietro di un giorno. Così, aggiungendo prima un giorno, sembra funzionare . . . 
             db.Insert(item);
         }
 

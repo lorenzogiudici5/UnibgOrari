@@ -25,7 +25,7 @@ namespace OrariUnibg.Droid.Services.Notifications
         AlarmManager am;
         public override void OnReceive(Context context, Intent intent)
         {
-            System.Diagnostics.Debug.WriteLine("ON RECEVICE");
+            Logcat.Write("ON RECEVICE");
             Intent service = new Intent(context, typeof(SampleSchedulingService));
             // Start the service, keeping the device awake while it is launching.
             StartWakefulService(context, service);
@@ -35,7 +35,9 @@ namespace OrariUnibg.Droid.Services.Notifications
         {
             if (!Settings.BackgroundSync)
                 return;
-            System.Diagnostics.Debug.WriteLine("SET ALARM");
+			
+            Logcat.Write("SET ALARM");
+
             Calendar alarmTime = Calendar.GetInstance(Java.Util.TimeZone.Default);
             //alarmTime.Set(CalendarField.DayOfMonth, 1);
             //alarmTime.Set(CalendarField.Month, 11);
@@ -48,14 +50,19 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             am = (AlarmManager)context.GetSystemService(Context.AlarmService);
             Intent intent = new Intent(context, typeof(SampleAlarmReceiver));
-            //intent.PutExtra (ALARM_ACTION, true);
-            pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
-            //PendingIntentFlags.UpdateCurrent
-            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi);
-            Console.WriteLine(alarmTime);
+			Intent sampleSchedulingService = new Intent(context, typeof(SampleSchedulingService));
 
-            // Enable {@code SampleBootReceiver} to automatically restart the alarm when the
-            // device is rebooted.
+          pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
+//			var pi = PendingIntent.GetService (context, 0, sampleSchedulingService, PendingIntentFlags.CancelCurrent);
+            
+			//PendingIntentFlags.UpdateCurrent
+//            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi);
+
+			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 70000, pi);
+            Console.WriteLine(alarmTime);
+			Logcat.Write("ALARM REPEATING");
+
+            // Enable {@code SampleBootReceiver} to automatically restart the alarm when the device is rebooted.
             ComponentName receiver = new ComponentName(context, Java.Lang.Class.FromType(typeof(SampleBootReceiver)));
             PackageManager pm = context.PackageManager;
 

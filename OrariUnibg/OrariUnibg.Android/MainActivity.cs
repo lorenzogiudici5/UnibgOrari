@@ -10,6 +10,7 @@ using Android.App;
 using Android.Content.PM;
 using OrariUnibg.Droid.Services.Database;
 using OrariUnibg.Services.Database;
+using Android.Graphics.Drawables;
 
 namespace OrariUnibg.Droid
 {
@@ -30,6 +31,11 @@ namespace OrariUnibg.Droid
 
             //SetPage(App.GetMainPage());
             LoadApplication(new App()); // method is new in 1.3
+
+			if ((int)Android.OS.Build.VERSION.SdkInt >= 21) 
+			{ 
+				ActionBar.SetIcon ( new ColorDrawable (Resources.GetColor (Android.Resource.Color.Transparent))); 
+			}
         }
     }
 }

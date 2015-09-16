@@ -22,9 +22,9 @@ namespace OrariUnibg.Droid.Services.Notifications
     public class Notification_Android : INotification
     {
         SampleAlarmReceiver sample = new SampleAlarmReceiver();
+
         public void BackgroundSync()
         {
-
             sample.SetAlarm(Forms.Context);
             //sample.StartService(Forms.Context);
         }
@@ -33,7 +33,7 @@ namespace OrariUnibg.Droid.Services.Notifications
         {
             if (!Settings.Notify)
                 return;
-            System.Diagnostics.Debug.WriteLine("SEND NOTIFICATION");
+            Logcat.Write("SEND NOTIFICATION");
 
             // Set up an intent so that tapping the notifications returns to this app:
             Intent intent = new Intent(Forms.Context, typeof(MainActivity));
@@ -45,14 +45,15 @@ namespace OrariUnibg.Droid.Services.Notifications
             Notification.Builder builder = new Notification.Builder(Forms.Context)
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(l.Note.ToUpper())
-                .SetContentText(l.Insegnamento + " - " + l.Ora)
+				.SetContentText(l.Insegnamento + " - " + l.Date + " - " + l.Ora )
                 .SetSmallIcon(Resource.Drawable.ic_notification_school)
                 .SetAutoCancel(true);
             //builder.SetStyle(new Notification.BigTextStyle().BigText(longMess));
 
             Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
             inboxStyle.AddLine(l.Insegnamento);
-            inboxStyle.AddLine(l.AulaOra);
+			inboxStyle.AddLine(l.Date.DayOfWeek + ", " + l.Date.ToShortDateString());
+			inboxStyle.AddLine(l.AulaOra);
             inboxStyle.AddLine(l.Docente);
             builder.SetStyle(inboxStyle);
 
@@ -63,9 +64,11 @@ namespace OrariUnibg.Droid.Services.Notifications
             NotificationManager notificationManager = Forms.Context.GetSystemService(Context.NotificationService) as NotificationManager;
 
             // Publish the notification:
-            const int notificationId = 1;
-            notificationManager.Notify(notificationId, notification);
+//            const int notificationId = 1;
+			var rnd = new System.Random ();
+			notificationManager.Notify(rnd.Next(), notification);
         }
+
         //public void StartService()
         //{
         //    Intent service = new Intent(Forms.Context, typeof(SampleSchedulingService));

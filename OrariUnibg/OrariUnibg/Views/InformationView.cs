@@ -33,6 +33,7 @@ namespace OrariUnibg.Views
         private Switch _switchNotific;
         private Label _lblSync;
         private Switch _switchSync;
+		private ToolbarItem tbiNext;
         private int limit = 3;
         private ActivityIndicator _activityIndicator;
         List<Facolta> listFacolta = new List<Facolta>();
@@ -151,7 +152,7 @@ namespace OrariUnibg.Views
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 IsRunning = true,
-                IsVisible = false,
+				IsVisible = false,
             };
 
             var grid = new Grid()
@@ -171,6 +172,7 @@ namespace OrariUnibg.Views
                      new RowDefinition { Height = GridLength.Auto },
                      new RowDefinition { Height = GridLength.Auto },
                      new RowDefinition { Height = GridLength.Auto },
+					 new RowDefinition { Height = GridLength.Auto },
                 },
                 ColumnDefinitions = 
                 { 
@@ -190,9 +192,9 @@ namespace OrariUnibg.Views
             grid.Children.Add(_switchSync, 1, 2, 5, 6);
             grid.Children.Add(_lblNotific, 0, 1, 6, 7);
             grid.Children.Add(_switchNotific, 1, 2, 6, 7);
-            grid.Children.Add(_activityIndicator, 0, 2, 7, 8);
+            grid.Children.Add(_activityIndicator, 0, 1, 7, 8);
 
-            ToolbarItem tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
+            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
             //if (Device.OS == TargetPlatform.Android)
             //{ // BUG: Android doesn't support the icon being null
             //    tbiNext = new ToolbarItem("Avanti", "ic_menu.png", () =>
@@ -224,7 +226,9 @@ namespace OrariUnibg.Views
                 return;
             }
 
+			ToolbarItems.Remove (tbiNext);
             _activityIndicator.IsVisible = true;
+
             Facolta fac = listFacolta.Where(x => x.Nome == _pickFacolta.Items[_pickFacolta.SelectedIndex]).First();
             int facoltaId = fac.IdFacolta;
             int facoltaIndex = _pickFacolta.SelectedIndex;
@@ -258,16 +262,17 @@ namespace OrariUnibg.Views
             List<CorsoCompleto> lista_completo = Web.GetSingleOrarioCompleto(completo);
             List<CorsoCompleto> lista_secondo = Web.GetSingleOrarioCompleto(secondo);
 
-            if(lista_completo.FirstOrDefault().Semestre == 1)
+			if(lista_completo.Count() != 0 && lista_completo.FirstOrDefault().Semestre == 1)
                 lista_completo.AddRange(lista_secondo);
 
-            _activityIndicator.IsVisible = false;
+//            _activityIndicator.IsVisible = false;
 
             Settings.PrimoAvvio = false;
 
             await Navigation.PushAsync(new ListaCorsi(lista_completo));
             //Navigation.PopModalAsync();
         }
+
         void _entryCognome_TextChanged(object sender, TextChangedEventArgs e)
         {
             var s = (Entry)sender;

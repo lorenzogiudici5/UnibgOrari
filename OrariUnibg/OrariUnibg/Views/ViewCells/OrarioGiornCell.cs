@@ -7,6 +7,7 @@ using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
+using System.Diagnostics;
 
 namespace OrariUnibg.Views.ViewCells
 {

@@ -13,7 +13,7 @@ namespace OrariUnibg.Models
     {
         #region Private Fields
         private IEnumerable<Orari> _listOrari;
-        private IEnumerable<Utenza> _listUtenza;
+		private IEnumerable<Utenza> _listUtenza;
         private DateTime _day;
         #endregion
 
@@ -35,9 +35,9 @@ namespace OrariUnibg.Models
             set
             {
                 if (value.ToString("dddd", new CultureInfo("it-IT")).ToLower() == "domenica")
-                    _day = value.AddDays(1);
+					_day = value.AddDays(1).Date;
                 else
-                    _day = value;
+					_day = value.Date;
             }
         }
 
@@ -59,14 +59,19 @@ namespace OrariUnibg.Models
             }
             set { SetProperty<IEnumerable<Utenza>>(ref _listUtenza, value, "ListUtenza"); }
         }
+
         public String UsoUtenza 
         {
             get 
             {
-                if (ListUtenza.Count() > 0)
-                    return ListUtenza.FirstOrDefault().AulaOra;
-                else
-                    return string.Empty;
+				if (_listUtenza != null) {
+	                if (ListUtenza.Count() > 0)
+	                    return ListUtenza.FirstOrDefault().AulaOra;
+	                else
+	                    return string.Empty;
+				}
+				else
+					return string.Empty;
             }
         }
     }

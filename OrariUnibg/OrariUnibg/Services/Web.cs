@@ -41,7 +41,7 @@ namespace OrariUnibg.Services
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+				System.Diagnostics.Debug.WriteLine(ex.Message);
                 return String.Empty;
             }
 
@@ -73,7 +73,7 @@ namespace OrariUnibg.Services
 
         public static List<CorsoGiornaliero> GetSingleOrarioGiornaliero(string html, int order, DateTime date)
         {
-            DbSQLite _db = new DbSQLite();
+//            DbSQLite _db = new DbSQLite();
             List<CorsoGiornaliero> listaCorso = new List<CorsoGiornaliero>();
             var doc = new HtmlDocument();
             doc.LoadHtml(html);

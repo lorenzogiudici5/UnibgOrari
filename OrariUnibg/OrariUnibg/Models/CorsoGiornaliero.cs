@@ -14,6 +14,7 @@ namespace OrariUnibg.Models
         private string _ora;
         private string _aulaOra;
         private string _note;
+		private DateTime _date;
         public CorsoGiornaliero(){ }
         public string AulaOra 
         {
@@ -50,7 +51,12 @@ namespace OrariUnibg.Models
                     _note = value; 
             }
         }
-        public DateTime Date { get; set; }
+		public DateTime Date 
+		{ 
+			get { return _date;}
+			set { _date = value.Date;}
+//			set { _date = value.Date.AddDays(1);} //perchè quando inserisco nel database, mi togli un giorno!!!****
+		}
 
         public bool MioCorso 
         {

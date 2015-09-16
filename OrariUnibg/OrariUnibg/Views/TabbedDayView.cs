@@ -68,7 +68,8 @@ namespace OrariUnibg.Views
                 HasUnevenRows = true,
             };
             _listView.SetBinding(ListView.ItemsSourceProperty, "ListaLezioni");
-            _listView.ItemSelected += _listView_ItemSelected;
+			_listView.ItemSelected += _listView_ItemSelected;
+
 
             _listUtenze = new ListView()
             {

@@ -23,18 +23,24 @@ namespace OrariUnibg.Droid.Services.Notifications
 
         public override void OnReceive(Context context, Intent intent)
         {
-            System.Diagnostics.Debug.WriteLine("CREATING APP.DATABASE");
+            Logcat.Write("CREATING APP.DATABASE");
             App.Init(new DbSQLite(new SQLite_Android().GetConnection()));
+
+			if(App.Database == null)
+				Logcat.Write("DATABASE NULLO");
+			else
+				Logcat.Write("DATABASE NON NULLO");
+
             //App.Database = new DbSQLite(new SQLite_Android().GetConnection());
            // App.Database = new SQLite_Android().GetConnection();
-            System.Diagnostics.Debug.WriteLine("BOOT RECEIVER ON RECEIVE");
+            Logcat.Write("BOOT RECEIVER ON RECEIVE");
             alarm.SetAlarm(context);
 
-            //if (intent.Action.Equals("android.intent.action.BOOT_COMPLETED"))
-            //{
-            //    System.Diagnostics.Debug.WriteLine("ACTION EQUALS BOOT COMPLTED");
-            //    alarm.SetAlarm(context);
-            //}
+//            if (intent.Action.Equals("android.intent.action.BOOT_COMPLETED"))
+//            {
+//                Logcat.Write("ACTION EQUALS BOOT COMPLTED");
+//                alarm.SetAlarm(context);
+//            }
         }
     }
 }

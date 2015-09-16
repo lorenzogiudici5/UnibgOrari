@@ -33,6 +33,7 @@ namespace OrariUnibg.Views
         private Giorno _oggi;
         private Giorno _domani;
         private Giorno _dopodomani;
+		private ToolbarItem tbiNext;
         #endregion
 
         #region Private Methods
@@ -61,7 +62,7 @@ namespace OrariUnibg.Views
                 IsVisible = false
             };
 
-            ToolbarItem tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0);
+            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0);
 
             ToolbarItems.Add(tbiNext);
 
@@ -102,25 +103,27 @@ namespace OrariUnibg.Views
         #region Event Handlers
         private async void toolbarItem_next()
         {
+			ToolbarItems.Remove (tbiNext);
             _activityIndicator.IsRunning = true;
             _activityIndicator.IsVisible = true;
+
 
             foreach (var i in _preferiti)
                 _db.Insert(i);
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
-            if (DateTime.Now.Hour < 18)
-            {
-                _oggi = new Giorno() { Data = DateTime.Today };
-                _domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-                _dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
-            }
-            else
-            {
-                _oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
-                _domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-                _dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
-            }
+			if (DateTime.Now.Hour > Settings.UpdateHour && DateTime.Now.Minute > 35)
+			{
+				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
+				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+			}
+			else
+			{
+				_oggi = new Giorno() { Data = DateTime.Today };
+				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+			}
 
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
             foreach (var d in arrayDate)
@@ -133,44 +136,42 @@ namespace OrariUnibg.Views
                 //string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, d.ToString("dd'/'MM'/'yyyy"));
                 //List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
-                foreach (var l in listaCorsi)
-                {
-                    var corso = l;
-                    if (_db.CheckAppartieneMieiCorsi(corso))
-                    {
-                        var orario = new Orari()
-                        {
-                            Insegnamento = corso.Insegnamento,
-                            Codice = corso.Codice,
-                            AulaOra = corso.AulaOra,
-                            Note = corso.Note,
-                            Date = corso.Date,
-                            Docente = corso.Docente,
-                            Notify = false,
-                        };
-
-                        _db.Insert(orario);
-                    }
-                    else if (corso.Insegnamento.Contains("UTENZA"))
-                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
-                }
-
-                //CERCA TRA I CORSI IN GENERALE, USO UTENZA
-                //string s_ut = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.ToString("dd'/'MM'/'yyyy"));
-                //List<CorsoGiornaliero> listaUtenze = Web.GetSingleOrarioGiornaliero(s, 0, d);
-                
-                //foreach(var u in listaUtenze)
-                //{
-                //    var utenza = u;
-                //    if (utenza.Insegnamento.Contains("Utenza"))
-                //        _db.Insert(new Utenza() { Data = utenza.Date, Aulaora = utenza.AulaOra });
-                //}
+				TabbedHomeView.updateSingleCorso (_db, listaCorsi);
+				var orariXX = _db.GetAllOrari ();
+//                foreach (var l in listaCorsi)
+//                {
+//                    var corso = l;
+//                    if (_db.CheckAppartieneMieiCorsi(corso))
+//                    {
+//                        var orario = new Orari()
+//                        {
+//                            Insegnamento = corso.Insegnamento,
+//                            Codice = corso.Codice,
+//                            AulaOra = corso.AulaOra,
+//                            Note = corso.Note,
+//							Date = corso.Date.Date,
+//                            Docente = corso.Docente,
+//                            Notify = false,
+//                        };
+//
+//                        _db.Insert(orario);
+//                    }
+//                    else if (corso.Insegnamento.Contains("UTENZA"))
+//                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
+//                }
             }
 
-            System.Diagnostics.Debug.WriteLine(_db.GetAllMieiCorsi().Count());
+			System.Diagnostics.Debug.WriteLine(_db.GetAllMieiCorsi().Count());
+			var orariX = _db.GetAllOrari ();
+
             _activityIndicator.IsRunning = false;
             _activityIndicator.IsVisible = false;
-            await Navigation.PushModalAsync(new MasterDetailView());
+
+
+			if(Settings.BackgroundSync)
+				DependencyService.Get<INotification> ().BackgroundSync ();
+			
+			await Navigation.PushModalAsync(new MasterDetailView());
 
         }
         #endregion

@@ -112,9 +112,6 @@ Global
 		{EF11A1FD-16E8-4C75-9DA3-AA6D1DA04AC2}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
 		{EF11A1FD-16E8-4C75-9DA3-AA6D1DA04AC2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = OrariUnibg\OrariUnibg\OrariUnibg.csproj
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

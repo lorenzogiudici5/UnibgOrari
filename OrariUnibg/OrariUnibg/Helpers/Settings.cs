@@ -21,33 +21,35 @@ namespace OrariUnibg.Helpers
       
       #region Setting Constants
       
-      private const string SettingsKey = "settings_key";
-      private const string PrimoAvvioKey = "primoAvvio_key";
-      private const string FacoltaKey = "facolta_key";
-      private const string DBFacoltaKey = "DBfacolta_key";
-      private const string LaureaKey = "laurea_key";
-      private const string AnnoKey = "anno_key";
-      private const string NomeKey = "nome_key";
-      private const string CognomeKey = "cognome_key";
-      private const string MailKey = "mail_key";
-      private const string MatricolaKey = "matricola_key";
+       	private const string SettingsKey = "settings_key";
+       	private const string PrimoAvvioKey = "primoAvvio_key";
+       	private const string FacoltaKey = "facolta_key";
+       	private const string DBFacoltaKey = "DBfacolta_key";
+       	private const string LaureaKey = "laurea_key";
+       	private const string AnnoKey = "anno_key";
+       	private const string NomeKey = "nome_key";
+       	private const string CognomeKey = "cognome_key";
+       	private const string MailKey = "mail_key";
+      	private const string MatricolaKey = "matricola_key";
 
-      private const string SyncKey = "sync_key";
-      private const string NotifyKey = "notify_key";
+      	private const string SyncKey = "sync_key";
+      	private const string NotifyKey = "notify_key";
+		private const string UpdateHourKey = "updateHour_key";
 
-      private const string FacoltaIdKey = "facId_key";
-      private const string LaureaIdKey = "laureaId_key";
-      private const string FacoltaIndexKey = "facIndex_key";
-      private const string LaureaIndexKey = "laureaIndex_key";
-      private const string AnnoIndexKey = "annoIndex_key";
-      private const string OrderKey = "order_key";
-      private const string RaggruppaKey = "raggruppa_key";
+      	private const string FacoltaIdKey = "facId_key";
+      	private const string LaureaIdKey = "laureaId_key";
+      	private const string FacoltaIndexKey = "facIndex_key";
+      	private const string LaureaIndexKey = "laureaIndex_key";
+      	private const string AnnoIndexKey = "annoIndex_key";
+      	private const string OrderKey = "order_key";
+      	private const string RaggruppaKey = "raggruppa_key";
 
-      private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
+      	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-      private static readonly string DefaultString = string.Empty;
-      private static readonly int DefaultValue = 0;
-      private static readonly bool DefaultBool = true;
+      	private static readonly string DefaultString = string.Empty;
+     	 private static readonly int DefaultValue = 0;
+      	private static readonly bool DefaultBool = true;
+		private static readonly int DefaultUpdateHours = 20;
 
       #endregion
       
@@ -85,6 +87,18 @@ namespace OrariUnibg.Helpers
             AppSettings.AddOrUpdateValue(NotifyKey, value);
         }
     }
+			
+		public static int UpdateHour
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(UpdateHourKey, DefaultUpdateHours);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(UpdateHourKey, value);
+			}
+		}
     
     #endregion
       
