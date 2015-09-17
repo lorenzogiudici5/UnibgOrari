@@ -41,7 +41,7 @@ namespace OrariUnibg.Services
             }
             catch(Exception ex)
             {
-				System.Diagnostics.Debug.WriteLine(ex.Message);
+				Logcat.Write(ex.Message);
                 return String.Empty;
             }
 
@@ -64,7 +64,7 @@ namespace OrariUnibg.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+				Logcat.Write(ex.Message);
                 return String.Empty;
             }
 

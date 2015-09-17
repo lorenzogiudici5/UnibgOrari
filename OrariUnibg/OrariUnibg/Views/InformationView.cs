@@ -280,6 +280,7 @@ namespace OrariUnibg.Views
             char nome = ' ';
             if (_entryNome.Text != string.Empty)
                 nome = _entryNome.Text[0];
+			
             if (s.Text != string.Empty)
                 cognome = s.Text;
 

@@ -59,12 +59,12 @@ namespace OrariUnibg.Services.Database
         //}
         public bool CheckAppartieneMieiCorsi(Corso item)
         {
-			System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: dentro il check appartiene");
+			Logcat.Write ("dentro il check appartiene");
 
 //			if(db == null)
-//				System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: db_SQLITE null");
+			//				Logcat.Write ("ORARI_UNIBG: db_SQLITE null");
 //			else
-//				System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: db_SQLITE NOT NULL");
+			//				Logcat.Write ("ORARI_UNIBG: db_SQLITE NOT NULL");
 
 			var list = GetAllMieiCorsi().Where(x => x.Insegnamento == item.Insegnamento).ToList();
 //            var list = db.Table<MieiCorsi>().Where(x => x.Insegnamento == item.Insegnamento).ToList();

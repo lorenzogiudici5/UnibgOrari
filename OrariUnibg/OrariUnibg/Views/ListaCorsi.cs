@@ -112,7 +112,7 @@ namespace OrariUnibg.Views
                 _db.Insert(i);
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
-			if (DateTime.Now.Hour > Settings.UpdateHour && DateTime.Now.Minute > 35)
+			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
 			{
 				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
 				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
@@ -161,7 +161,7 @@ namespace OrariUnibg.Views
 //                }
             }
 
-			System.Diagnostics.Debug.WriteLine(_db.GetAllMieiCorsi().Count());
+			Logcat.Write(_db.GetAllMieiCorsi().Count());
 			var orariX = _db.GetAllOrari ();
 
             _activityIndicator.IsRunning = false;

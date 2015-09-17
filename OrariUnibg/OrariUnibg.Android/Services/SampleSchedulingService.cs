@@ -29,13 +29,12 @@ namespace OrariUnibg.Droid.Services.Notifications
         private IEnumerable<Orari> _listOrariGiorno;
         #endregion 
 
-		public SampleSchedulingService() : base("SchedulingIntentService")
-		{ }
+//		public SampleSchedulingService() : base("SchedulingIntentService")
+//		{ }
 
         protected async override void OnHandleIntent(Android.Content.Intent intent)
         {
 			Logcat.Write("ALARM: " + DateTime.Now.ToLongTimeString());
-//            System.Diagnostics.Debug.WriteLine("CREATING DB");
             //SendNotification();
             //App.Database = new DbSQLite(new SQLite_Android().GetConnection());
             _db = App.Database;
@@ -59,9 +58,9 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             //_mieiCorsiList = db.GetItemsMieiCorsi();
 
-			if (DateTime.Now.Hour > Settings.UpdateHour && DateTime.Now.Minute > 35)
+			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
             {
-				Logcat.Write ("Ora X => SABATO!!");
+				Logcat.Write ("Ora X => LUNEDI!!");
 				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
 				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
 				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
@@ -100,68 +99,71 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             foreach (var d in arrayDate)
             {
+//				SendNotification ("Data Considerata: " + d.ToString ());
 				Logcat.Write ("Data Considerata: " + d.ToString());
                 //Corsi generale, utenza + corsi
                 string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
-				Logcat.Write ("Ho ottenuto la stringa della web page");
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
-				TabbedHomeView.updateSingleCorso (_db, listaCorsi);
-
-				Logcat.Write ("UpdateSingleCorso terminato");
-//                foreach (var l in listaCorsi)
-//                {
-//                    var corso = l;
-//                    if (_db.CheckAppartieneMieiCorsi(l))
-//                    {
-//                        //_db.InsertUpdate(l);
-//                        var orario = new Orari()
-//                        {
-//                            Insegnamento = corso.Insegnamento,
-//                            Codice = corso.Codice,
-//                            AulaOra = corso.AulaOra,
-//                            Note = corso.Note,
-//                            Date = corso.Date,
-//                            Docente = corso.Docente,
-//                        };
-//
-//                        if (_db.AppartieneOrari(orario)) //l'orario è già presente
-//                        {
-//                            var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date == orario.Date);
-//                            if ((string.Compare(o.Note, corso.Note) != 0) || !o.Notify)
-//                            {
-//                                o.Note = corso.Note;
-//                                o.AulaOra = corso.AulaOra;
-//                                if (o.Note != null && o.Note != "" && !o.Notify)
-//                                {
-//                                    SendNotification(corso);
-//                                    o.Notify = true;
-//                                }
-//                                _db.Update(o);
-//                            }
-//                        }
-//                        else // l'orario non è presente nel mio db
-//                        {
-//                            orario.Notify = false;
-//
-//                            if (orario.Note != null && orario.Note != "" && !orario.Notify)
-//                            {
-//                                SendNotification(corso);
-//                                orario.Notify = true;
-//                            }
-//
-//                            _db.Insert(orario);
-//                        }
-//                    }
-//                    else if (corso.Insegnamento.Contains("UTENZA"))
-//                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
-//                }
-
+				updateSingleCorso (listaCorsi);               
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
         }
+
+		private void updateSingleCorso(List<CorsoGiornaliero> listaCorsi)
+		{
+			foreach (var l in listaCorsi)
+			{
+				var corso = l;
+				if (_db.CheckAppartieneMieiCorsi(l))
+				{
+					//_db.InsertUpdate(l);
+					var orario = new Orari()
+					{
+						Insegnamento = corso.Insegnamento,
+						Codice = corso.Codice,
+						AulaOra = corso.AulaOra,
+						Note = corso.Note,
+						Date = corso.Date,
+						Docente = corso.Docente,
+					};
+
+					if (_db.AppartieneOrari(orario)) //l'orario è già presente
+					{
+						var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date == orario.Date);
+						if ((string.Compare(o.Note, corso.Note) != 0) || !o.Notify) //ci sono state notifiche non ancora segnalate
+						{
+							o.Note = corso.Note;
+							o.AulaOra = corso.AulaOra;
+							if (o.Note != null && o.Note != "" && !o.Notify)
+							{
+								SendNotification(corso);
+								o.Notify = true;
+							}
+							_db.Update(o);
+						}
+					}
+					else // l'orario non è presente nel mio db
+					{
+						orario.Notify = false;
+
+						if (orario.Note != null && orario.Note != "" && !orario.Notify)
+						{
+//							SendNotification ("TROVATO CORSO ANNULLATO!");
+							SendNotification(corso);
+							orario.Notify = true;
+						}
+
+						_db.Insert(orario);
+					}
+				}
+				else if (corso.Insegnamento.Contains("UTENZA"))
+					_db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
+			}
+
+		}
         private void SendNotification(CorsoGiornaliero l)
         {
             if (!Settings.Notify)
@@ -207,40 +209,67 @@ namespace OrariUnibg.Droid.Services.Notifications
             notificationManager.Notify(notificationId, notification);
         }
 
-        //private void SendNotification()
-        //{
-        //    System.Diagnostics.Debug.WriteLine("SEND NOTIFICATION");
-
-        //    // Set up an intent so that tapping the notifications returns to this app:
-        //    Intent intent = new Intent(this, typeof(MainActivity));
-
-        //    // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
-        //    const int pendingIntentId = 0;
-        //    PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
-
-        //    Notification.Builder builder = new Notification.Builder(this)
-        //        .SetContentIntent(pendingIntent)
-        //        .SetContentTitle("NOTIFICA")
-        //        .SetContentText("NOTIFICA TEST")
-        //        .SetSmallIcon(Resource.Drawable.UnibgOk);
-        //    //builder.SetStyle(new Notification.BigTextStyle().BigText(longMess));
-
-        //    Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-        //    //inboxStyle.AddLine(l.Insegnamento);
-        //    //inboxStyle.AddLine(l.AulaOra);
-        //    //inboxStyle.AddLine(l.Docente);
-        //    builder.SetStyle(inboxStyle);
-
-        //    // Build the notification:
-        //    Notification notification = builder.Build();
-
-        //    // Get the notification manager:
-        //    NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
-
-        //    // Publish the notification:
-        //    const int notificationId = 1;
-        //    notificationManager.Notify(notificationId, notification);
-        //}
+//		private void SendNotification(string text)
+//		{
+//			Logcat.Write("SEND NOTIFICATION");
+//
+//			// Set up an intent so that tapping the notifications returns to this app:
+//			Intent intent = new Intent(this, typeof(MainActivity));
+//
+//			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+//			const int pendingIntentId = 0;
+//			PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+//
+//			Notification.Builder builder = new Notification.Builder(this)
+//				.SetContentIntent(pendingIntent)
+//				.SetContentTitle("NOTIFICA")
+//				.SetContentText(text)
+//				.SetSmallIcon(Resource.Drawable.UnibgOk);
+//
+//			Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+//			builder.SetStyle(inboxStyle);
+//
+//			// Build the notification:
+//			Notification notification = builder.Build();
+//
+//			// Get the notification manager:
+//			NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
+//
+//			// Publish the notification:
+//			int notificationId = new Random().Next();
+//			notificationManager.Notify(notificationId, notification);
+//		}
+//
+//        private void SendNotification()
+//        {
+//			Logcat.Write("SEND NOTIFICATION");
+//
+//            // Set up an intent so that tapping the notifications returns to this app:
+//            Intent intent = new Intent(this, typeof(MainActivity));
+//
+//            // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+//            const int pendingIntentId = 0;
+//            PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+//
+//            Notification.Builder builder = new Notification.Builder(this)
+//                .SetContentIntent(pendingIntent)
+//                .SetContentTitle("NOTIFICA")
+//				.SetContentText("NOTIFICA TEST" + DateTime.Now)
+//                .SetSmallIcon(Resource.Drawable.UnibgOk);
+//
+//            Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+//            builder.SetStyle(inboxStyle);
+//
+//            // Build the notification:
+//            Notification notification = builder.Build();
+//
+//            // Get the notification manager:
+//            NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
+//
+//            // Publish the notification:
+//            const int notificationId = 1;
+//            notificationManager.Notify(notificationId, notification);
+//        }
         #endregion
 
 

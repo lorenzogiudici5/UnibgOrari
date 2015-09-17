@@ -27,8 +27,9 @@ namespace OrariUnibg.Droid.Services.Notifications
         {
             Logcat.Write("ON RECEVICE");
             Intent service = new Intent(context, typeof(SampleSchedulingService));
-            // Start the service, keeping the device awake while it is launching.
-            StartWakefulService(context, service);
+            
+			// Start the service, keeping the device awake while it is launching.
+			StartWakefulService(context, service);
         }
 
         public void SetAlarm(Context context)
@@ -53,12 +54,10 @@ namespace OrariUnibg.Droid.Services.Notifications
 			Intent sampleSchedulingService = new Intent(context, typeof(SampleSchedulingService));
 
           pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
-//			var pi = PendingIntent.GetService (context, 0, sampleSchedulingService, PendingIntentFlags.CancelCurrent);
-            
-			//PendingIntentFlags.UpdateCurrent
-//            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi);
 
-			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 70000, pi);
+			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour*Settings.UpdateInterval, pi);
+
+//			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 60000, pi);
             Console.WriteLine(alarmTime);
 			Logcat.Write("ALARM REPEATING");
 
@@ -86,13 +85,13 @@ namespace OrariUnibg.Droid.Services.Notifications
                     ComponentEnableOption.DontKillApp);
         }
 
-        public void StartService(Context context)
-        {
-            Intent service = new Intent(context, typeof(SampleSchedulingService));
-            // Start the service, keeping the device awake while it is launching.
-            StartWakefulService(context, service);
-        }
-
+//        public void StartService(Context context)
+//        {
+//            Intent service = new Intent(context, typeof(SampleSchedulingService));
+//            // Start the service, keeping the device awake while it is launching.
+//            StartWakefulService(context, service);
+//        }
+//
 
     }
 

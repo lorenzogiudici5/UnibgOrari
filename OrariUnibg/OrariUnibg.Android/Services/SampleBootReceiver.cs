@@ -31,8 +31,6 @@ namespace OrariUnibg.Droid.Services.Notifications
 			else
 				Logcat.Write("DATABASE NON NULLO");
 
-            //App.Database = new DbSQLite(new SQLite_Android().GetConnection());
-           // App.Database = new SQLite_Android().GetConnection();
             Logcat.Write("BOOT RECEIVER ON RECEIVE");
             alarm.SetAlarm(context);
 

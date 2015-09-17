@@ -35,6 +35,8 @@ namespace OrariUnibg.Helpers
       	private const string SyncKey = "sync_key";
       	private const string NotifyKey = "notify_key";
 		private const string UpdateHourKey = "updateHour_key";
+		private const string UpdateMinuteKey = "updateMinute_key";
+		private const string UpdateIntervalKey = "updateInterval_key";
 
       	private const string FacoltaIdKey = "facId_key";
       	private const string LaureaIdKey = "laureaId_key";
@@ -47,9 +49,11 @@ namespace OrariUnibg.Helpers
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
       	private static readonly string DefaultString = string.Empty;
-     	 private static readonly int DefaultValue = 0;
+		private static readonly int DefaultValue = 0;
       	private static readonly bool DefaultBool = true;
-		private static readonly int DefaultUpdateHours = 20;
+		private static readonly int DefaultUpdateHours = 18;
+		private static readonly int DefaultUpdateMinute = 13;
+		private static readonly int DefaultUpdateInterval = 3;
 
       #endregion
       
@@ -97,6 +101,29 @@ namespace OrariUnibg.Helpers
 			set
 			{
 				AppSettings.AddOrUpdateValue(UpdateHourKey, value);
+			}
+		}
+		public static int UpdateMinute
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(UpdateMinuteKey, DefaultUpdateMinute);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(UpdateMinuteKey, value);
+			}
+		}
+
+		public static int UpdateInterval
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(UpdateIntervalKey, DefaultUpdateInterval);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(UpdateIntervalKey, value);
 			}
 		}
     

@@ -127,8 +127,8 @@ namespace OrariUnibg.Views
                     _lblInfo,
                     _listView,
                     layoutUtenza,
+					_activityIndicator,
                     _listUtenze,
-                    _activityIndicator,
                 }
             };
 

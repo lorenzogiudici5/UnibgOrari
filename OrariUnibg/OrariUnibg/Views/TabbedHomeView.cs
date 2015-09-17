@@ -19,7 +19,7 @@ namespace OrariUnibg.Views
         public TabbedHomeView()
         {
             _db = new DbSQLite();
-			System.Diagnostics.Debug.WriteLine("COUNT: " + _db.GetAllMieiCorsi().Count());
+			Logcat.Write("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
             //BackgroundColor = ColorHelper.White;
 
@@ -73,7 +73,7 @@ namespace OrariUnibg.Views
 			foreach (var c in listaCorsi)
 			{
 				var corso = c;
-				System.Diagnostics.Debug.WriteLine ("ORARI_UNIBG: prima di Check");
+				Logcat.Write("ORARI_UNIBG: prima di Check");
 				if (_db.CheckAppartieneMieiCorsi(c))
 				{
 					//_db.InsertUpdate(l);
@@ -130,7 +130,7 @@ namespace OrariUnibg.Views
 
 		public void checkDays()
 		{
-			if (DateTime.Now.Hour > Settings.UpdateHour && DateTime.Now.Minute > 35)
+			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
 			{
 				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
 				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
@@ -218,30 +218,32 @@ namespace OrariUnibg.Views
 
 			updateListaGiorni();
         }
-        protected async override void OnAppearing()
-        {
+
+		private void deleteMioCorso(TabbedDayView obj)
+		{
+			loadListCorsiGiorno();
+		}
+        #endregion
+
+        #region Event Handlers
+		protected async override void OnAppearing()
+		{
 			checkDays ();
 			updateListaGiorni ();
 
 			if(_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno
-            {
-                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-                await updateDbOrariUtenza();
-                Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
-                MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
-            }
+			{
+				MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+				await updateDbOrariUtenza();
+				Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
+				MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+			}
 
 			loadListCorsiGiorno();
-            base.OnAppearing();
-           
-        }
-        #endregion
+			base.OnAppearing();
 
-        #region Event Handlers
-        private void deleteMioCorso(TabbedDayView obj)
-        {
-			loadListCorsiGiorno();
-        }
+		}
+        
         #endregion
     }
 }
