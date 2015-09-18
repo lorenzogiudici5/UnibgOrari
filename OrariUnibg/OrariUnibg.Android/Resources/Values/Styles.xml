@@ -9,13 +9,12 @@
     <!--<item name="android:backgroundDimEnabled">true</item>-->
   </style>
 
-  <style name="ActionBarCustomHeader" parent="@android:style/Theme.Holo.Light">
-      <!--<item name="android:actionBarStyle">@style/ActionBarCustomStyle</item>-->
+<!--  <style name="ActionBarCustomHeader" parent="@android:style/Theme.Holo.Light">
       <item name="android:actionBarTabStyle">@style/ActionBarCustomTabStyle</item>
       <item name="android:actionBarTabBarStyle">@style/ActionBarCustomTabBarStyle</item>
       <item name="android:actionBarTabTextStyle">@style/ActionBarCustomTabTextStyle</item>
       <item name="android:colorPressedHighlight">@color/lightblue</item>
-    </style>
+    </style>-->
 
 
     <!--<style name="ActionBarCustomStyle" parent="@android:style/Widget.Holo.ActionBar">
@@ -24,7 +23,7 @@
       <item name="android:windowContentOverlay">@null</item>
     </style>-->
 
-    <style name="ActionBarCustomTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+<!--    <style name="ActionBarCustomTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
       <item name="android:background">@drawable/tab_bar_background</item>
     </style>
 
@@ -35,9 +34,9 @@
     </style>
 
     <style name="ActionBarCustomTabTextStyle" parent="android:style/Widget.Holo.Light.ActionBar.TabText">
-      <!--<item name="android:textColor">#ffffff</item>-->
+      <item name="android:textColor">#ffffff</item>
       <item name="android:textColor">@drawable/tab_bar_text</item>
-    </style>
+    </style>-->
 
 
     <style name="MyTheme.Base" parent="@android:style/Theme.Holo.Light.DarkActionBar"> 
@@ -49,11 +48,27 @@
    
     <style name="MyTheme.ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar"> 
     	<item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item> 
-    	<item name="android:background">@color/material_blue_500</item> 
+    	<item name="android:background">@color/material_blue_700</item> 
     </style> 
 
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title"> 
     	<item name="android:textColor">@android:color/white</item> 
+    </style>
+
+    <style name="MyTheme.ActionBar.TabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+      <item name="android:background">@drawable/tab_bar_background</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TabBarStyle" parent="@android:style/Widget.Holo.ActionBar.TabBar">
+<!--      <item name="android:background">@color/blue</item>-->
+      <item name="android:background">@color/material_blue_700</item> 
+      <item name="android:divider">@color/transparent</item>
+      <item name="android:dividerPadding">5dp</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TabTextStyle" parent="android:style/Widget.Holo.Light.ActionBar.TabText">
+    	<item name="android:textColor">#ffffff</item>
+    	<item name="android:textColor">@drawable/tab_bar_text</item>
     </style>
 
 

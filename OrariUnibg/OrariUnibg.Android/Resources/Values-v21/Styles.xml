@@ -11,5 +11,8 @@
 		<item name="android:windowSharedElementEnterTransition">@android:transition/move</item> 
 		<item name="android:windowSharedElementExitTransition">@android:transition/move</item> 
 		<item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item> 
+		<item name="android:actionBarTabBarStyle">@style/MyTheme.ActionBar.TabBarStyle</item>
+		<item name="android:actionBarTabStyle">@style/MyTheme.ActionBar.TabStyle</item>
+		<item name="android:actionBarTabTextStyle">@style/MyTheme.ActionBar.TabTextStyle</item>
 	</style> 
 </resources>

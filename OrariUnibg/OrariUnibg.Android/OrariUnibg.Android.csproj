@@ -17,11 +17,9 @@
     <AndroidUseLatestPlatformSdk />
     <TargetFrameworkVersion>v5.1</TargetFrameworkVersion>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
-    <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <JavaMaximumHeapSize>
     </JavaMaximumHeapSize>
-    <JavaOptions />
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <NuGetPackageImportStamp>bb8585e6</NuGetPackageImportStamp>
   </PropertyGroup>
@@ -39,15 +37,20 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <AndroidStoreUncompressedFileExtensions>
+    </AndroidStoreUncompressedFileExtensions>
+    <JavaOptions>
+    </JavaOptions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">

@@ -8,7 +8,7 @@ namespace OrariUnibg
 
 		public static void Write(object log)
 		{
-//			System.Diagnostics.Debug.WriteLine (TAG + log);
+			System.Diagnostics.Debug.WriteLine (TAG + log);
 		}
 	}
 }

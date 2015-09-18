@@ -230,29 +230,26 @@ namespace OrariUnibg.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ActionBarCustomHeader = 2131099649;
-			
-			// aapt resource value: 0x7f060003
-			public const int ActionBarCustomTabBarStyle = 2131099651;
-			
 			// aapt resource value: 0x7f060002
-			public const int ActionBarCustomTabStyle = 2131099650;
-			
-			// aapt resource value: 0x7f060004
-			public const int ActionBarCustomTabTextStyle = 2131099652;
+			public const int MyTheme = 2131099650;
 			
 			// aapt resource value: 0x7f060006
-			public const int MyTheme = 2131099654;
-			
-			// aapt resource value: 0x7f060008
-			public const int MyTheme_ActionBar_TitleTextStyle = 2131099656;
-			
-			// aapt resource value: 0x7f060007
-			public const int MyTheme_ActionBarStyle = 2131099655;
+			public const int MyTheme_ActionBar_TabBarStyle = 2131099654;
 			
 			// aapt resource value: 0x7f060005
-			public const int MyTheme_Base = 2131099653;
+			public const int MyTheme_ActionBar_TabStyle = 2131099653;
+			
+			// aapt resource value: 0x7f060007
+			public const int MyTheme_ActionBar_TabTextStyle = 2131099655;
+			
+			// aapt resource value: 0x7f060004
+			public const int MyTheme_ActionBar_TitleTextStyle = 2131099652;
+			
+			// aapt resource value: 0x7f060003
+			public const int MyTheme_ActionBarStyle = 2131099651;
+			
+			// aapt resource value: 0x7f060001
+			public const int MyTheme_Base = 2131099649;
 			
 			// aapt resource value: 0x7f060000
 			public const int Theme_Splash = 2131099648;

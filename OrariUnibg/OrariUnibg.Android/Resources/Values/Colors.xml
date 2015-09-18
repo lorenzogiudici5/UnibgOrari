@@ -4,7 +4,8 @@
   <color name="semitranspwhite">#66FFFFFF</color>
   <color name="white">#ffffff</color>
   <color name="lightblue">#29b6f6</color>
-  <color name="blue">#0277bd</color>
+  <color name="blue">#2196F3</color>
+<!--  <color name="blue">#0277bd</color>-->
 
   <color name="material_blue_500">#2196F3</color> 
   <color name="material_blue_700">#1976D2</color>

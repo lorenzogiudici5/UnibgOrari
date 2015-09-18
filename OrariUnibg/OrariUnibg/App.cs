@@ -14,20 +14,21 @@ namespace OrariUnibg
     {
         public App()
         {
-            if (Settings.PrimoAvvio)
-            {
-                var nav = new NavigationPage(new InformationView())
-                {
-                    BarBackgroundColor = ColorHelper.Blue,
-                    BarTextColor = ColorHelper.White
-                };
-                MainPage = nav;
-            }
-            else
-            {
-                MainPage = new MasterDetailView();
-            }
-            
+//            if (Settings.PrimoAvvio)
+//            {
+//                var nav = new NavigationPage(new InformationView())
+//                {
+//                    BarBackgroundColor = ColorHelper.Blue,
+//                    BarTextColor = ColorHelper.White
+//                };
+//                MainPage = nav;
+//            }
+//            else
+//            {
+//                MainPage = new MasterDetailView();
+//            }
+//            
+			MainPage = new MasterDetailView();
             
         }
 

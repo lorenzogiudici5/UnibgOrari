@@ -80,19 +80,20 @@ namespace OrariUnibg.Views.ViewCells
             };
             _lblNote.SetBinding(Label.TextProperty, "Note");
             _lblNote.SetBinding(Label.IsVisibleProperty, new Binding("Note", converter: new NoteIsVisibleConverter()));
-
-            //lblOra.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
+			_lblNote.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             
+			//lblOra.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             //lblAula.SetBinding(Label.TextColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
             
-            var grid = new Grid()
+			var grid = new Grid()
             {
-                BackgroundColor = ColorHelper.White,
+				BackgroundColor = ColorHelper.White,
                 Padding = new Thickness(10, 10, 10, 10),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand,
                 RowSpacing = 0,
                 ColumnSpacing = 5,
+
                 RowDefinitions = 
                 {
                      new RowDefinition { Height = GridLength.Auto },
@@ -106,7 +107,7 @@ namespace OrariUnibg.Views.ViewCells
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
                 }
             };
-            grid.SetBinding(Grid.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
+            //grid.SetBinding(Grid.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
 
             grid.Children.Add(_lblCorso, 0, 2, 0, 1);
             //grid.Children.Add(_lblCodice, 1, 2, 0, 1);
@@ -116,6 +117,25 @@ namespace OrariUnibg.Views.ViewCells
             grid.Children.Add(_lblDocente, 1, 2, 2, 3);
             grid.Children.Add(_lblNote, 0, 2, 3, 4);
 
+			var layoutInt = new StackLayout () {
+				Padding = new Thickness (5, 0, 0, 0), 
+				HeightRequest = grid.Height,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+			};
+
+			layoutInt.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
+			layoutInt.Children.Add (grid);
+
+			var layoutExt = new StackLayout () {
+				Padding = new Thickness (0, 3, 0, 3), 
+				BackgroundColor = ColorHelper.Transparent,
+			};
+			layoutExt.Children.Add (layoutInt);
+
+//			return grid;
+
+			return layoutExt;
+	
             //var layout = new StackLayout()
             //{
             //    Padding = new Thickness(10, 10, 10, 10),
@@ -177,7 +197,6 @@ namespace OrariUnibg.Views.ViewCells
             //        return;
             //});
 
-            return grid;
         }
         #endregion
 

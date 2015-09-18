@@ -112,6 +112,7 @@ namespace OrariUnibg.Views
             Content = layout;
         }
 
+		#region EventHandlers
         private async void btn_Clicked(object sender, EventArgs e)
         {
             lblError.IsVisible = false;
@@ -155,5 +156,6 @@ namespace OrariUnibg.Views
             }
                 
         }
+		#endregion
     }
 }

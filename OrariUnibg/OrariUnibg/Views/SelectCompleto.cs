@@ -123,16 +123,6 @@ namespace OrariUnibg.Views
             pickerSemestre.SelectedIndex = 0;
             pickerRaggruppa.SelectedIndex = Settings.Raggruppa;
 
-            var btn = new Button()
-            {
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                Text = "Ricerca",
-                BackgroundColor = ColorHelper.Blue,
-                TextColor = ColorHelper.White,
-                BorderColor = ColorHelper.White,
-            };
-            btn.Clicked += btn_Clicked;
-
             lblError = new Label()
             {
                 Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
@@ -147,9 +137,20 @@ namespace OrariUnibg.Views
                 IsRunning = true,
                 HorizontalOptions = LayoutOptions.Fill
             };
+
+			var btn = new Button()
+			{
+				VerticalOptions = LayoutOptions.EndAndExpand,
+				Text = "Ricerca",
+				BackgroundColor = ColorHelper.Blue,
+				TextColor = ColorHelper.White,
+				BorderColor = ColorHelper.White,
+			};
+			btn.Clicked += btn_Clicked;
             
             var layout = new StackLayout()
             {
+				BackgroundColor = ColorHelper.White,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = new Thickness(10, 10, 10, 10),
                 Orientation = StackOrientation.Vertical,
@@ -159,6 +160,7 @@ namespace OrariUnibg.Views
             Content = layout;
         }
 
+		#region EventHandlers
         private async void btn_Clicked(object sender, EventArgs e)
         {
             Facolta fac = listFacolta.Where(x => x.Nome == pickerFacoltà.Items[pickerFacoltà.SelectedIndex]).First();
@@ -205,5 +207,6 @@ namespace OrariUnibg.Views
                 return;
             }
         }
+		#endregion
     }
 }

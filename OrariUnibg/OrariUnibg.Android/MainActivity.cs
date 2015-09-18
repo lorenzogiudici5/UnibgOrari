@@ -14,7 +14,7 @@ using Android.Graphics.Drawables;
 
 namespace OrariUnibg.Droid
 {
-    [Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/ActionBarCustomHeader")]
+	[Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/MyTheme")] // , Theme = "@style/ActionBarCustomHeader")]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity // superclass new in 1.3
     {
         protected override void OnCreate(Bundle bundle)

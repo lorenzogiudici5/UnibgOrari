@@ -8,7 +8,7 @@ namespace OrariUnibg.Droid
 
 		public static void Write(object log)
 		{
-//			System.Diagnostics.Debug.WriteLine (log, TAG);
+			System.Diagnostics.Debug.WriteLine (log, TAG);
 		}
 	}
 }

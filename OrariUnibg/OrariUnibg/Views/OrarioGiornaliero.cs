@@ -61,6 +61,7 @@ namespace OrariUnibg.Views
             };
             lv.SetBinding(ListView.ItemsSourceProperty, "ListOrari");
             lv.ItemSelected += lv_ItemSelected;
+			lv.SeparatorColor = Color.Transparent;
 
             var searchbar = new SearchBar()
             {

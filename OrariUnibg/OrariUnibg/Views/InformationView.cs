@@ -192,7 +192,7 @@ namespace OrariUnibg.Views
             grid.Children.Add(_switchSync, 1, 2, 5, 6);
             grid.Children.Add(_lblNotific, 0, 1, 6, 7);
             grid.Children.Add(_switchNotific, 1, 2, 6, 7);
-            grid.Children.Add(_activityIndicator, 0, 1, 7, 8);
+            grid.Children.Add(_activityIndicator, 0, 2, 7, 8);
 
             tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
             //if (Device.OS == TargetPlatform.Android)
