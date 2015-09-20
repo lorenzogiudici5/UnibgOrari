@@ -43,10 +43,10 @@ namespace OrariUnibg.Droid.Services.Notifications
 				Logcat.Write ("_db NULL");
 				App.Init (new DbSQLite (new SQLite_Android ().GetConnection ()));
 				_db = App.Database;
-				if (_db == null)
-					Logcat.Write ("_db ancora NULL dopo INIT");
-				else
-					Logcat.Write ("_db NOT NULL dopo INIT");
+//				if (_db == null)
+//					Logcat.Write ("_db ancora NULL dopo INIT");
+//				else
+//					Logcat.Write ("_db NOT NULL dopo INIT");
 			} else
 				Logcat.Write ("_db NOT NULL");
 
@@ -60,7 +60,6 @@ namespace OrariUnibg.Droid.Services.Notifications
 
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
             {
-				Logcat.Write ("Ora X => LUNEDI!!");
 				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
 				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
 				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
@@ -72,13 +71,11 @@ namespace OrariUnibg.Droid.Services.Notifications
 				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
             }
             
-			Logcat.Write ("Giorni OK, ora updateDbOrariUtenze");
             /*
             * lista dei corsi salvati. Scandisco ogni elemento della lista con la lista di tutti i corsi di giornata
             * se insegnamento+ora sono uguali, verifico se le Note cambiano. Se cambiano, la salvo nel database e invio la notifica
             * */
             await updateDbOrariUtenza();
-
 
             // Release the wake lock provided by the BroadcastReceiver.
             SampleAlarmReceiver.CompleteWakefulIntent(intent);
@@ -162,6 +159,8 @@ namespace OrariUnibg.Droid.Services.Notifications
 				else if (corso.Insegnamento.Contains("UTENZA"))
 					_db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
 			}
+
+			Settings.LastUpdate = DateTime.Now.ToString ("R");
 
 		}
         private void SendNotification(CorsoGiornaliero l)

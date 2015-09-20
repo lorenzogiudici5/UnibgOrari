@@ -32,6 +32,7 @@ namespace OrariUnibg.Helpers
        	private const string MailKey = "mail_key";
       	private const string MatricolaKey = "matricola_key";
 
+		private const string LastUpdateKey = "lastUpdate_key";
       	private const string SyncKey = "sync_key";
       	private const string NotifyKey = "notify_key";
 		private const string UpdateHourKey = "updateHour_key";
@@ -124,6 +125,18 @@ namespace OrariUnibg.Helpers
 			set
 			{
 				AppSettings.AddOrUpdateValue(UpdateIntervalKey, value);
+			}
+		}
+
+		public static string LastUpdate
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(LastUpdateKey, DefaultString);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(LastUpdateKey, value);
 			}
 		}
     

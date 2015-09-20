@@ -141,10 +141,11 @@ namespace OrariUnibg.Views
                 Text = "Notifiche variazioni lezioni"
             };
             _switchSync = new Switch() { IsToggled = true};
+
             _lblSync = new Label()
             {
                 HorizontalOptions = LayoutOptions.StartAndExpand,
-                Text = "Sincronizzazione bakgruound"
+                Text = "Aggiornamento in bakgruound"
             };
             _switchNotific = new Switch() { IsToggled = true };
 
@@ -194,22 +195,22 @@ namespace OrariUnibg.Views
             grid.Children.Add(_switchNotific, 1, 2, 6, 7);
             grid.Children.Add(_activityIndicator, 0, 2, 7, 8);
 
-            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
-            //if (Device.OS == TargetPlatform.Android)
-            //{ // BUG: Android doesn't support the icon being null
-            //    tbiNext = new ToolbarItem("Avanti", "ic_menu.png", () =>
-            //    {
-            //        Navigation.PushAsync(new MasterDetailView());
-            //    }, 0, 0);
-            //}
-            //if (Device.OS == TargetPlatform.WinPhone)
-            //{
-            //    tbi = new ToolbarItem("Avanti", "ic_menu.png", () =>
-            //    {
-            //        Navigation.PushAsync(new MasterDetailView());
-            //    }, 0, 0);
-            //}
-            ToolbarItems.Add(tbiNext);
+//            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
+//            //if (Device.OS == TargetPlatform.Android)
+//            //{ // BUG: Android doesn't support the icon being null
+//            //    tbiNext = new ToolbarItem("Avanti", "ic_menu.png", () =>
+//            //    {
+//            //        Navigation.PushAsync(new MasterDetailView());
+//            //    }, 0, 0);
+//            //}
+//            //if (Device.OS == TargetPlatform.WinPhone)
+//            //{
+//            //    tbi = new ToolbarItem("Avanti", "ic_menu.png", () =>
+//            //    {
+//            //        Navigation.PushAsync(new MasterDetailView());
+//            //    }, 0, 0);
+//            //}
+//            ToolbarItems.Add(tbiNext);
             return grid;
         }
 
@@ -217,6 +218,11 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
+		protected override void OnAppearing()
+		{
+			tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
+			ToolbarItems.Add(tbiNext);
+		}
         private async void toolbarItem_next()
         {
 

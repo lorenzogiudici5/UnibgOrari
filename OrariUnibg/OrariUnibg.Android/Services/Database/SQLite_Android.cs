@@ -20,7 +20,8 @@ namespace OrariUnibg.Droid.Services.Database
     public class SQLite_Android : ISQLite
     {
         public SQLite_Android() { }
-        public SQLite.Net.SQLiteConnection GetConnection()
+        
+		public SQLite.Net.SQLiteConnection GetConnection()
         {
             var sqliteFilename = "DbSQLite.db3";
             string documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); // Documents folder

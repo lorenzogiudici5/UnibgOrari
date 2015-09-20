@@ -36,6 +36,7 @@ namespace OrariUnibg.Models
         Home,
         Giornaliero,
         Completo,
-        Esami
+        Esami,
+		Impostazioni
     }
 }

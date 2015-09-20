@@ -134,37 +134,43 @@ namespace OrariUnibg.Droid
 			public const int ic_notification_school = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int ic_settings_gray = 2130837520;
+			public const int ic_settings_blue = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int ic_star = 2130837521;
+			public const int ic_settings_dark = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int ic_sync = 2130837522;
+			public const int ic_settings_gray = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int LogoUnibg = 2130837523;
+			public const int ic_star = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int selectable_background_example = 2130837524;
+			public const int ic_sync = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int splash = 2130837525;
+			public const int LogoUnibg = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int tab_bar_background = 2130837526;
+			public const int selectable_background_example = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int tab_bar_background_selected = 2130837527;
+			public const int splash = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int tab_bar_background_selected_pressed = 2130837528;
+			public const int tab_bar_background = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int tab_bar_text = 2130837529;
+			public const int tab_bar_background_selected = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int UnibgOk = 2130837530;
+			public const int tab_bar_background_selected_pressed = 2130837530;
+			
+			// aapt resource value: 0x7f02001b
+			public const int tab_bar_text = 2130837531;
+			
+			// aapt resource value: 0x7f02001c
+			public const int UnibgOk = 2130837532;
 			
 			static Drawable()
 			{

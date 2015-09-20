@@ -80,6 +80,8 @@
     <Compile Include="Services\Web.cs" />
     <Compile Include="Views\ViewCells\UtenzaCell.cs" />
     <Compile Include="Helpers\Logcat.cs" />
+    <Compile Include="Views\ImpostazioniView.cs" />
+    <Compile Include="Models\IntervalEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">

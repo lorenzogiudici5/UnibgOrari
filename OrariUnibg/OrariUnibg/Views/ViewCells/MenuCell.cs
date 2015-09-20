@@ -56,7 +56,7 @@ namespace OrariUniBg.Views.ViewCells
             var layout = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
-                Padding = new Thickness(15, 7, 15, 7),
+                Padding = new Thickness(15, 9, 15, 9),
                 //VerticalOptions = LayoutOptions.CenterAndExpand,
                 Spacing = 25,
                 Children = { _iconDeSelected, _iconSelected, _lblTitle }

@@ -56,6 +56,7 @@ namespace OrariUnibg.Views
                     };
                     pages.Add(menuType, newPage);
                 }
+
                 Detail = newPage;
                 Detail.Title = master.PageSelection.Title;
                 IsPresented = false;
@@ -74,6 +75,7 @@ namespace OrariUnibg.Views
         private TabbedHomeView mainView;
         private SelectCompleto selectCompletoView;
         private SelectGiornaliero selectGiornView;
+		private ImpostazioniView impostazioniView;
         private MasterDetailViewModel _viewModel;
         #endregion
         
@@ -143,6 +145,7 @@ namespace OrariUnibg.Views
                 ItemTemplate = new DataTemplate(typeof(MenuCell)),
                 HasUnevenRows = true,
                 VerticalOptions = LayoutOptions.FillAndExpand,
+				SeparatorColor = ColorHelper.Transparent,
             };
             //if (mainView == null)
             //    mainView = new MainPage();
@@ -151,48 +154,12 @@ namespace OrariUnibg.Views
             _listView.ItemSelected += _listView_ItemSelected;
             _listView.SelectedItem = viewModel.MenuItems[0];
 
-            var _lblImpostazioni = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                Text = "Impostazioni",
-                TextColor = ColorHelper.DarkGray,
-            };
-            var _iconImpostazioni = new Image()
-            {
-                Source = "ic_settings_gray.png"
-            };
-
-            var layoutSettings = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                Padding = new Thickness(15, 7, 15, 7),
-                Spacing = 25,
-                BackgroundColor = ColorHelper.LightGray,
-                Children = { _iconImpostazioni, _lblImpostazioni},
-                VerticalOptions = LayoutOptions.EndAndExpand,
-            };
-
-
-            //var _lblMenu = new ContentView
-            //{
-            //    Padding = new Thickness(10, 20, 0, 10),
-            //    BackgroundColor = Color.Transparent,
-            //    Content = new Label
-            //    {
-            //        Text = "MENU",
-            //        TextColor = Color.White,
-            //        FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-            //    }
-            //};
-
             var scrollview = new ScrollView()
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Content = new StackLayout()
                 {
-                    Children = { _listView, layoutSettings, }
+                    Children = { _listView }
                 }
             };
 
@@ -217,29 +184,37 @@ namespace OrariUnibg.Views
                 x.Selected = false;
             switch (menuItem.MenuType)
             {
-                case MenuType.Home:
-                    if (mainView == null)
-                        mainView = new TabbedHomeView();
+            case MenuType.Home:
+                if (mainView == null)
+                    mainView = new TabbedHomeView();
 
-                    _viewModel.MenuItems[0].Selected = true;
-                    PageSelection = mainView;
-                    break;
+                _viewModel.MenuItems[0].Selected = true;
+                PageSelection = mainView;
+                break;
 
-                case MenuType.Giornaliero:
-                    if (selectGiornView == null)
-                        selectGiornView = new SelectGiornaliero();
+            case MenuType.Giornaliero:
+                if (selectGiornView == null)
+                    selectGiornView = new SelectGiornaliero();
 
-                    _viewModel.MenuItems[1].Selected = true;
-                    PageSelection = selectGiornView;
-                    break;
+                _viewModel.MenuItems[1].Selected = true;
+                PageSelection = selectGiornView;
+                break;
 
-                case MenuType.Completo:
-                    if (selectCompletoView == null)
-                        selectCompletoView = new SelectCompleto();
+            case MenuType.Completo:
+                if (selectCompletoView == null)
+                    selectCompletoView = new SelectCompleto();
 
-                    _viewModel.MenuItems[2].Selected = true;
-                    PageSelection = selectCompletoView;
-                    break;
+                _viewModel.MenuItems[2].Selected = true;
+                PageSelection = selectCompletoView;
+                break;
+
+			case MenuType.Impostazioni:
+				if (impostazioniView == null)
+					impostazioniView = new ImpostazioniView();
+
+				_viewModel.MenuItems[3].Selected = true;
+				PageSelection = impostazioniView;
+				break;
 
                 //case MenuType.Esami:
                 //    if (downloadView == null)

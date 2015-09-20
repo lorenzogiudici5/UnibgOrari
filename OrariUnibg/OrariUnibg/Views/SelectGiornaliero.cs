@@ -24,6 +24,7 @@ namespace OrariUnibg.Views
         List<Facolta> listFacolta = new List<Facolta>();
         Dictionary<string, int> dictionaryLauree = new Dictionary<string, int>();
         DbSQLite _db;
+
         public SelectGiornaliero()
         {
             _db = new DbSQLite();

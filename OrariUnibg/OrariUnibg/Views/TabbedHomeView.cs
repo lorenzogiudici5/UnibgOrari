@@ -126,6 +126,8 @@ namespace OrariUnibg.Views
 						_db.Insert(ut); 
 				}
 			}
+
+			Settings.LastUpdate = DateTime.Now.ToString ("R");
 		}
 
 		public void checkDays()
@@ -231,7 +233,7 @@ namespace OrariUnibg.Views
 			checkDays ();
 			updateListaGiorni ();
 
-			if(_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno
+			if(_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount) // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
 			{
 				MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
 				await updateDbOrariUtenza();

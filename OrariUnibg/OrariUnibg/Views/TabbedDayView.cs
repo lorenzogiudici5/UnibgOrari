@@ -118,12 +118,12 @@ namespace OrariUnibg.Views
             var layout = new StackLayout()
             {
                 Padding = new Thickness(15, 10, 15, 10),
-                Spacing = 10,
+                Spacing = 5,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Children = 
                 {
-                    new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
+//                    new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
                     layoutUtenza,
