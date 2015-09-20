@@ -53,11 +53,11 @@ namespace OrariUnibg
 				},
 				ColumnDefinitions = 
 				{ 
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+					new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
 					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
 				}
 			};
-			_backgroundSyncLayout.Children.Add(new Label(){Text = "Aggiornamento in background", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
+			_backgroundSyncLayout.Children.Add(new Label(){Text = "Aggiornamento background", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
 			_backgroundSyncLayout.Children.Add(_backgroundSyncSwitch, 1,2,0,1);
 			_backgroundSyncLayout.Children.Add(_lblBackgroundSync, 0, 1, 1, 2);
 
@@ -88,11 +88,11 @@ namespace OrariUnibg
 				},
 				ColumnDefinitions = 
 				{ 
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+					new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
 					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
 				}
 				};
-			_notificheLayout.Children.Add(new Label(){Text = "Notifiche variazioni lezioni", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
+			_notificheLayout.Children.Add(new Label(){Text = "Notifiche", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
 			_notificheLayout.Children.Add(_notificheSwitch, 1,2,0,1);
 			_notificheLayout.Children.Add(_lblNotifiche, 0, 1, 1, 2);
 
@@ -145,7 +145,7 @@ namespace OrariUnibg
 			_lastUpdateCell.IsEnabled = false;
 			#endregion
 
-			var sectionSync = new TableSection ("Sincronizzaione") { //TableSection constructor takes title as an optional parameter
+			var sectionSync = new TableSection ("Sincronizzazione") { //TableSection constructor takes title as an optional parameter
 				_backgroundSyncCell,
 				_notificheCell,
 				_updateIntervallCell,

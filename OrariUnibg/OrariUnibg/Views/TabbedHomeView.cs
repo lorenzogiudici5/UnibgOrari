@@ -90,7 +90,7 @@ namespace OrariUnibg.Views
 					if (_db.AppartieneOrari(orario)) //l'orario è già presente
 					{
 						Logcat.Write ("Orario già PRESENTE nel DB: " + orario.Insegnamento);
-						var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date.Date == orario.Date.Date);
+						var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date.Date == orario.Date.Date && orario.AulaOra == y.AulaOra);
 
 						if ((string.Compare(o.Note, corso.Note) != 0) || !o.Notify)
 						{

@@ -25,6 +25,7 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <NuGetPackageImportStamp>dc62cb33</NuGetPackageImportStamp>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

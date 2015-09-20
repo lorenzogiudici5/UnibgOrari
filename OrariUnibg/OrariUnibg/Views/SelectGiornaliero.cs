@@ -15,6 +15,7 @@ namespace OrariUnibg.Views
 {
     public class SelectGiornaliero : ContentPage
     {
+		#region Private Fields
         Picker pickerFacoltà;
         Picker pickerLaurea;
         Picker pickerOrder;
@@ -24,11 +25,22 @@ namespace OrariUnibg.Views
         List<Facolta> listFacolta = new List<Facolta>();
         Dictionary<string, int> dictionaryLauree = new Dictionary<string, int>();
         DbSQLite _db;
+		#endregion
 
+		#region Constructor
         public SelectGiornaliero()
-        {
-            _db = new DbSQLite();
-            Title = "Giornaliero";
+		{
+			_db = new DbSQLite ();
+			Title = "Giornaliero";
+
+			Content = getView ();
+		}
+
+		#endregion
+
+		#region Private Methods
+		private View getView()
+		{
             listFacolta = Facolta.facolta;
             pickerFacoltà = new Picker()
             {
@@ -110,8 +122,10 @@ namespace OrariUnibg.Views
                 Children = { pickerFacoltà, pickerLaurea, pickData, pickerOrder, lblError, activityIndicator, btn, }
             };
 
-            Content = layout;
-        }
+			return layout;
+		}
+         
+			#endregion
 
 		#region EventHandlers
         private async void btn_Clicked(object sender, EventArgs e)

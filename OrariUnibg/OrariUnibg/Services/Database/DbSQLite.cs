@@ -101,7 +101,7 @@ namespace OrariUnibg.Services.Database
 //					 where i.Insegnamento == item.Insegnamento && i.Date == item.Date
 //			         select i).ToList ();
 			
-			var y = GetAllOrari().Where (c=> c.Insegnamento == item.Insegnamento && c.Date.Date == item.Date.Date).FirstOrDefault ();
+			var y = GetAllOrari().Where (c=> c.Insegnamento == item.Insegnamento && c.Date.Date == item.Date.Date && item.AulaOra == c.AulaOra).FirstOrDefault ();
 
 			if (y != null)
                 return true;
