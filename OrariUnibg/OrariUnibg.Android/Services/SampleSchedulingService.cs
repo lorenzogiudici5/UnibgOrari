@@ -40,7 +40,6 @@ namespace OrariUnibg.Droid.Services.Notifications
             _db = App.Database;
 
 			if (_db == null) {
-				Logcat.Write ("_db NULL");
 				App.Init (new DbSQLite (new SQLite_Android ().GetConnection ()));
 				_db = App.Database;
 //				if (_db == null)
@@ -102,7 +101,9 @@ namespace OrariUnibg.Droid.Services.Notifications
                 string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
-				updateSingleCorso (listaCorsi);               
+				if (listaCorsi.Count () != 0)
+					updateSingleCorso (listaCorsi);
+					              
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
@@ -158,10 +159,9 @@ namespace OrariUnibg.Droid.Services.Notifications
 				}
 				else if (corso.Insegnamento.Contains("UTENZA"))
 					_db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
-			}
+			}		
 
-			Settings.LastUpdate = DateTime.Now.ToString ("R");
-
+			Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
 		}
         private void SendNotification(CorsoGiornaliero l)
         {

@@ -110,6 +110,7 @@ namespace OrariUnibg.Views
 
             foreach (var i in _preferiti)
                 _db.Insert(i);
+			
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
@@ -126,53 +127,24 @@ namespace OrariUnibg.Views
 			}
 
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
-            foreach (var d in arrayDate)
-            {
-                //Corsi generale, utenza + corsi
-                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
-                List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
+			foreach (var d in arrayDate) {
 
-                //CERCA SOLO TRA CORSI DI QUELLA LAUREA
-                //string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, Settings.Laurea, d.ToString("dd'/'MM'/'yyyy"));
-                //List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
+				//Corsi generale, utenza + corsi
+				string s = await Web.GetOrarioGiornaliero (Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString ("dd'/'MM'/'yyyy"));
+				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero (s, 0, d);
 
-				TabbedHomeView.updateSingleCorso (_db, listaCorsi);
-				var orariXX = _db.GetAllOrari ();
-//                foreach (var l in listaCorsi)
-//                {
-//                    var corso = l;
-//                    if (_db.CheckAppartieneMieiCorsi(corso))
-//                    {
-//                        var orario = new Orari()
-//                        {
-//                            Insegnamento = corso.Insegnamento,
-//                            Codice = corso.Codice,
-//                            AulaOra = corso.AulaOra,
-//                            Note = corso.Note,
-//							Date = corso.Date.Date,
-//                            Docente = corso.Docente,
-//                            Notify = false,
-//                        };
-//
-//                        _db.Insert(orario);
-//                    }
-//                    else if (corso.Insegnamento.Contains("UTENZA"))
-//                        _db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
-//                }
-            }
+				if (listaCorsi.Count () != 0)
+					TabbedHomeView.updateSingleCorso (_db, listaCorsi);
 
-			Logcat.Write(_db.GetAllMieiCorsi().Count());
-			var orariX = _db.GetAllOrari ();
+			}
 
             _activityIndicator.IsRunning = false;
             _activityIndicator.IsVisible = false;
-
 
 			if(Settings.BackgroundSync)
 				DependencyService.Get<INotification> ().BackgroundSync ();
 			
 			await Navigation.PushModalAsync(new MasterDetailView());
-
         }
         #endregion
 

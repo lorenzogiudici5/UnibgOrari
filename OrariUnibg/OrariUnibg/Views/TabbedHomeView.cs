@@ -127,7 +127,8 @@ namespace OrariUnibg.Views
 				}
 			}
 
-			Settings.LastUpdate = DateTime.Now.ToString ("R");
+			//Settings.LastUpdate = DateTime.Now.ToString ("R");
+			Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
 		}
 
 		public void checkDays()
@@ -186,22 +187,11 @@ namespace OrariUnibg.Views
 				string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, day.DateString);
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
 
-				updateSingleCorso (_db, listaCorsi);
-
-                //CHECK USO UTENZA
-                //string s_ut = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.Facolta, 0, d.DateString);
-                //List<CorsoGiornaliero> listaUtenze = Web.GetSingleOrarioGiornaliero(s, 0, d.Data);
-
-                //foreach (var u in listaUtenze)
-                //{
-                //    var utenza = u;
-                //    if (utenza.Insegnamento.Contains("Utenza"))
-                //        _db.Insert(new Utenza() { Data = utenza.Date, Aulaora = utenza.AulaOra });
-                //}
+				if (listaCorsi.Count () != 0)
+					updateSingleCorso (_db, listaCorsi);
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
-
         }
 
         private void loadListCorsiGiorno()
