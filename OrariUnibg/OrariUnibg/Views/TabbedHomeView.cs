@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
+using Connectivity.Plugin;
+using Toasts.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views
 {
@@ -74,6 +76,7 @@ namespace OrariUnibg.Views
 			{
 				var corso = c;
 				Logcat.Write("ORARI_UNIBG: prima di Check");
+
 				if (_db.CheckAppartieneMieiCorsi(c))
 				{
 					//_db.InsertUpdate(l);
@@ -164,7 +167,8 @@ namespace OrariUnibg.Views
 			ToolbarItems.Clear();
 			ToolbarItems.Remove(tbiSync);
 
-			await updateDbOrariUtenza();
+			await updateDbOrariUtenza ();
+
 			loadListCorsiGiorno();
 
 			ToolbarItems.Add(tbiSync);
@@ -181,8 +185,15 @@ namespace OrariUnibg.Views
                     _db.DeleteSingleOrari(l.Id);
             };
 
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				return;
+			}
+
+			
 			foreach (var day in listGiorni)
-            {
+            {				
                 //Corsi generale, utenza + corsi
 				string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, day.DateString);
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
@@ -220,18 +231,17 @@ namespace OrariUnibg.Views
         #region Event Handlers
 		protected async override void OnAppearing()
 		{
+			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", true);
 			checkDays ();
 			updateListaGiorni ();
 
-			if(_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount) // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
-			{
-				MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-				await updateDbOrariUtenza();
-				Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
-				MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+			if (_db.GetAllMieiCorsi ().Count () > Settings.MieiCorsiCount) { // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
+				await updateDbOrariUtenza ();
+				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
 			}
-
+				
 			loadListCorsiGiorno();
+			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", false);
 			base.OnAppearing();
 
 		}

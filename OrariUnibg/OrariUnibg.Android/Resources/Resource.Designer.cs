@@ -28,6 +28,16 @@ namespace OrariUnibg.Droid
 		{
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::OrariUnibg.Droid.Resource.String.ApplicationName;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::OrariUnibg.Droid.Resource.String.Hello;
+			global::Toasts.Forms.Plugin.Droid.Resource.Drawable.error = global::OrariUnibg.Droid.Resource.Drawable.error;
+			global::Toasts.Forms.Plugin.Droid.Resource.Drawable.info = global::OrariUnibg.Droid.Resource.Drawable.info;
+			global::Toasts.Forms.Plugin.Droid.Resource.Drawable.success = global::OrariUnibg.Droid.Resource.Drawable.success;
+			global::Toasts.Forms.Plugin.Droid.Resource.Drawable.warning = global::OrariUnibg.Droid.Resource.Drawable.warning;
+			global::Toasts.Forms.Plugin.Droid.Resource.Id.desc = global::OrariUnibg.Droid.Resource.Id.desc;
+			global::Toasts.Forms.Plugin.Droid.Resource.Id.image = global::OrariUnibg.Droid.Resource.Id.image;
+			global::Toasts.Forms.Plugin.Droid.Resource.Id.title = global::OrariUnibg.Droid.Resource.Id.title;
+			global::Toasts.Forms.Plugin.Droid.Resource.Layout.crouton = global::OrariUnibg.Droid.Resource.Layout.crouton;
+			global::Toasts.Forms.Plugin.Droid.Resource.String.ApplicationName = global::OrariUnibg.Droid.Resource.String.ApplicationName;
+			global::Toasts.Forms.Plugin.Droid.Resource.String.Hello = global::OrariUnibg.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Resource.String.ApplicationName = global::OrariUnibg.Droid.Resource.String.ApplicationName;
 			global::Xamarin.Forms.Platform.Resource.String.Hello = global::OrariUnibg.Droid.Resource.String.Hello;
 		}
@@ -89,88 +99,100 @@ namespace OrariUnibg.Droid
 			public const int actionbar_background = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int ic_clock = 2130837505;
+			public const int error = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int ic_clock_blue = 2130837506;
+			public const int ic_clock = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int ic_clock_dark = 2130837507;
+			public const int ic_clock_blue = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int ic_completo = 2130837508;
+			public const int ic_clock_dark = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int ic_completo_blue = 2130837509;
+			public const int ic_completo = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int ic_completo_dark = 2130837510;
+			public const int ic_completo_blue = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int ic_esami = 2130837511;
+			public const int ic_completo_dark = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int ic_home = 2130837512;
+			public const int ic_esami = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int ic_home_blue = 2130837513;
+			public const int ic_home = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int ic_home_dark = 2130837514;
+			public const int ic_home_blue = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int ic_launcher = 2130837515;
+			public const int ic_home_dark = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int ic_menu = 2130837516;
+			public const int ic_launcher = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int ic_next = 2130837517;
+			public const int ic_menu = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int ic_nostar = 2130837518;
+			public const int ic_next = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int ic_notification_school = 2130837519;
+			public const int ic_nostar = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int ic_settings_blue = 2130837520;
+			public const int ic_notification_school = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int ic_settings_dark = 2130837521;
+			public const int ic_settings_blue = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int ic_settings_gray = 2130837522;
+			public const int ic_settings_dark = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int ic_star = 2130837523;
+			public const int ic_settings_gray = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int ic_sync = 2130837524;
+			public const int ic_star = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int LogoUnibg = 2130837525;
+			public const int ic_sync = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int selectable_background_example = 2130837526;
+			public const int info = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int splash = 2130837527;
+			public const int LogoUnibg = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int tab_bar_background = 2130837528;
+			public const int selectable_background_example = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int tab_bar_background_selected = 2130837529;
+			public const int splash = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int tab_bar_background_selected_pressed = 2130837530;
+			public const int success = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int tab_bar_text = 2130837531;
+			public const int tab_bar_background = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int UnibgOk = 2130837532;
+			public const int tab_bar_background_selected = 2130837532;
+			
+			// aapt resource value: 0x7f02001d
+			public const int tab_bar_background_selected_pressed = 2130837533;
+			
+			// aapt resource value: 0x7f02001e
+			public const int tab_bar_text = 2130837534;
+			
+			// aapt resource value: 0x7f02001f
+			public const int UnibgOk = 2130837535;
+			
+			// aapt resource value: 0x7f020020
+			public const int warning = 2130837536;
 			
 			static Drawable()
 			{
@@ -185,8 +207,17 @@ namespace OrariUnibg.Droid
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070002
+			public const int desc = 2131165186;
+			
 			// aapt resource value: 0x7f070000
-			public const int splash_layout = 2131165184;
+			public const int image = 2131165184;
+			
+			// aapt resource value: 0x7f070003
+			public const int splash_layout = 2131165187;
+			
+			// aapt resource value: 0x7f070001
+			public const int title = 2131165185;
 			
 			static Id()
 			{
@@ -202,7 +233,10 @@ namespace OrariUnibg.Droid
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int splash_layout = 2130903040;
+			public const int crouton = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int splash_layout = 2130903041;
 			
 			static Layout()
 			{

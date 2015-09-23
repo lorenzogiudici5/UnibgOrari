@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Toasts.Forms.Plugin.Abstractions;
+using Connectivity.Plugin;
 
 namespace OrariUnibg.Views
 {
@@ -193,7 +195,7 @@ namespace OrariUnibg.Views
             grid.Children.Add(_switchSync, 1, 2, 5, 6);
             grid.Children.Add(_lblNotific, 0, 1, 6, 7);
             grid.Children.Add(_switchNotific, 1, 2, 6, 7);
-            grid.Children.Add(_activityIndicator, 0, 2, 7, 8);
+            grid.Children.Add(_activityIndicator, 0, 1, 7, 8);
 
 //            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
 //            //if (Device.OS == TargetPlatform.Android)
@@ -261,6 +263,13 @@ namespace OrariUnibg.Views
             Settings.LaureaIndex = laureaIndex;
             Settings.FacoltaIndex = facoltaIndex;
             Settings.AnnoIndex = annoIndex;
+
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				var toast = DependencyService.Get<IToastNotificator> ();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				ToolbarItems.Add (tbiNext);
+				return;
+			}
 
             string completo = await Web.GetOrarioCompleto("completo", db, facoltaId, laureaId, annoIndex);
             string secondo = await Web.GetOrarioCompleto("secondo", db, facoltaId, laureaId, annoIndex);

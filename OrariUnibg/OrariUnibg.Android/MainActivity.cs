@@ -11,6 +11,7 @@ using Android.Content.PM;
 using OrariUnibg.Droid.Services.Database;
 using OrariUnibg.Services.Database;
 using Android.Graphics.Drawables;
+using Toasts.Forms.Plugin.Droid;
 
 namespace OrariUnibg.Droid
 {
@@ -31,6 +32,7 @@ namespace OrariUnibg.Droid
 
             //SetPage(App.GetMainPage());
             LoadApplication(new App()); // method is new in 1.3
+			ToastNotificatorImplementation.Init();  //TOAST NOTIFICATION
 
 			if ((int)Android.OS.Build.VERSION.SdkInt >= 21) 
 			{ 

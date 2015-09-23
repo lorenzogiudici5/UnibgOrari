@@ -38,6 +38,25 @@ namespace OrariUnibg
 				BackgroundColor = ColorHelper.White,
 			};
 
+			#region IntervalUpdate
+			_lblInterval = new Label () { Text = getIntervalString(), TextColor = ColorHelper.DarkGray };
+			var _updateIntervallLayout = new StackLayout () {
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = 
+				{
+					new Label(){Text = "Intervallo di aggiornamento", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+					_lblInterval
+				}					
+				};
+			_updateIntervallCell = new ViewCell (){ View = _updateIntervallLayout, IsEnabled = Settings.BackgroundSync};
+			_updateIntervallCell.Tapped += _updateIntervallCell_Tapped;
+
+			#endregion
+
+
 			#region AggiornamentoBackground
 			_backgroundSyncSwitch = new Switch() {IsToggled = Settings.BackgroundSync, HorizontalOptions = LayoutOptions.EndAndExpand};
 			_lblBackgroundSync = new Label () { Text = getBackgroundSyncString(), TextColor = ColorHelper.DarkGray };
@@ -66,8 +85,11 @@ namespace OrariUnibg
 			{
 				if (_backgroundSyncSwitch.IsToggled) {
 					Settings.BackgroundSync = true;
+					_updateIntervallCell.IsEnabled = true;
+
 				} else {
 					Settings.BackgroundSync = false;
+					_updateIntervallCell.IsEnabled = false;
 				}
 				_lblBackgroundSync.Text = getBackgroundSyncString();
 			};
@@ -108,23 +130,6 @@ namespace OrariUnibg
 			};
 			#endregion
 
-			#region IntervalUpdate
-			_lblInterval = new Label () { Text = getIntervalString(), TextColor = ColorHelper.DarkGray };
-			var _updateIntervallLayout = new StackLayout () {
-				Padding = new Thickness(20, 10, 20, 10),
-				Orientation = StackOrientation.Vertical,
-				VerticalOptions = LayoutOptions.FillAndExpand,
-				Spacing = 3,
-				Children = 
-				{
-					new Label(){Text = "Intervallo di aggiornamento", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
-					_lblInterval
-				}					
-			};
-			_updateIntervallCell = new ViewCell (){ View = _updateIntervallLayout};
-			_updateIntervallCell.Tapped += _updateIntervallCell_Tapped;
-
-			#endregion
 
 
 			#region LastUpdate

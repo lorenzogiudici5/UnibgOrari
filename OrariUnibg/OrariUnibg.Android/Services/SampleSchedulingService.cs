@@ -14,6 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Connectivity.Plugin;
+using Toasts.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Droid.Services.Notifications
 {
@@ -93,11 +95,16 @@ namespace OrariUnibg.Droid.Services.Notifications
                     _db.DeleteSingleOrari(l.Id);
             };
 
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				return;
+			}
+			
             foreach (var d in arrayDate)
             {
-//				SendNotification ("Data Considerata: " + d.ToString ());
 				Logcat.Write ("Data Considerata: " + d.ToString());
-                //Corsi generale, utenza + corsi
+
                 string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 

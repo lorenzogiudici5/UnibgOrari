@@ -8,6 +8,8 @@ using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Services;
 using OrariUnibg.ViewModels;
+using Connectivity.Plugin;
+using Toasts.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views
 {
@@ -181,7 +183,16 @@ namespace OrariUnibg.Views
             //Settings.AnnoIndex = anno;
             Settings.Raggruppa = pickerRaggruppa.SelectedIndex;
 
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				activityIndicator.IsVisible = false;
+				lblError.IsVisible = true;
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				return;
+			}
+
             string s = await Web.GetOrarioCompleto(semestre, db, facolta, laureaId, anno);
+
             if(s == string.Empty)
             {
                 activityIndicator.IsVisible = false;

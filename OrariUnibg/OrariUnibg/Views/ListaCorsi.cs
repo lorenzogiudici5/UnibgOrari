@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Connectivity.Plugin;
+using Toasts.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views
 {
@@ -127,15 +129,21 @@ namespace OrariUnibg.Views
 			}
 
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
-			foreach (var d in arrayDate) {
 
-				//Corsi generale, utenza + corsi
-				string s = await Web.GetOrarioGiornaliero (Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString ("dd'/'MM'/'yyyy"));
-				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero (s, 0, d);
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+			}else { //CONNESSIONE A INTERNET
+				foreach (var d in arrayDate) {
 
-				if (listaCorsi.Count () != 0)
-					TabbedHomeView.updateSingleCorso (_db, listaCorsi);
+					//Corsi generale, utenza + corsi
+					string s = await Web.GetOrarioGiornaliero (Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString ("dd'/'MM'/'yyyy"));
+					List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero (s, 0, d);
 
+					if (listaCorsi.Count () != 0)
+						TabbedHomeView.updateSingleCorso (_db, listaCorsi);
+
+				}
 			}
 
             _activityIndicator.IsRunning = false;
