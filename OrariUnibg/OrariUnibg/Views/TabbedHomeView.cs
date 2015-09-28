@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using Connectivity.Plugin;
 using Toasts.Forms.Plugin.Abstractions;
+using OrariUnibg.Views.ViewCells;
 
 namespace OrariUnibg.Views
 {
@@ -53,7 +54,18 @@ namespace OrariUnibg.Views
             ToolbarItems.Add(tbiSync);
 
 
-            MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", deleteMioCorso);
+			MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", (sender) => {
+				loadListCorsiGiorno();
+			});
+			MessagingCenter.Subscribe<OrarioFavCell> (this, "delete_corso_fav", (sender) => {
+				loadListCorsiGiorno();
+			});
+
+			MessagingCenter.Subscribe<OrarioFavCell> (this, "delete_corso_fav_impostazioni", (sender) => {
+				loadListCorsiGiorno();
+			});
+//			MessagingCenter.Subscribe<OrarioGiornCell>(this, "delete_corso_context", deleteMioCorsoContext);
+//			MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", loadListCorsiGiorno());
         }
         #endregion
 
@@ -124,7 +136,7 @@ namespace OrariUnibg.Views
 
 				else if (corso.Insegnamento.Contains("UTENZA")) //verifico se è un utenza
 				{ 
-					Utenza ut = new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra};
+					Utenze ut = new Utenze() { Data = corso.Date, AulaOra = corso.AulaOra};
 					if(!_db.AppartieneUtenze(ut))
 						_db.Insert(ut); 
 				}
@@ -207,41 +219,44 @@ namespace OrariUnibg.Views
 
         private void loadListCorsiGiorno()
         {
-			var orari = _db.GetAllOrari ();
+			var utenze = _db.GetAllUtenze ();
 			_oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Date.Date) == 0);
-			var oggiXXX = _oggi.ListaLezioni.Count();
-			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _oggi.Data);
+//			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _oggi.Data.Date);
+			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Data.Date) == 0);
+			var count = _oggi.ListUtenza.Count ();
 
 			_domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Date.Date) == 0);
-			var domaniYYY = _oggi.ListaLezioni.Count();
-			_domani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _domani.Data);
+			_domani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
 
 			_dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data.Date, dateX.Date.Date) == 0);
-			_dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _dopodomani.Data);
+			_dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
 
 			updateListaGiorni();
-        }
 
-		private void deleteMioCorso(TabbedDayView obj)
-		{
-			loadListCorsiGiorno();
-		}
+			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
+        }
         #endregion
 
         #region Event Handlers
 		protected async override void OnAppearing()
 		{
+			var utenze = _db.GetAllUtenze ();
+			_db.CheckUtenzeDoppioni (); //verifica che non ci sono doppioni nelle utenze, non so perchè ma capita che me ne crea
 			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", true);
+			ToolbarItems.Remove(tbiSync);
 			checkDays ();
 			updateListaGiorni ();
 
+//			var count = _db.GetAllMieiCorsi ().Count ();
 			if (_db.GetAllMieiCorsi ().Count () > Settings.MieiCorsiCount) { // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
 				await updateDbOrariUtenza ();
-				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
+//				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
 			}
 				
 			loadListCorsiGiorno();
 			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", false);
+			ToolbarItems.Add(tbiSync);
+
 			base.OnAppearing();
 
 		}

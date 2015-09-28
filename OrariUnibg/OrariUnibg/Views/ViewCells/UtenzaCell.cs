@@ -46,7 +46,20 @@ namespace OrariUnibg.Views.ViewCells
                 Children = { _lblTitleUtenza, _lblAulaOra}
             };
 
-            return layout;
+			var layoutInt = new StackLayout () {
+				Padding = new Thickness (5, 0, 0, 0), 
+				HeightRequest = layout.Height,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				BackgroundColor = Color.FromHex("B0B0FF"),
+				Children = {layout}
+			};
+			var layoutExt = new StackLayout () {
+				Padding = new Thickness (0, 3, 0, 3), 
+				BackgroundColor = ColorHelper.Transparent,
+				Children = {layoutInt}
+			};
+
+			return layoutExt;
         }
         #endregion
 

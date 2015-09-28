@@ -14,5 +14,6 @@
 		<item name="android:actionBarTabBarStyle">@style/MyTheme.ActionBar.TabBarStyle</item>
 		<item name="android:actionBarTabStyle">@style/MyTheme.ActionBar.TabStyle</item>
 		<item name="android:actionBarTabTextStyle">@style/MyTheme.ActionBar.TabTextStyle</item>
+		<item name="android:actionModeStyle">@style/MyTheme.ActionModeStyle</item>
 	</style> 
 </resources>

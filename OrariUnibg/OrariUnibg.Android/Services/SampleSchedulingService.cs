@@ -165,55 +165,50 @@ namespace OrariUnibg.Droid.Services.Notifications
 					}
 				}
 				else if (corso.Insegnamento.Contains("UTENZA"))
-					_db.Insert(new Utenza() { Data = corso.Date, AulaOra = corso.AulaOra });
+					_db.Insert(new Utenze() { Data = corso.Date, AulaOra = corso.AulaOra });
 			}		
 
 			Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
 		}
-        private void SendNotification(CorsoGiornaliero l)
-        {
-            if (!Settings.Notify)
-                return;
+		public void SendNotification(CorsoGiornaliero l)
+		{
+			if (!Settings.Notify)
+				return;
+//			Logcat.Write("SEND NOTIFICATION");
 
-            var connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
-            var activeConnection = connectivityManager.ActiveNetworkInfo;
-            if ((activeConnection == null) || !activeConnection.IsConnected)
-                return; //rete non disponibilie
+			// Set up an intent so that tapping the notifications returns to this app:
+			Intent intent = new Intent(Forms.Context, typeof(MainActivity));
 
-			Logcat.Write("SEND NOTIFICATION");
+			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+			const int pendingIntentId = 0;
+			PendingIntent pendingIntent = PendingIntent.GetActivity(Forms.Context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
 
-            // Set up an intent so that tapping the notifications returns to this app:
-            Intent intent = new Intent(this, typeof(MainActivity));
+			Notification.Builder builder = new Notification.Builder(Forms.Context)
+				.SetContentIntent(pendingIntent)
+				.SetContentTitle(l.Note.ToUpper())
+				.SetContentText(l.Insegnamento + " - " + l.Date + " - " + l.Ora )
+				.SetSmallIcon(Resource.Drawable.ic_notification_school)
+				.SetAutoCancel(true);
+			//builder.SetStyle(new Notification.BigTextStyle().BigText(longMess));
 
-            // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
-            const int pendingIntentId = 0;
-            PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+			Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+			inboxStyle.AddLine(l.Insegnamento);
+			inboxStyle.AddLine(l.Date.DayOfWeek + ", " + l.Date.ToShortDateString());
+			inboxStyle.AddLine(l.AulaOra);
+			inboxStyle.AddLine(l.Docente);
+			builder.SetStyle(inboxStyle);
 
-            Notification.Builder builder = new Notification.Builder(this)
-                .SetContentIntent(pendingIntent)
-                .SetContentTitle(l.Note.ToUpper())
-                .SetContentText(l.Insegnamento + " - " + l.Ora)
-                .SetSmallIcon(Resource.Drawable.ic_notification_school)
-                .SetAutoCancel(true);
-            //builder.SetStyle(new Notification.BigTextStyle().BigText(longMess));
+			// Build the notification:
+			Notification notification = builder.Build();
 
-            Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-            inboxStyle.AddLine(l.Insegnamento);
-            inboxStyle.AddLine(l.AulaOra);
-            inboxStyle.AddLine(l.Docente);
-            builder.SetStyle(inboxStyle);
+			// Get the notification manager:
+			NotificationManager notificationManager = Forms.Context.GetSystemService(Context.NotificationService) as NotificationManager;
 
-            // Build the notification:
-            Notification notification = builder.Build();
-
-            // Get the notification manager:
-            NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
-
-            // Publish the notification:
-            int notificationId = new Random().Next();
-            //const int notificationId = 1;
-            notificationManager.Notify(notificationId, notification);
-        }
+			// Publish the notification:
+			//            const int notificationId = 1;
+			var rnd = new System.Random ();
+			notificationManager.Notify(rnd.Next(), notification);
+		}
 
 //		private void SendNotification(string text)
 //		{

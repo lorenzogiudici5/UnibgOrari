@@ -27,6 +27,8 @@ namespace OrariUnibg
 		private ViewCell _updateIntervallCell;
 		private Label _lblLastUpdate;
 		private ViewCell _lastUpdateCell;
+		private ViewCell _corsiPreferitiCell;
+		private Label _lblCorsiPreferiti;
 		#endregion
 
 		#region Private Methods
@@ -131,7 +133,6 @@ namespace OrariUnibg
 			#endregion
 
 
-
 			#region LastUpdate
 			_lblLastUpdate = new Label () { Text = Settings.LastUpdate, TextColor = ColorHelper.DarkGray };
 			var _lastUpdatelLayout = new StackLayout () {
@@ -156,12 +157,46 @@ namespace OrariUnibg
 				_updateIntervallCell,
 				_lastUpdateCell,
 			};
+
+			#region Corsi Preferiti
+			_lblCorsiPreferiti = new Label () { Text = getPreferitiString(), TextColor = ColorHelper.DarkGray };
+			var _corsiPrefLayout = new StackLayout()
+			{
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = {
+					new Label(){Text = "Corsi Preferiti", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+					_lblCorsiPreferiti
+				}
+			};
+			_corsiPreferitiCell = new ViewCell (){ View = _corsiPrefLayout};
+			_corsiPreferitiCell.Tapped += async (object sender, EventArgs e) => 
+			{
+				var nav = new GestionePreferitiView();
+//				nav.BindingContext = orariViewModel;
+				await this.Navigation.PushAsync(nav);
+			};
+			#endregion
+
+			var sectionFavourit = new TableSection ("Gestione Preferiti") { //TableSection constructor takes title as an optional parameter
+				_corsiPreferitiCell
+			};
 				
 			table.Root = new TableRoot () {
 				sectionSync,
+				sectionFavourit
 			};
 				
 			return table;
+		}
+
+		private string getPreferitiString(){
+			if(Settings.MieiCorsiCount == 1)
+				return String.Format ("{0} corso", Settings.MieiCorsiCount);
+			else
+				return String.Format ("{0} corsi", Settings.MieiCorsiCount);
 		}
 
 		private string getNotificheString()
@@ -217,6 +252,11 @@ namespace OrariUnibg
 			_lblInterval.Text = getIntervalString ();
 		}
 
+		protected override void OnAppearing ()
+		{
+			base.OnAppearing ();
+			_lblCorsiPreferiti.Text = getPreferitiString ();
+		}
 		#endregion
 	}
 }

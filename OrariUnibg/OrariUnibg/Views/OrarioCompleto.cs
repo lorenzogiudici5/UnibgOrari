@@ -62,7 +62,11 @@ namespace OrariUnibg.Views
             lblAnno.SetBinding(Label.TextProperty, "AnnoSemestre");
 
             lv = new ListView() { HasUnevenRows = true, VerticalOptions = LayoutOptions.FillAndExpand};
-            lv.ItemSelected += lv_ItemSelected;
+			lv.ItemSelected += (sender, e) => {
+				((ListView)sender).SelectedItem = null;
+			};
+
+//            lv.ItemSelected += lv_ItemSelected;
 
             var searchbar = new SearchBar()
             {
@@ -132,64 +136,63 @@ namespace OrariUnibg.Views
 
 
         }
-
-        async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
-                return;
-
-            Corso orario;
-            if(_viewModel.Group)
-            {
-                CorsoCompletoGroupViewModel o = (CorsoCompletoGroupViewModel)lv.SelectedItem;
-                orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
-            }
-                
-            else
-            {
-                CorsoCompleto o = (CorsoCompleto)lv.SelectedItem;
-                orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
-            }
-                
-            if (_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
-            {
-                string action;
-                if (_db.CheckAppartieneMieiCorsi(orario))
-                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
-                else
-                    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Aggiungi ai preferiti");
-
-                switch (action)
-                {
-                    case "Rimuovi dai preferiti":
-                        var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
-                        if (conferma)
-                        {
-                            var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-                            _db.DeleteMieiCorsi(corso);
-                        }
-                        else
-                            return;
-
-                        break;
-                    case "Aggiungi ai preferiti":
-                        _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-                        await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
-                        break;
-                    default:
-                    //case "Dettagli":
-                    //    var nav = new DettagliCorsoView();
-                    //    //nav.BindingContext = 
-                    //    await this.Navigation.PushAsync(nav);
-                        break;
-                }
-            }
-
-            ((ListView)sender).SelectedItem = null;
-        }
         #endregion
 
         #region Event Handlers
+//		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+//		{
+//			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
+//				return;
+//
+//			Corso orario;
+//			if(_viewModel.Group)
+//			{
+//				CorsoCompletoGroupViewModel o = (CorsoCompletoGroupViewModel)lv.SelectedItem;
+//				orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
+//			}
+//
+//			else
+//			{
+//				CorsoCompleto o = (CorsoCompleto)lv.SelectedItem;
+//				orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
+//			}
+//
+//			if (_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
+//			{
+//				string action;
+//				if (_db.CheckAppartieneMieiCorsi(orario))
+//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
+//				else
+//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Aggiungi ai preferiti");
+//
+//				switch (action)
+//				{
+//				case "Rimuovi dai preferiti":
+//					var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
+//					if (conferma)
+//					{
+//						var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+//						_db.DeleteMieiCorsi(corso);
+//					}
+//					else
+//						return;
+//
+//					break;
+//				case "Aggiungi ai preferiti":
+//					_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+//					await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
+//					break;
+//				default:
+//					//case "Dettagli":
+//					//    var nav = new DettagliCorsoView();
+//					//    //nav.BindingContext = 
+//					//    await this.Navigation.PushAsync(nav);
+//					break;
+//				}
+//			}
+//
+//			((ListView)sender).SelectedItem = null;
+//		}
         private void showAll()
         {
             ToolbarItems.Clear();

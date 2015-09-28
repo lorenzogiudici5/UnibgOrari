@@ -20,7 +20,7 @@ namespace OrariUnibg.Services.Database
             //db = App.SQLite.GetConnection();
             db.CreateTable<MieiCorsi>();
             db.CreateTable<Orari>();
-            db.CreateTable<Utenza>();
+            db.CreateTable<Utenze>();
         }
 
         public DbSQLite()
@@ -61,19 +61,20 @@ namespace OrariUnibg.Services.Database
         {
 			Logcat.Write ("dentro il check appartiene");
 
-//			if(db == null)
-			//				Logcat.Write ("ORARI_UNIBG: db_SQLITE null");
-//			else
-			//				Logcat.Write ("ORARI_UNIBG: db_SQLITE NOT NULL");
-
-			var list = GetAllMieiCorsi().Where(x => x.Insegnamento == item.Insegnamento).ToList();
-//            var list = db.Table<MieiCorsi>().Where(x => x.Insegnamento == item.Insegnamento).ToList();
-
-            if (list.Count > 0)
-                return true;
-            else
-                return false;
+			return CheckAppartieneMieiCorsi (item.Insegnamento);
         }
+
+		public bool CheckAppartieneMieiCorsi(string insegnamento)
+		{
+//			var list = GetAllMieiCorsi().Where(x => x.Insegnamento == item.Insegnamento).ToList();
+			//          var list = db.Table<MieiCorsi>().Where(x => x.Insegnamento == item.Insegnamento).ToList();
+			var list = GetAllMieiCorsi().Where(x => x.Insegnamento == insegnamento).ToList();
+
+			if (list.Count > 0)
+				return true;
+			else
+				return false;
+		}
 
         public void Insert(MieiCorsi item)
         {
@@ -96,7 +97,7 @@ namespace OrariUnibg.Services.Database
         
         public bool AppartieneOrari(CorsoGiornaliero item)
         {
-			var count = db.Table<Orari> ().ToList ();
+//			var count = db.Table<Orari> ().ToList ();
 //			var x = (from i in db.Table<Orari> ()
 //					 where i.Insegnamento == item.Insegnamento && i.Date == item.Date
 //			         select i).ToList ();
@@ -161,23 +162,39 @@ namespace OrariUnibg.Services.Database
         #endregion
 
         #region Utenza
-        public void Insert(Utenza item)
+		public void CheckUtenzeDoppioni(){
+			var utenze = GetAllUtenze ();
+
+			for (int i = 0; i < utenze.Count(); i++) {
+				var u = utenze.ElementAt (i);
+
+				for (int h = i+1; h < utenze.Count(); h++) {
+					var u2 = utenze.ElementAt (h);
+					if (u.DateString == u2.DateString && u.AulaOra == u2.AulaOra)
+						db.Delete<Utenze> (u.Id);
+				}
+			}
+
+			utenze = GetAllUtenze ();
+		}
+		public void Insert(Utenze item)
         {
+			item.Data = item.Data.AddDays (1);
             db.Insert(item);
         }
 
-        public bool AppartieneUtenze(Utenza item)
+		public bool AppartieneUtenze(Utenze item)
         {
-            var x = (from i in db.Table<Utenza>() where i.Data == item.Data && i.AulaOra == item.AulaOra select i).ToList();
-            if (x.Count > 0)
-                return true;
-            else
-                return false;
+			var x = GetAllUtenze ().Where (u => u.Data.Date == item.Data.Date && u.AulaOra == item.AulaOra).FirstOrDefault ();
+			if (x == null)
+				return false;
+			else
+				return true;
         }
 
-        public IEnumerable<Utenza> GetAllUtenze()
+        public IEnumerable<Utenze> GetAllUtenze()
         {
-            return (from i in db.Table<Utenza>() select i).ToList();
+            return (from i in db.Table<Utenze>() select i).ToList();
         }
         #endregion
     }
@@ -211,4 +228,11 @@ namespace OrariUnibg.Services.Database
         //public string Docente { get; set; }
 
     }
+	
+	[Table("Utenze")]
+	public class Utenze : Utenza
+	{
+		[PrimaryKey, AutoIncrement, Column("_id")]
+		public int Id { get; set; }
+	}
 }

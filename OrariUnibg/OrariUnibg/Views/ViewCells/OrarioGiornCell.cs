@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using System.Diagnostics;
+using Toasts.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -16,6 +17,8 @@ namespace OrariUnibg.Views.ViewCells
         #region Constructor
         public OrarioGiornCell()
         {
+			_db = new DbSQLite();
+			setUpContextAction ();
             View = getView();
         }
         #endregion
@@ -26,11 +29,15 @@ namespace OrariUnibg.Views.ViewCells
         private Label _lblOra;
         private Label _lblDocente;
         private Label _lblNote;
+		private DbSQLite _db;
+		private Orari orario;
+//		private Xamarin.Forms.MenuItem removeAction;
+		private Xamarin.Forms.MenuItem addAction;
         #endregion
 
         #region Private Methods
         private View getView()
-        {
+		{
             _lblCorso = new Label()
             {
                 FontSize = Device.GetNamedSize(NamedSize.Default, this),
@@ -132,132 +139,123 @@ namespace OrariUnibg.Views.ViewCells
 			};
 			layoutExt.Children.Add (layoutInt);
 
-//			return grid;
-
 			return layoutExt;
 	
-            //var layout = new StackLayout()
-            //{
-            //    Padding = new Thickness(10, 10, 10, 10),
-            //    Spacing = 0,
-            //    VerticalOptions = LayoutOptions.FillAndExpand,
-            //    HorizontalOptions = LayoutOptions.FillAndExpand,
-            //    Orientation = StackOrientation.Vertical,
-            //    Children = { 
-            //        lblCorso, 
-            //        lblAula, 
-            //        new StackLayout(){HorizontalOptions = LayoutOptions.FillAndExpand, Orientation = StackOrientation.Horizontal, Children ={lblOra, lblDocente} },
-            //        lblNote
-            //    }
-            //};
-
-            //layout.SetBinding(StackLayout.BackgroundColorProperty, new Binding("Note", converter: new NoteBackgroundConverter()));
-
-            //MessagingCenter.Subscribe<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", (sender, arg) =>
-            //{
-            //    //if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
-            //    //{
-            //    //    ////DOUBLE TAPPED?!
-            //    //    ////if (_lblNote.Text != String.Empty)
-            //    //    ////{
-            //    //    ////    if (_lblNote.IsVisible)
-            //    //    ////        _lblNote.IsVisible = false;
-            //    //    ////    else
-            //    //    ////        _lblNote.IsVisible = true;
-            //    //    ////}
-
-            //    //    ////if (_lblCodice.IsVisible)
-            //    //    ////    _lblCodice.IsVisible = false;
-            //    //    ////else
-            //    //    ////    _lblCodice.IsVisible = true;
-            //    //}
-            //    //else
-            //    //    return;
-            //});
-
-            //MessagingCenter.Subscribe<TabbedDayView, Orari>(this, "orari_clicked", (sender, arg) =>
-            //{
-            //    if (arg.Insegnamento == _lblCorso.Text && arg.Ora == _lblOra.Text & arg.Aula == _lblAula.Text)
-            //    {
-            //        if (_lblNote.Text != String.Empty)
-            //        {
-            //            if (_lblNote.IsVisible)
-            //                _lblNote.IsVisible = false;
-            //            else
-            //                _lblNote.IsVisible = true;
-            //        }
-
-            //        if (_lblCodice.IsVisible)
-            //            _lblCodice.IsVisible = false;
-            //        else
-            //            _lblCodice.IsVisible = true;
-
-            //    }
-            //    else
-            //        return;
-            //});
 
         }
+
+		private void setUpContextAction()
+		{
+//			removeAction = new Xamarin.Forms.MenuItem { Text = "Rimuovi", Icon = "ic_bin.png" };
+//			removeAction.SetBinding (Xamarin.Forms.MenuItem.CommandParameterProperty, new Binding ("."));
+//			removeAction.Clicked += RemoveAction_Clicked;
+			//ADD
+			addAction = new Xamarin.Forms.MenuItem { Text="Aggiungi ai preferiti"};//, Icon = "ic_nostar.png"};
+			addAction.SetBinding(Xamarin.Forms.MenuItem.CommandParameterProperty, new Binding ("."));
+			addAction.Clicked += AddAction_Clicked;
+
+			ContextActions.Add (addAction);
+//			ContextActions.Add (removeAction);
+
+//			if (_db.CheckAppartieneMieiCorsi (orario)) {
+//				ContextActions.Add (removeAction);
+//			} else {
+//				ContextActions.Add (addAction);
+//			}
+		}
+			
         #endregion
 
+		#region Event Handlers
+//		void RemoveAction_Clicked (object sender, EventArgs e)
+//		{
+//			var mi = ((Xamarin.Forms.MenuItem)sender);
+//			var orario = mi.CommandParameter as Orari;
+//
+//			var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+//			_db.DeleteMieiCorsi(corso);
+//
+//			MessagingCenter.Send<OrarioGiornCell>(this, "delete_corso_context");
+//			Debug.WriteLine(orario.Insegnamento);
+//		}
+
+		async void AddAction_Clicked (object sender, EventArgs e)
+		{
+			var mi = ((Xamarin.Forms.MenuItem)sender);
+			var orario = mi.CommandParameter as CorsoGiornaliero;
+			var x = _db.GetAllMieiCorsi ();
+
+			var toast = DependencyService.Get<IToastNotificator>();
+			if (_db.CheckAppartieneMieiCorsi (orario)) {
+				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
+			} else {
+				_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
+			}
+		}
+		#endregion
+
     }
 
-    public class NoteBackgroundConverter : IValueConverter
-    {
+	#region Converter
+	public class NoteBackgroundConverter : IValueConverter
+	{
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is string)
-            {
-                switch ((string)value)
-                {
-                    case "Sospensione lezione":
-                        return Color.FromHex("FF6666");
-                    case "Cambio aula":
-                        return Color.FromHex("FFFF66");
-                    case "Attività accademica":
-                        return Color.FromHex("B0B0FF");
-                    case "Attività integrativa":
-                        return Color.Pink;
-                    case "Esame":
-                        return Color.FromHex("A0FFA0");
-                    case "Alta formazione":
-                        return Color.FromHex("A0FFFF");
-                    case "Recupero lezione":
-                        return Color.FromHex("00DD00");
-                    default:
-                        return Color.White; // per sfondo layout
-                }
-            }
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is string)
+			{
+				switch ((string)value)
+				{
+				case "Sospensione lezione":
+					return Color.FromHex("FF6666");
+				case "Cambio aula":
+					return Color.FromHex("FFFF66");
+				case "Attività accademica":
+					return Color.FromHex("B0B0FF");
+				case "Attività integrativa":
+					return Color.Pink;
+				case "Esame":
+					return Color.FromHex("A0FFA0");
+				case "Alta formazione":
+					return Color.FromHex("A0FFFF");
+				case "Recupero lezione":
+					return Color.FromHex("00DD00");
+				default:
+					return Color.White; // per sfondo layout
+				}
+			}
 
-            return string.Empty;
-        }
+			return string.Empty;
+		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
 
-    public class NoteIsVisibleConverter : IValueConverter
-    {
+	public class NoteIsVisibleConverter : IValueConverter
+	{
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is string)
-            {
-                if ( (string)value != string.Empty)
-                    return true;
-                else 
-                    return false;
-            }
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is string)
+			{
+				if ( (string)value != string.Empty)
+					return true;
+				else 
+					return false;
+			}
 
-            return false;
-        }
+			return false;
+		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
+	#endregion
+ 
 }

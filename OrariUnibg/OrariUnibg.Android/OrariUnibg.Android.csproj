@@ -135,6 +135,8 @@
     <AndroidResource Include="Resources\Values\Colors.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bin.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_clock.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_clock_blue.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_clock_dark.png" />
@@ -156,6 +158,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_sync.png" />
     <AndroidResource Include="Resources\drawable-hdpi\Thumbs.db" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_bin.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_clock.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_clock_blue.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_clock_dark.png" />
@@ -176,6 +179,7 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_settings_gray.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bin.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_clock.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_clock_blue.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_clock_dark.png" />
@@ -196,6 +200,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_settings_gray.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bin.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock_blue.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_clock_dark.png" />
@@ -216,7 +221,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_settings_gray.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_sync.png" />
-    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />

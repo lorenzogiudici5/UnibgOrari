@@ -83,6 +83,9 @@
     <Compile Include="Helpers\Logcat.cs" />
     <Compile Include="Views\ImpostazioniView.cs" />
     <Compile Include="Models\IntervalEnum.cs" />
+    <Compile Include="Views\ViewCells\OrarioFavCell.cs" />
+    <Compile Include="Views\GestionePreferitiView.cs" />
+    <Compile Include="Views\ViewCells\MieiCorsiCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">
