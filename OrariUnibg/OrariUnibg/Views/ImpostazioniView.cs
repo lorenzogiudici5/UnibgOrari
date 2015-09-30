@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg
 {
@@ -11,6 +12,7 @@ namespace OrariUnibg
 		{
 			Title = "Impostazioni";
 			Icon = null;
+			_db = new DbSQLite ();
 			Content = getView();
 		}
 		#endregion
@@ -29,6 +31,7 @@ namespace OrariUnibg
 		private ViewCell _lastUpdateCell;
 		private ViewCell _corsiPreferitiCell;
 		private Label _lblCorsiPreferiti;
+		private DbSQLite _db;
 		#endregion
 
 		#region Private Methods
@@ -255,7 +258,9 @@ namespace OrariUnibg
 		protected override void OnAppearing ()
 		{
 			base.OnAppearing ();
+			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ();
 			_lblCorsiPreferiti.Text = getPreferitiString ();
+			_lblLastUpdate.Text = Settings.LastUpdate;
 		}
 		#endregion
 	}

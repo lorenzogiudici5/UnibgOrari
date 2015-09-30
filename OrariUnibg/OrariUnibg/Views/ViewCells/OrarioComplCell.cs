@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using Toasts.Forms.Plugin.Abstractions;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -144,7 +145,7 @@ namespace OrariUnibg.Views.ViewCells
 		async void AddAction_Clicked (object sender, EventArgs e)
 		{
 			var mi = ((Xamarin.Forms.MenuItem)sender);
-			var orario = mi.CommandParameter as CorsoGiornaliero;
+			var orario = mi.CommandParameter as CorsoCompleto ;
 			var toast = DependencyService.Get<IToastNotificator>();
 			if (_db.CheckAppartieneMieiCorsi (orario)) {
 				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));

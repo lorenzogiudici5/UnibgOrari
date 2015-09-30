@@ -192,6 +192,8 @@ namespace OrariUnibg.Views.ViewCells
 				_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
 				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
 			}
+
+
 		}
 		#endregion
 

@@ -154,9 +154,9 @@ namespace OrariUnibg.Views
 //                    new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
-			
-					layoutListaUtenza,
 					_activityIndicator,
+					layoutListaUtenza,
+
 //                    layoutUtenza,
 //					_listUtenze
                 }

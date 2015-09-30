@@ -10,6 +10,8 @@ namespace OrariUnibg
 		public GestionePreferitiView ()
 		{
 			_db = new DbSQLite ();
+			Title = "Corsi Preferiti";
+			Icon = null;
 			Content = getView ();
 		}
 		#endregion
@@ -25,7 +27,7 @@ namespace OrariUnibg
 			_listView = new ListView()
 			{
 				ItemTemplate = new DataTemplate(typeof(MieiCorsiCell)),
-				VerticalOptions = LayoutOptions.End,
+				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorColor = Color.Transparent,
 				HasUnevenRows = true,
 				ItemsSource = _db.GetAllMieiCorsi ()
