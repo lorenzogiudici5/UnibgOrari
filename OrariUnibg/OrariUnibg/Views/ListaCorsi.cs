@@ -78,31 +78,33 @@ namespace OrariUnibg.Views
             return layout;
         }
 
-        void _list_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
-                return;
-            var selected = (CorsoCompleto)_list.SelectedItem;
-
-            MieiCorsi newFavourite = new MieiCorsi() { Codice = selected.Codice, Insegnamento = selected.Insegnamento, Docente = selected.Docente };
-
-            int index = _preferiti.FindIndex(f => f.Insegnamento == newFavourite.Insegnamento);
-            if (index >= 0)
-            {
-                MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "deselect_fav", newFavourite);
-                _preferiti.RemoveAt(index);
-            }
-            else
-            {
-                MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "select_fav", newFavourite);
-                _preferiti.Add(newFavourite);
-            }
-
-            ((ListView)sender).SelectedItem = null;
-        }
+        
         #endregion
 
         #region Event Handlers
+		void _list_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
+				return;
+			var selected = (CorsoCompleto)_list.SelectedItem;
+
+			MieiCorsi newFavourite = new MieiCorsi() { Codice = selected.Codice, Insegnamento = selected.Insegnamento, Docente = selected.Docente };
+
+			int index = _preferiti.FindIndex(f => f.Insegnamento == newFavourite.Insegnamento);
+			if (index >= 0)
+			{
+				MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "deselect_fav", newFavourite);
+				_preferiti.RemoveAt(index);
+			}
+			else
+			{
+				MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "select_fav", newFavourite);
+				_preferiti.Add(newFavourite);
+			}
+
+			((ListView)sender).SelectedItem = null;
+		}
+
         private async void toolbarItem_next()
         {
 			ToolbarItems.Remove (tbiNext);

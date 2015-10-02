@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
+using System.Linq;
 
 namespace OrariUnibg
 {
@@ -18,7 +19,7 @@ namespace OrariUnibg
 		#endregion
 
 		#region Private Fields
-
+		private DbSQLite _db;
 		private Label _lblBackgroundSync;
 		private ViewCell _backgroundSyncCell;
 		private Switch _backgroundSyncSwitch;
@@ -31,7 +32,8 @@ namespace OrariUnibg
 		private ViewCell _lastUpdateCell;
 		private ViewCell _corsiPreferitiCell;
 		private Label _lblCorsiPreferiti;
-		private DbSQLite _db;
+		private ViewCell _versionCell;
+
 		#endregion
 
 		#region Private Methods
@@ -186,12 +188,32 @@ namespace OrariUnibg
 			var sectionFavourit = new TableSection ("Gestione Preferiti") { //TableSection constructor takes title as an optional parameter
 				_corsiPreferitiCell
 			};
+
+			var _versionLayout = new StackLayout () 
+			{
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = 
+				{
+					new Label() {Text = "Versione", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+					new Label () {Text = Settings.Versione, TextColor = ColorHelper.DarkGray}
+				}					
+			};
+			
+			_versionCell = new ViewCell () {View = _versionLayout, IsEnabled = false };
+
+			var sectionInfo = new TableSection ("Informazioni") {
+				_versionCell
+			};
 				
 			table.Root = new TableRoot () {
 				sectionSync,
-				sectionFavourit
+				sectionFavourit,
+				sectionInfo
 			};
-				
+
 			return table;
 		}
 
@@ -258,7 +280,7 @@ namespace OrariUnibg
 		protected override void OnAppearing ()
 		{
 			base.OnAppearing ();
-			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ();
+			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
 			_lblCorsiPreferiti.Text = getPreferitiString ();
 			_lblLastUpdate.Text = Settings.LastUpdate;
 		}
