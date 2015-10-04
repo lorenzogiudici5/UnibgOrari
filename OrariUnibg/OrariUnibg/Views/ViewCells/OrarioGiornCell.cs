@@ -212,7 +212,8 @@ namespace OrariUnibg.Views.ViewCells
 				case "Sospensione lezione":
 					return Color.FromHex("FF6666");
 				case "Cambio aula":
-					return Color.FromHex("FFFF66");
+					return ColorHelper.Yellow;
+					//return Color.FromHex("FFFF66");
 				case "Attività accademica":
 					return Color.FromHex("B0B0FF");
 				case "Attività integrativa":

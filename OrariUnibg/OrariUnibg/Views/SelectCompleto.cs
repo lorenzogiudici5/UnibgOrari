@@ -163,6 +163,10 @@ namespace OrariUnibg.Views
         }
 
 		#region EventHandlers
+		protected override bool OnBackButtonPressed ()
+		{
+			return true; //ALERT CHIUDERE APP??
+		}
         private async void btn_Clicked(object sender, EventArgs e)
         {
             Facolta fac = listFacolta.Where(x => x.Nome == pickerFacoltà.Items[pickerFacoltà.SelectedIndex]).First();

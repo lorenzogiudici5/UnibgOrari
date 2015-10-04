@@ -38,7 +38,7 @@ namespace OrariUnibg.Droid
 			{ 
 				ActionBar.SetIcon ( new ColorDrawable (Resources.GetColor (Android.Resource.Color.Transparent))); 
 			}
-        }
+		}
     }
 }
 

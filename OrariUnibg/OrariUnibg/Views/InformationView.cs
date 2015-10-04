@@ -16,7 +16,9 @@ namespace OrariUnibg.Views
     {
         #region Constructor
         public InformationView()
-        {
+		{
+			NavigationPage.SetHasNavigationBar (this, true);
+//			App.Current.MainPage = this;
             Title = "Informazioni";
             BackgroundColor = ColorHelper.White;
             Content = getView();
@@ -220,6 +222,11 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
+		protected override bool OnBackButtonPressed ()
+		{
+			return true;
+//			return base.OnBackButtonPressed ();
+		}
 		protected override void OnAppearing()
 		{
 			tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
@@ -283,6 +290,14 @@ namespace OrariUnibg.Views
 //            _activityIndicator.IsVisible = false;
 
             Settings.PrimoAvvio = false;
+
+			var nav = new NavigationPage (new ListaCorsi(lista_completo)) {
+				BarBackgroundColor = ColorHelper.Blue,
+				BarTextColor = ColorHelper.White
+			};
+
+
+//			await this.Navigation.PushModalAsync (nav);
 
             await Navigation.PushAsync(new ListaCorsi(lista_completo));
             //Navigation.PopModalAsync();

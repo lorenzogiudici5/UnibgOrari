@@ -33,6 +33,7 @@ namespace OrariUnibg
 		private ViewCell _corsiPreferitiCell;
 		private Label _lblCorsiPreferiti;
 		private ViewCell _versionCell;
+		private ViewCell _tutorialCell;
 
 		#endregion
 
@@ -189,6 +190,7 @@ namespace OrariUnibg
 				_corsiPreferitiCell
 			};
 
+			#region Version
 			var _versionLayout = new StackLayout () 
 			{
 				Padding = new Thickness(20, 10, 20, 10),
@@ -201,10 +203,27 @@ namespace OrariUnibg
 					new Label () {Text = Settings.Versione, TextColor = ColorHelper.DarkGray}
 				}					
 			};
-			
 			_versionCell = new ViewCell () {View = _versionLayout, IsEnabled = false };
+			#endregion
+
+			var _tutorialLayout = new StackLayout () 
+			{
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = 
+				{
+					new Label() {Text = "Tutorial", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+				}					
+				};
+
+			_tutorialCell = new ViewCell (){View = _tutorialLayout};
+			_tutorialCell.Tapped += async (object sender, EventArgs e) => await Navigation.PushModalAsync(new TutorialView());
+
 
 			var sectionInfo = new TableSection ("Informazioni") {
+				_tutorialCell,
 				_versionCell
 			};
 				
@@ -253,6 +272,10 @@ namespace OrariUnibg
 
 
 		#region EventHandlers
+		protected override bool OnBackButtonPressed ()
+		{
+			return true; //ALERT CHIUDERE APP??
+		}
 		async void _updateIntervallCell_Tapped (object sender, EventArgs e)
 		{
 			var interval = await DisplayActionSheet ("Scegli intervallo di aggiornamento", "Annulla", null, "1 ora", "3 ore", "6 ore", "12 ore", "24 ore");

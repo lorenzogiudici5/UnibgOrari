@@ -124,6 +124,7 @@
     <Compile Include="Services\SampleSchedulingService.cs" />
     <Compile Include="Splash.cs" />
     <Compile Include="Helpers\Logcat.cs" />
+    <Compile Include="Services\Methods_Android.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -221,6 +222,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_settings_gray.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_star.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_sync.png" />
+    <AndroidResource Include="Resources\Drawable\Screen1.png" />
+    <AndroidResource Include="Resources\Drawable\Screen2.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />

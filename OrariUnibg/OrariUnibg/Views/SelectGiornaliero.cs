@@ -130,6 +130,11 @@ namespace OrariUnibg.Views
 			#endregion
 
 		#region EventHandlers
+		protected override bool OnBackButtonPressed ()
+		{
+			return true; //ALERT CHIUDERE APP??
+		}
+
         private async void btn_Clicked(object sender, EventArgs e)
         {
             lblError.IsVisible = false;

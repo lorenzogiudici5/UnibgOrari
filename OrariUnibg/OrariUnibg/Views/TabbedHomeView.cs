@@ -27,23 +27,7 @@ namespace OrariUnibg.Views
             //BackgroundColor = ColorHelper.White;
 
 			checkDays (); //controllo che giorni sono necessari nelle tab
-			loadListCorsiGiorno(); //carico la lista dei giorni
-
-//            _oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data, dateX.Date) == 0);
-//            _oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _oggi.Data);
-//            
-//            _domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data, dateX.Date) == 0);
-//            _domani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _domani.Data);
-//            
-//            _dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data, dateX.Date) == 0);
-//            _dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _dopodomani.Data);
-//
-//
-//			listGiorni = new List<Giorno>()
-//            {
-//                _oggi, _domani, _dopodomani
-//            };
-//			this.ItemsSource = listGiorni;            
+			loadListCorsiGiorno(); //carico la lista dei giorni         
 
             this.ItemTemplate = new DataTemplate(() =>
             {
@@ -238,6 +222,12 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
+		protected override bool OnBackButtonPressed ()
+		{
+			DependencyService.Get<IMethods>().Close_App(); //altrmenti nulla
+			return true;
+//			return true; //ALERT CHIUDERE APP??
+		}
 		protected async override void OnAppearing()
 		{
 			var utenze = _db.GetAllUtenze ();
