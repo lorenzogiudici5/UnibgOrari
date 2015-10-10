@@ -26,7 +26,7 @@ namespace OrariUnibg.Views.ViewCells
             View = new StackLayout
             {
                 Padding = new Thickness(10, 5, 10, 5),
-                BackgroundColor = ColorHelper.Blue,
+                BackgroundColor = ColorHelper.Blue700,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Orientation = StackOrientation.Horizontal,
                 Children = { title }

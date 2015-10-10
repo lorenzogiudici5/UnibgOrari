@@ -29,19 +29,29 @@ namespace OrariUnibg.Views
             NavigationPage.SetHasNavigationBar(this, false);
             Master = master = new MasterView(ViewModel);
 
-            var homeNav = new NavigationPage(new TabbedHomeView())
-            {
-                BarBackgroundColor = ColorHelper.Blue,
-                BarTextColor = ColorHelper.White
-            };
+			NavigationPage homeNav;
+			if (Settings.SuccessLogin) {
+				homeNav = new NavigationPage (new TabbedHomeView ()) {
+					BarBackgroundColor = ColorHelper.Blue700,
+					BarTextColor = ColorHelper.White
+				};
+
+			} else {
+				homeNav = new NavigationPage (new HomeSkipView ()) {
+					BarBackgroundColor = ColorHelper.Blue700,
+					BarTextColor = ColorHelper.White
+				};
+
+			}
+
             Detail = homeNav;
             IsPresented = false;
+			pages.Add (MenuType.Home, homeNav);
 
-            pages.Add(MenuType.Home, homeNav);
+//			App.Current.MainPage = this;
 
             master.PageSelectionChanged = (menuType) =>
             {
-
                 NavigationPage newPage;
                 if (pages.ContainsKey(menuType))
                 {
@@ -51,7 +61,7 @@ namespace OrariUnibg.Views
                 {
                     newPage = new NavigationPage(master.PageSelection)
                     {
-                        BarBackgroundColor = ColorHelper.Blue,
+                        BarBackgroundColor = ColorHelper.Blue700,
                         BarTextColor = Color.White
                     };
                     pages.Add(menuType, newPage);
@@ -108,6 +118,12 @@ namespace OrariUnibg.Views
                 Text = string.Format("{0} - {1}", Settings.Email, Settings.Matricola),
                 TextColor = ColorHelper.White,
             };
+
+			var _lblAnonimo = new Label () {
+				FontSize = Device.GetNamedSize(NamedSize.Large, this),
+				Text = "Accesso Anonimo",
+				TextColor = ColorHelper.White,
+			};
             //var _lblFacoltà = new Label()
             //{
             //    Text = Settings.Facolta,
@@ -135,9 +151,17 @@ namespace OrariUnibg.Views
             {
                 Padding = new Thickness(15, 40, 10, 15),
                 Spacing = 0,
-                BackgroundColor = ColorHelper.Blue,
-                Children = { _lblUtente, _lblMail }
+                BackgroundColor = ColorHelper.Blue700,
+//                Children = { _lblUtente, _lblMail }
             };
+
+			if (Settings.SuccessLogin) {
+				layoutUser.Children.Add (_lblUtente);
+				layoutUser.Children.Add (_lblMail);
+			}
+			else
+				layoutUser.Children.Add (_lblAnonimo);
+
 
             _listView = new ListView()
             {
@@ -152,7 +176,9 @@ namespace OrariUnibg.Views
             //PageSelection = mainView;
 
             _listView.ItemSelected += _listView_ItemSelected;
-            _listView.SelectedItem = viewModel.MenuItems[0];
+			_listView.SelectedItem = viewModel.MenuItems.FirstOrDefault ();
+
+			_listView.SelectedItem = viewModel.MenuItems [0];
 
             var scrollview = new ScrollView()
             {
@@ -180,41 +206,47 @@ namespace OrariUnibg.Views
 
             var menuItem = _listView.SelectedItem as OrariUnibg.Models.MenuItem;
             menuType = menuItem.MenuType;
+
             foreach (var x in _viewModel.MenuItems)
                 x.Selected = false;
+			
             switch (menuItem.MenuType)
             {
-            case MenuType.Home:
-                if (mainView == null)
-                    mainView = new TabbedHomeView();
+	            case MenuType.Home:
+	                if (mainView == null)
+	                    mainView = new TabbedHomeView();
 
-                _viewModel.MenuItems[0].Selected = true;
-                PageSelection = mainView;
-                break;
+//	                _viewModel.MenuItems[0].Selected = true;
+					_viewModel.MenuItems.Where(x => x.Id == 0).FirstOrDefault().Selected = true;
+	                PageSelection = mainView;
+	                break;
 
-            case MenuType.Giornaliero:
-                if (selectGiornView == null)
-                    selectGiornView = new SelectGiornaliero();
+	            case MenuType.Giornaliero:
+	                if (selectGiornView == null)
+	                    selectGiornView = new SelectGiornaliero();
 
-                _viewModel.MenuItems[1].Selected = true;
-                PageSelection = selectGiornView;
-                break;
+//	                _viewModel.MenuItems[1].Selected = true;
+				_viewModel.MenuItems.Where(x => x.Id == 1).FirstOrDefault().Selected = true;
+	                PageSelection = selectGiornView;
+	                break;
 
-            case MenuType.Completo:
-                if (selectCompletoView == null)
-                    selectCompletoView = new SelectCompleto();
+	            case MenuType.Completo:
+	                if (selectCompletoView == null)
+	                    selectCompletoView = new SelectCompleto();
 
-                _viewModel.MenuItems[2].Selected = true;
-                PageSelection = selectCompletoView;
-                break;
+//	                _viewModel.MenuItems[2].Selected = true;
+				_viewModel.MenuItems.Where(x => x.Id == 2).FirstOrDefault().Selected = true;
+	                PageSelection = selectCompletoView;
+	                break;
 
-			case MenuType.Impostazioni:
-				if (impostazioniView == null)
-					impostazioniView = new ImpostazioniView();
+				case MenuType.Impostazioni:
+					if (impostazioniView == null)
+						impostazioniView = new ImpostazioniView();
 
-				_viewModel.MenuItems[3].Selected = true;
-				PageSelection = impostazioniView;
-				break;
+//					_viewModel.MenuItems[3].Selected = true;
+				_viewModel.MenuItems.Where(x => x.Id == 3).FirstOrDefault().Selected = true;
+					PageSelection = impostazioniView;
+					break;
 
                 //case MenuType.Esami:
                 //    if (downloadView == null)

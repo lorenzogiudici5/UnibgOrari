@@ -34,7 +34,7 @@ namespace OrariUnibg.Views.ViewCells
 			var lblCorso = new Label()
 			{
 				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				TextColor = ColorHelper.Blue,
+				TextColor = ColorHelper.Blue700,
 			};
 
 			var lblDocente = new Label()
@@ -132,6 +132,9 @@ namespace OrariUnibg.Views.ViewCells
 
 		private void setUpContextAction()
 		{
+			if (!Settings.SuccessLogin) { //se non sono loggato, non posso aggiungere o rimuovere corsi dai preferiti
+				return;
+			}
 			//ADD
 			addAction = new Xamarin.Forms.MenuItem { Text="Aggiungi ai preferiti"};
 			addAction.SetBinding(Xamarin.Forms.MenuItem.CommandParameterProperty, new Binding ("."));

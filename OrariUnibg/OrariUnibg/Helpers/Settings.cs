@@ -23,6 +23,7 @@ namespace OrariUnibg.Helpers
 		private const string VersionKey = "version_key";
        	private const string SettingsKey = "settings_key";
        	private const string PrimoAvvioKey = "primoAvvio_key";
+		private const string SuccessLoginKey = "successLogin_key";
        	private const string FacoltaKey = "facolta_key";
        	private const string DBFacoltaKey = "DBfacolta_key";
        	private const string LaureaKey = "laurea_key";
@@ -72,17 +73,30 @@ namespace OrariUnibg.Helpers
 			}
 		}
 
-    public static bool PrimoAvvio
-    {
-        get
-        {
-            return AppSettings.GetValueOrDefault(PrimoAvvioKey, DefaultBool);
-        }
-        set
-        {
-            AppSettings.AddOrUpdateValue(PrimoAvvioKey, value);
-        }
-    }
+	    public static bool PrimoAvvio
+	    {
+	        get
+	        {
+	            return AppSettings.GetValueOrDefault(PrimoAvvioKey, DefaultBool);
+	        }
+	        set
+	        {
+	            AppSettings.AddOrUpdateValue(PrimoAvvioKey, value);
+	        }
+	    }
+
+		public static bool SuccessLogin
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(SuccessLoginKey, false);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(SuccessLoginKey, value);
+			}
+		}
+
     public static bool BackgroundSync
     {
       get

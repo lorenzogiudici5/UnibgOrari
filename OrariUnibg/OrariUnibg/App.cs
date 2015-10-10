@@ -14,11 +14,11 @@ namespace OrariUnibg
     {
         public App()
         {
-            if (Settings.PrimoAvvio)
+            if (Settings.PrimoAvvio) //prima volta che avvio la app
             {
 //                var nav = new NavigationPage(new InformationView())
 //                {
-//                    BarBackgroundColor = ColorHelper.Blue,
+//                    BarBackgroundColor = ColorHelper.Blue700,
 //                    BarTextColor = ColorHelper.White
 //                };
 //                MainPage = nav;
@@ -26,10 +26,11 @@ namespace OrariUnibg
             }
             else
             {
-                MainPage = new MasterDetailView();
+				if (Settings.SuccessLogin) //login effettuto con successo
+					MainPage = new MasterDetailView ();
+				else //utente non login
+					MainPage = new LoginView ();
             }
-
-//			MainPage = new TutorialView ();
             
         }
 
@@ -39,7 +40,7 @@ namespace OrariUnibg
         //    {
         //        var nav = new NavigationPage(new InformationView())
         //        {
-        //            BarBackgroundColor = ColorHelper.Blue,
+        //            BarBackgroundColor = ColorHelper.Blue700,
         //            BarTextColor = ColorHelper.White
         //        };
         //        return nav;

@@ -38,7 +38,7 @@ namespace OrariUnibg.Views.ViewCells
 			_lblInsegnamento = new Label()
 			{
 				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				TextColor = ColorHelper.Blue,
+				TextColor = ColorHelper.Blue700,
 			};
 
 			_lblDocente = new Label()
@@ -64,7 +64,7 @@ namespace OrariUnibg.Views.ViewCells
 			MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "select_fav", (sender, arg) =>
 				{
 					if(arg.Insegnamento == _lblInsegnamento.Text)
-						_layout.BackgroundColor = ColorHelper.LightBlue;
+						_layout.BackgroundColor = ColorHelper.LightBlue500;
 				});
 			MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "deselect_fav", (sender, arg) =>
 				{
@@ -87,6 +87,9 @@ namespace OrariUnibg.Views.ViewCells
 
 		private void setUpContextAction()
 		{
+			if (!Settings.SuccessLogin) { //se non sono loggato, non posso aggiungere o rimuovere corsi dai preferiti
+				return;
+			}
 			//ADD
 			addAction = new Xamarin.Forms.MenuItem { Text="Aggiungi ai preferiti"};
 			addAction.SetBinding(Xamarin.Forms.MenuItem.CommandParameterProperty, new Binding ("."));

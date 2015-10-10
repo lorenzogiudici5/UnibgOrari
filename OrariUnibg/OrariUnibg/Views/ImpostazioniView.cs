@@ -34,7 +34,7 @@ namespace OrariUnibg
 		private Label _lblCorsiPreferiti;
 		private ViewCell _versionCell;
 		private ViewCell _tutorialCell;
-
+		private ViewCell _logoutCell;
 		#endregion
 
 		#region Private Methods
@@ -190,6 +190,24 @@ namespace OrariUnibg
 				_corsiPreferitiCell
 			};
 
+
+			#region Tutorial
+			var _tutorialLayout = new StackLayout () 
+			{
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = 
+				{
+					new Label() {Text = "Tutorial", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+				}					
+				};
+
+			_tutorialCell = new ViewCell (){View = _tutorialLayout};
+			_tutorialCell.Tapped += async (object sender, EventArgs e) => await Navigation.PushModalAsync(new TutorialView());
+			#endregion
+
 			#region Version
 			var _versionLayout = new StackLayout () 
 			{
@@ -206,7 +224,8 @@ namespace OrariUnibg
 			_versionCell = new ViewCell () {View = _versionLayout, IsEnabled = false };
 			#endregion
 
-			var _tutorialLayout = new StackLayout () 
+			#region Logout
+			var _logoutLayout = new StackLayout () 
 			{
 				Padding = new Thickness(20, 10, 20, 10),
 				Orientation = StackOrientation.Vertical,
@@ -214,17 +233,20 @@ namespace OrariUnibg
 				Spacing = 3,
 				Children = 
 				{
-					new Label() {Text = "Tutorial", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+					new Label() {Text = "Esci", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
 				}					
-				};
+			};
 
-			_tutorialCell = new ViewCell (){View = _tutorialLayout};
-			_tutorialCell.Tapped += async (object sender, EventArgs e) => await Navigation.PushModalAsync(new TutorialView());
+			_logoutCell = new ViewCell (){View = _logoutLayout};
+			_logoutCell.Tapped += _logoutCell_Tapped;
+			#endregion
+
 
 
 			var sectionInfo = new TableSection ("Informazioni") {
 				_tutorialCell,
-				_versionCell
+				_versionCell,
+				_logoutCell
 			};
 				
 			table.Root = new TableRoot () {
@@ -300,6 +322,11 @@ namespace OrariUnibg
 			_lblInterval.Text = getIntervalString ();
 		}
 
+		async void _logoutCell_Tapped (object sender, EventArgs e)
+		{
+			Settings.SuccessLogin = false;
+			await Navigation.PushModalAsync(new LoginView());
+		}
 		protected override void OnAppearing ()
 		{
 			base.OnAppearing ();

@@ -290,17 +290,14 @@ namespace OrariUnibg.Views
 //            _activityIndicator.IsVisible = false;
 
             Settings.PrimoAvvio = false;
+			Settings.SuccessLogin = true;
 
 			var nav = new NavigationPage (new ListaCorsi(lista_completo)) {
-				BarBackgroundColor = ColorHelper.Blue,
+				BarBackgroundColor = ColorHelper.Blue700,
 				BarTextColor = ColorHelper.White
 			};
 
-
-//			await this.Navigation.PushModalAsync (nav);
-
             await Navigation.PushAsync(new ListaCorsi(lista_completo));
-            //Navigation.PopModalAsync();
         }
 
         void _entryCognome_TextChanged(object sender, TextChangedEventArgs e)

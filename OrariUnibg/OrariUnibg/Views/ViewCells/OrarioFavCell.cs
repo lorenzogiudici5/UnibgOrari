@@ -41,7 +41,7 @@ namespace OrariUnibg
 			_lblCorso = new Label()
 			{
 				FontSize = Device.GetNamedSize(NamedSize.Default, this),
-				TextColor = ColorHelper.Blue,
+				TextColor = ColorHelper.Blue700,
 				//HorizontalOptions = LayoutOptions.FillAndExpand
 			};
 			_lblCorso.SetBinding(Label.TextProperty, "Insegnamento");

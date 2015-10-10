@@ -144,7 +144,7 @@ namespace OrariUnibg.Views
 			{
 				VerticalOptions = LayoutOptions.EndAndExpand,
 				Text = "Ricerca",
-				BackgroundColor = ColorHelper.Blue,
+				BackgroundColor = ColorHelper.Blue700,
 				TextColor = ColorHelper.White,
 				BorderColor = ColorHelper.White,
 			};

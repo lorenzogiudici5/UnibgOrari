@@ -11,11 +11,11 @@ namespace OrariUnibg.Helpers
     {
         //public static Color Blue = Color.FromHex("10528c");
 		public static Color Transparent = Color.Transparent;
-        public static Color LightBlue = Color.FromHex("29b6f6"); 
+		public static Color LightBlue500 = Color.FromHex("03A9F4"); //accent500
         public static Color DarkBlue = Color.FromHex("01579b");
 //		public static Color Blue = Color.FromHex("0277bd"); 
-//		public static Color Blue = Color.FromHex("2196F3"); //accent 500
-		public static Color Blue = Color.FromHex("1976D2"); //accent 700
+		public static Color Blue500 = Color.FromHex("2196F3"); //accent 700
+		public static Color Blue700 = Color.FromHex("1976D2"); //accent 700
 		public static Color Yellow = Color.FromHex("FFEB3B");
         public static Color White = Color.White;
         public static Color Green = Color.Green;

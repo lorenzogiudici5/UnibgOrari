@@ -66,7 +66,7 @@ namespace OrariUniBg.Views.ViewCells
             //{
             //    if (arg.Title == _lblTitle.Text)
             //    {
-            //        layout.BackgroundColor = ColorHelper.LightBlue;
+            //        layout.BackgroundColor = ColorHelper.LightBlue500;
             //    }
             //});
 
@@ -95,7 +95,7 @@ namespace OrariUniBg.Views.ViewCells
             if (value is bool)
             {
                 if ((bool)value)
-                    return ColorHelper.Blue;
+                    return ColorHelper.Blue700;
                 else
                     return ColorHelper.Black;
             }

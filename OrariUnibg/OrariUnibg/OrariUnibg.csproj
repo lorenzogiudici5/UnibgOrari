@@ -88,6 +88,8 @@
     <Compile Include="Views\TutorialView.cs" />
     <Compile Include="Services\IMethods.cs" />
     <Compile Include="Views\ViewCells\OrarioGiornCell.cs" />
+    <Compile Include="Views\HomeSkipView.cs" />
+    <Compile Include="Views\LoginView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">

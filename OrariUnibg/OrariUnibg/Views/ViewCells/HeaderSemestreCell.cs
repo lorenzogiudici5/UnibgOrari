@@ -38,7 +38,7 @@ namespace OrariUnibg.Views.ViewCells
             {
                Padding = new Thickness(10, 5, 10, 5),
                // BackgroundColor = ColorHelper.White,
-                BackgroundColor = ColorHelper.Blue,
+                BackgroundColor = ColorHelper.Blue700,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 //Padding = new Thickness(10),
                 Children = { _lblTitle }
