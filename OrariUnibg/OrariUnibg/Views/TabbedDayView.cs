@@ -58,7 +58,7 @@ namespace OrariUnibg.Views
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 Text = "Rilassati! Non hai lezioni!",
-                TextColor = ColorHelper.Green,
+				TextColor = ColorHelper.Green500,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
             _lblInfo.SetBinding(Label.IsVisibleProperty, new Binding("ListaLezioni", converter: new IsVisibleCountConverter()));
@@ -68,7 +68,7 @@ namespace OrariUnibg.Views
             _listView = new ListView()
             {
                 ItemTemplate = new DataTemplate(typeof(OrarioFavCell)),
-				VerticalOptions = LayoutOptions.End,
+				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorColor = Color.Transparent,
                 HasUnevenRows = true,
             };
@@ -154,9 +154,8 @@ namespace OrariUnibg.Views
 //                    new StackLayout() {Padding = new Thickness(15, 10, 15, 10), BackgroundColor = ColorHelper.White, Orientation = StackOrientation.Horizontal, Spacing = 5, Children = {_lblDay, _lblDate}},
                     _lblInfo,
                     _listView,
-					_activityIndicator,
 					layoutListaUtenza,
-
+					_activityIndicator,
 //                    layoutUtenza,
 //					_listUtenze
                 }

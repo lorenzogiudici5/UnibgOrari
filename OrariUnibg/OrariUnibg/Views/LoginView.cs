@@ -68,7 +68,7 @@ namespace OrariUnibg
 			var _btnRegister = new Button () {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "             Registrati             ",
+				Text = "                 Registrati                 ",
 				FontSize = Device.GetNamedSize (NamedSize.Medium, this),
 				TextColor = ColorHelper.White,
 				BackgroundColor = ColorHelper.LightBlue500,

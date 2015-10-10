@@ -108,7 +108,7 @@ namespace OrariUnibg.Views
             lblError = new Label()
             {
                 Text = "ORARIO NON DISPONIBILE O IN CORSO DI DEFINIZIONE",
-                TextColor = ColorHelper.Red,
+                TextColor = ColorHelper.Red500,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 FontSize = Device.GetNamedSize(NamedSize.Small, this),
                 IsVisible = false,

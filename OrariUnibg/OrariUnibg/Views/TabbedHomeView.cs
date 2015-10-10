@@ -199,6 +199,7 @@ namespace OrariUnibg.Views
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
+			_db.CheckUtenzeDoppioni ();
         }
 
         private void loadListCorsiGiorno()

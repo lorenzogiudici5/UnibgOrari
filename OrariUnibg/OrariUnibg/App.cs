@@ -16,12 +16,6 @@ namespace OrariUnibg
         {
             if (Settings.PrimoAvvio) //prima volta che avvio la app
             {
-//                var nav = new NavigationPage(new InformationView())
-//                {
-//                    BarBackgroundColor = ColorHelper.Blue700,
-//                    BarTextColor = ColorHelper.White
-//                };
-//                MainPage = nav;
 				MainPage = new TutorialView();
             }
             else

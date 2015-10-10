@@ -38,6 +38,7 @@ namespace OrariUnibg.Services
                 s = s.Replace("&nbsp;", "");
                 s = s.Replace("&agrave;", "à");
                 s = s.Replace("&egrave;", "è");
+				s = s.Replace("&quot;", "'");
             }
             catch(Exception ex)
             {

@@ -125,7 +125,7 @@ namespace OrariUnibg.Views.ViewCells
             grid.Children.Add(_lblNote, 0, 2, 3, 4);
 
 			var layoutInt = new StackLayout () {
-				Padding = new Thickness (5, 0, 0, 0), 
+				Padding = new Thickness (6, 0, 0, 0), 
 				HeightRequest = grid.Height,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 			};
@@ -213,20 +213,19 @@ namespace OrariUnibg.Views.ViewCells
 				switch ((string)value)
 				{
 				case "Sospensione lezione":
-					return Color.FromHex("FF6666");
+					return ColorHelper.Red500;
 				case "Cambio aula":
-					return ColorHelper.Yellow;
-					//return Color.FromHex("FFFF66");
+					return ColorHelper.Yellow500;
 				case "Attività accademica":
-					return Color.FromHex("B0B0FF");
+					return ColorHelper.DeepPurple500;
 				case "Attività integrativa":
-					return Color.Pink;
+					return ColorHelper.Pink500;
 				case "Esame":
-					return Color.FromHex("A0FFA0");
+					return ColorHelper.LightGreen500;
 				case "Alta formazione":
-					return Color.FromHex("A0FFFF");
+					return ColorHelper.CyanA100;
 				case "Recupero lezione":
-					return Color.FromHex("00DD00");
+					return ColorHelper.Green500;
 				default:
 					return Color.White; // per sfondo layout
 				}

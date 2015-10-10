@@ -24,7 +24,10 @@ namespace OrariUnibg
 		private View getView()
 		{
 			_lblLogin = new Label () {
-				Text = "Effettuando il login potrai usufruire di interessanti funzionalità, quali: ",
+				Text = "Effettua il login per sfruttare al meglio OrariUniBg! \n" +
+					"- Ricevi notifiche se una lezione viene sospesa . ." +
+					"- Aggiungi i tuoi corsi preferiti" +
+					"- . . e molto altro ancora!",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 			};
 

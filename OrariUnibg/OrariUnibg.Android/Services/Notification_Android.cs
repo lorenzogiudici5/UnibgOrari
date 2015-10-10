@@ -14,6 +14,7 @@ using OrariUnibg.Services;
 using Java.Util;
 using OrariUnibg.Models;
 using OrariUnibg.Helpers;
+using System.Globalization;
 
 
 [assembly: Dependency(typeof(OrariUnibg.Droid.Services.Notifications.Notification_Android))]
@@ -52,7 +53,8 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
             inboxStyle.AddLine(l.Insegnamento);
-			inboxStyle.AddLine(l.Date.DayOfWeek + ", " + l.Date.ToShortDateString());
+			var day = l.Date.ToString("dddd", new CultureInfo("it-IT")).ToUpper();
+			inboxStyle.AddLine(day + ", " + l.Date.ToShortDateString());
 			inboxStyle.AddLine(l.AulaOra);
             inboxStyle.AddLine(l.Docente);
             builder.SetStyle(inboxStyle);
