@@ -174,6 +174,10 @@ namespace OrariUnibg.Views
 				}
 			});
 
+			MessagingCenter.Subscribe<TabbedHomeView>(this, "share", (sender) => {
+
+				});
+
             return layout;
         }
         #endregion

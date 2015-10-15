@@ -35,7 +35,9 @@ namespace OrariUnibg.Views
             });
 
             tbiSync = new ToolbarItem("Sync", "ic_sync.png", sync, 0, 0);
+			tbiShare = new ToolbarItem ("Share", "ic_next.png", share, 0, 0);
             ToolbarItems.Add(tbiSync);
+			ToolbarItems.Add(tbiShare);
 
 
 			MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", (sender) => {
@@ -60,6 +62,7 @@ namespace OrariUnibg.Views
         private Giorno _domani;
         private Giorno _dopodomani;
         private ToolbarItem tbiSync;
+		private ToolbarItem tbiShare;
 		#endregion
                   
 		#region Public Methods
@@ -169,6 +172,11 @@ namespace OrariUnibg.Views
 
 			ToolbarItems.Add(tbiSync);
 			MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+		}
+
+		private async void share()
+		{
+//			MessagingCenter.Send<TabbedHomeView, List<CorsoGiornaliero>>(this, "share", listacorsi);
 		}
 
         private async Task updateDbOrariUtenza()

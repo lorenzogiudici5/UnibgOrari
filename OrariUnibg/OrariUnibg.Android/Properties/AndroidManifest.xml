@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="it.lorenzogiudici5.unibgg" android:versionCode="1" android:versionName="Beta3">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="it.lorenzogiudici5.unibgg" android:versionCode="1" android:versionName="Beta4">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
 	<application android:theme="@style/MyTheme" android:label="OrariUniBg" android:icon="@drawable/LogoUnibg"></application>
 	<application>

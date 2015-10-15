@@ -27,12 +27,13 @@ namespace OrariUnibg.Views
         #region Private Fields
         private ListView lv;
         private List<CorsoCompleto> lista;
+		private IEnumerable<IGrouping<Lezione.Day, CorsoCompletoGroupViewModel>> listaGroup;
         //private List<CorsoCompleto> OriginalList;
         private DbSQLite _db;
         private OrariCompletoViewModel _viewModel;
         private ToolbarItem tbiShowFav;
         private ToolbarItem tbiShowAll;
-
+		private ToolbarItem tbiShare;
         #endregion
 
         #region Private Methods
@@ -98,8 +99,11 @@ namespace OrariUnibg.Views
 
             tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
             tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
+			tbiShare = new ToolbarItem ("Share", "ic_next.png", share, 0, 1);
 
-            ToolbarItems.Add(tbiShowFav);
+			if(Settings.SuccessLogin)
+				ToolbarItems.Add(tbiShowFav);
+			ToolbarItems.Add(tbiShare);
             //ToolbarItems.Add(tbiShowAll);
 
             return layout;
@@ -108,7 +112,7 @@ namespace OrariUnibg.Views
         {
             if (_viewModel.Group)
             {
-                var listaGroup = from corso in lista
+				listaGroup = from corso in lista
                                  from lez in corso.Lezioni
                                  orderby lez.Ora
                                  where lez.AulaOra != string.Empty
@@ -136,9 +140,33 @@ namespace OrariUnibg.Views
 
 
         }
+
+		private string ListGroupToString()
+		{
+			string text = string.Format ("ORARIO COMPLETO: {0} - {1} \n\n", _viewModel.LaureaString, _viewModel.AnnoSemestre);
+			var days = Enum.GetValues (typeof(OrariUnibg.Models.Lezione.Day));
+			foreach (var day in days) {
+				
+				var list = listaGroup.Where (z => z.Key.ToString() == day.ToString()).SelectMany(value => value);
+				if(list.Count ()>0)
+					text += string.Format ("{0}\n{1}\n\n", day.ToString ().ToUpper (), string.Join("\n", list));
+			}
+
+			return text;
+		}
         #endregion
 
         #region Event Handlers
+		private void share()
+		{
+			string text;
+			if (_viewModel.Group)
+				text = ListGroupToString();
+			else
+				text = _viewModel.ToString ();
+			
+			DependencyService.Get<IMethods> ().Share (text);
+		}
 //		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
 //		{
 //			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared

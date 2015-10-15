@@ -59,5 +59,10 @@ namespace OrariUnibg.Models
                 else return false;
             }
         }
+
+		public override string ToString ()
+		{
+			return string.Format ("{0} \n{1}\n", InsegnamentoToString(), string.Join("\n", Lezioni.Where(x => x.AulaOra != string.Empty)));
+		}
     }
 }

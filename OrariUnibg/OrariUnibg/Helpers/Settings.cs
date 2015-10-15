@@ -50,7 +50,7 @@ namespace OrariUnibg.Helpers
 
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-		private static readonly string VersionString = "1.1.3";
+		private static readonly string VersionString = "1.1.4";
       	private static readonly string DefaultString = string.Empty;
 		private static readonly int DefaultValue = 0;
       	private static readonly bool DefaultBool = true;

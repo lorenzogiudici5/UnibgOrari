@@ -31,5 +31,12 @@ namespace OrariUnibg.ViewModels
         public DateTime Data { get; set; }
         public String DataString { get { return string.Format("ORARIO DEL GIORNO: {0}", Data.ToString("dd'/'MM'/'yyyy")); } }
 
+
+		#region Public Methods
+		public override string ToString ()
+		{
+			return string.Format("{0} \n\n{1}", DataString, string.Join("\n", ListOrari));
+		}
+		#endregion
     }
 }

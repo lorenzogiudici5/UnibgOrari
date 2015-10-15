@@ -11,5 +11,11 @@ namespace OrariUnibg.Models
         public string Insegnamento { get; set; }
         public string Codice { get; set; }
         public string Docente { get; set; }
+
+		public String InsegnamentoToString()
+		{
+			var stringa = Insegnamento.Split ('(');
+			return stringa [0];
+		}
     }
 }

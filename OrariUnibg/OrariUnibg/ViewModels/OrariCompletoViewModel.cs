@@ -32,5 +32,12 @@ namespace OrariUnibg.ViewModels
         public String Semestre { get; set; }
         public bool Group { get; set; }
         public String AnnoSemestre { get { return string.Format("{0}: {1} semestre", Anno, Semestre); } }
+
+		#region Public Methods
+		public override string ToString ()
+		{
+			return string.Format ("ORARIO COMPLETO: {0} - {1} \n\n{2}", LaureaString, AnnoSemestre, string.Join("\n", ListOrari));
+		}
+		#endregion
     }
 }

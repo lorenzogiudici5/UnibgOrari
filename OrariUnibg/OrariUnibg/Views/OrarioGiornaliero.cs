@@ -31,6 +31,7 @@ namespace OrariUnibg.Views
         private List<CorsoGiornaliero> _listOriginal;
         private ToolbarItem tbiShowFav;
         private ToolbarItem tbiShowAll;
+		private ToolbarItem tbiShare;
         #endregion
 
         #region Private Methods
@@ -99,8 +100,11 @@ namespace OrariUnibg.Views
 
             tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
             tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
+			tbiShare = new ToolbarItem ("Share", "ic_next.png", share, 0, 1);
 
-            ToolbarItems.Add(tbiShowFav);
+			if(Settings.SuccessLogin)
+            	ToolbarItems.Add(tbiShowFav);
+			ToolbarItems.Add(tbiShare);
             //ToolbarItems.Add(tbiShowAll);
 
             return l;
@@ -156,7 +160,11 @@ namespace OrariUnibg.Views
 //
 //			((ListView)sender).SelectedItem = null;
 //		}
-
+		private void share()
+		{
+			string text = _viewModel.ToString ();
+			DependencyService.Get<IMethods> ().Share (text);
+		}
         private void showAll()
         {
             ToolbarItems.Clear();

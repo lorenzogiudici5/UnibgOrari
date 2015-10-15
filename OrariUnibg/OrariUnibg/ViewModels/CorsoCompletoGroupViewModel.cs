@@ -92,5 +92,10 @@ namespace OrariUnibg.ViewModels
         public int Day { get; set; }
 
         //lez.isVisible, lez.Giorno, lez.Note, lez.day
+
+		public override string ToString ()
+		{
+			return string.Format ("{0}: {1} ({2}), ", Ora, InsegnamentoToString(),  Aula);
+		}
     }
 }
