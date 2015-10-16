@@ -31,13 +31,29 @@ namespace OrariUnibg.Views
         private List<CorsoGiornaliero> _listOriginal;
         private ToolbarItem tbiShowFav;
         private ToolbarItem tbiShowAll;
-		private ToolbarItem tbiShare;
+//		private ToolbarItem tbiShare;
         #endregion
 
         #region Private Methods
 
         private View getView()
         {
+			var fab = new FloatingActionButtonView() {
+				ImageName = "ic_sharee.png",
+				ColorNormal = ColorHelper.Blue500,
+				ColorPressed = ColorHelper.Blue900,
+				ColorRipple = ColorHelper.Blue500,
+				Size = FloatingActionButtonSize.Normal,
+				Clicked = (sender, args) => 
+				{
+					string text = _viewModel.ToString ();
+					DependencyService.Get<IMethods> ().Share (text);
+				}
+//				ColorNormal = Color.FromHex("ff3498db"),
+//				ColorPressed = Color.Black,
+//				ColorRipple = Color.FromHex("ff3498db")
+			};
+
             var lblData = new Label()
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, this),
@@ -100,14 +116,32 @@ namespace OrariUnibg.Views
 
             tbiShowFav = new ToolbarItem("Mostra preferiti", "ic_nostar.png", showFavourites, 0, 0);
             tbiShowAll = new ToolbarItem("Mostra tutti", "ic_star.png", showAll, 0, 0);
-			tbiShare = new ToolbarItem ("Share", "ic_next.png", share, 0, 1);
+//			tbiShare = new ToolbarItem ("Share", "ic_next.png", share, 0, 1);
 
 			if(Settings.SuccessLogin)
             	ToolbarItems.Add(tbiShowFav);
-			ToolbarItems.Add(tbiShare);
+//			ToolbarItems.Add(tbiShare);
             //ToolbarItems.Add(tbiShowAll);
 
-            return l;
+
+			var absolute = new AbsoluteLayout() { 
+				VerticalOptions = LayoutOptions.FillAndExpand, 
+				HorizontalOptions = LayoutOptions.FillAndExpand };
+
+			// Position the pageLayout to fill the entire screen.
+			// Manage positioning of child elements on the page by editing the pageLayout.
+			AbsoluteLayout.SetLayoutFlags(l, AbsoluteLayoutFlags.All);
+			AbsoluteLayout.SetLayoutBounds(l, new Rectangle(0f, 0f, 1f, 1f));
+			absolute.Children.Add(l);
+
+			// Overlay the FAB in the bottom-right corner
+			AbsoluteLayout.SetLayoutFlags(fab, AbsoluteLayoutFlags.PositionProportional);
+			AbsoluteLayout.SetLayoutBounds(fab, new Rectangle(1f, 1f, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize));
+			absolute.Children.Add(fab);
+
+
+//            return l;
+			return absolute;
 
         }
 
@@ -167,13 +201,15 @@ namespace OrariUnibg.Views
 		}
         private void showAll()
         {
-            ToolbarItems.Clear();
+//            ToolbarItems.Clear();
+			ToolbarItems.Remove(tbiShowAll);
             ToolbarItems.Add(tbiShowFav);
             _viewModel.ListOrari = _listOriginal;
         }
         private void showFavourites()
         {
-            ToolbarItems.Clear();
+//            ToolbarItems.Clear();
+			ToolbarItems.Remove(tbiShowFav);
             ToolbarItems.Add(tbiShowAll);
             _viewModel.ListOrari = _viewModel.ListOrari.Where(x => x.MioCorso).ToList();
         }

@@ -90,6 +90,7 @@
     <Compile Include="Views\ViewCells\OrarioGiornCell.cs" />
     <Compile Include="Views\HomeSkipView.cs" />
     <Compile Include="Views\LoginView.cs" />
+    <Compile Include="Views\FloatingActionButtonView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack-PCL">

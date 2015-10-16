@@ -127,7 +127,13 @@ namespace OrariUnibg.Views.ViewCells
 					new StackLayout() {Orientation = StackOrientation.Horizontal, Children = {lblInizioFine, lblDocente}},
 				}
 				};
-			return layout;
+		
+			var layoutExt = new StackLayout () {
+				Padding = new Thickness (0, 3, 0, 3), 
+				BackgroundColor = ColorHelper.Transparent,
+			};
+			layoutExt.Children.Add (layout);
+			return layoutExt;
 		}
 
 		private void setUpContextAction()

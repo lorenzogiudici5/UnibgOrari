@@ -26,6 +26,29 @@ namespace OrariUnibg.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::com.refractored.fab.Resource.Attribute.fab_colorDisabled = global::OrariUnibg.Droid.Resource.Attribute.fab_colorDisabled;
+			global::com.refractored.fab.Resource.Attribute.fab_colorNormal = global::OrariUnibg.Droid.Resource.Attribute.fab_colorNormal;
+			global::com.refractored.fab.Resource.Attribute.fab_colorPressed = global::OrariUnibg.Droid.Resource.Attribute.fab_colorPressed;
+			global::com.refractored.fab.Resource.Attribute.fab_colorRipple = global::OrariUnibg.Droid.Resource.Attribute.fab_colorRipple;
+			global::com.refractored.fab.Resource.Attribute.fab_shadow = global::OrariUnibg.Droid.Resource.Attribute.fab_shadow;
+			global::com.refractored.fab.Resource.Attribute.fab_size = global::OrariUnibg.Droid.Resource.Attribute.fab_size;
+			global::com.refractored.fab.Resource.Color.fab_material_blue_500 = global::OrariUnibg.Droid.Resource.Color.fab_material_blue_500;
+			global::com.refractored.fab.Resource.Dimension.fab_elevation_lollipop = global::OrariUnibg.Droid.Resource.Dimension.fab_elevation_lollipop;
+			global::com.refractored.fab.Resource.Dimension.fab_scroll_threshold = global::OrariUnibg.Droid.Resource.Dimension.fab_scroll_threshold;
+			global::com.refractored.fab.Resource.Dimension.fab_shadow_size = global::OrariUnibg.Droid.Resource.Dimension.fab_shadow_size;
+			global::com.refractored.fab.Resource.Dimension.fab_size_mini = global::OrariUnibg.Droid.Resource.Dimension.fab_size_mini;
+			global::com.refractored.fab.Resource.Dimension.fab_size_normal = global::OrariUnibg.Droid.Resource.Dimension.fab_size_normal;
+			global::com.refractored.fab.Resource.Drawable.fab_shadow = global::OrariUnibg.Droid.Resource.Drawable.fab_shadow;
+			global::com.refractored.fab.Resource.Drawable.fab_shadow_mini = global::OrariUnibg.Droid.Resource.Drawable.fab_shadow_mini;
+			global::com.refractored.fab.Resource.Id.mini = global::OrariUnibg.Droid.Resource.Id.mini;
+			global::com.refractored.fab.Resource.Id.normal = global::OrariUnibg.Droid.Resource.Id.normal;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_colorDisabled = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_colorDisabled;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_colorNormal = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_colorNormal;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_colorPressed = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_colorPressed;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_colorRipple = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_colorRipple;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_shadow = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_shadow;
+			global::com.refractored.fab.Resource.Styleable.FloatingActionButton_fab_size = global::OrariUnibg.Droid.Resource.Styleable.FloatingActionButton_fab_size;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::OrariUnibg.Droid.Resource.String.ApplicationName;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::OrariUnibg.Droid.Resource.String.Hello;
 			global::Toasts.Forms.Plugin.Droid.Resource.Drawable.error = global::OrariUnibg.Droid.Resource.Drawable.error;
@@ -45,6 +68,24 @@ namespace OrariUnibg.Droid
 		public partial class Attribute
 		{
 			
+			// aapt resource value: 0x7f010002
+			public const int fab_colorDisabled = 2130771970;
+			
+			// aapt resource value: 0x7f010001
+			public const int fab_colorNormal = 2130771969;
+			
+			// aapt resource value: 0x7f010000
+			public const int fab_colorPressed = 2130771968;
+			
+			// aapt resource value: 0x7f010003
+			public const int fab_colorRipple = 2130771971;
+			
+			// aapt resource value: 0x7f010004
+			public const int fab_shadow = 2130771972;
+			
+			// aapt resource value: 0x7f010005
+			public const int fab_size = 2130771973;
+			
 			static Attribute()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -58,29 +99,32 @@ namespace OrariUnibg.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f050007
-			public const int accent = 2131034119;
-			
-			// aapt resource value: 0x7f050004
-			public const int blue = 2131034116;
-			
-			// aapt resource value: 0x7f050003
-			public const int lightblue = 2131034115;
+			// aapt resource value: 0x7f050008
+			public const int accent = 2131034120;
 			
 			// aapt resource value: 0x7f050005
-			public const int material_blue_500 = 2131034117;
-			
-			// aapt resource value: 0x7f050006
-			public const int material_blue_700 = 2131034118;
-			
-			// aapt resource value: 0x7f050001
-			public const int semitranspwhite = 2131034113;
+			public const int blue = 2131034117;
 			
 			// aapt resource value: 0x7f050000
-			public const int transparent = 2131034112;
+			public const int fab_material_blue_500 = 2131034112;
+			
+			// aapt resource value: 0x7f050004
+			public const int lightblue = 2131034116;
+			
+			// aapt resource value: 0x7f050006
+			public const int material_blue_500 = 2131034118;
+			
+			// aapt resource value: 0x7f050007
+			public const int material_blue_700 = 2131034119;
 			
 			// aapt resource value: 0x7f050002
-			public const int white = 2131034114;
+			public const int semitranspwhite = 2131034114;
+			
+			// aapt resource value: 0x7f050001
+			public const int transparent = 2131034113;
+			
+			// aapt resource value: 0x7f050003
+			public const int white = 2131034115;
 			
 			static Color()
 			{
@@ -88,6 +132,34 @@ namespace OrariUnibg.Droid
 			}
 			
 			private Color()
+			{
+			}
+		}
+		
+		public partial class Dimension
+		{
+			
+			// aapt resource value: 0x7f060004
+			public const int fab_elevation_lollipop = 2131099652;
+			
+			// aapt resource value: 0x7f060003
+			public const int fab_scroll_threshold = 2131099651;
+			
+			// aapt resource value: 0x7f060002
+			public const int fab_shadow_size = 2131099650;
+			
+			// aapt resource value: 0x7f060001
+			public const int fab_size_mini = 2131099649;
+			
+			// aapt resource value: 0x7f060000
+			public const int fab_size_normal = 2131099648;
+			
+			static Dimension()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Dimension()
 			{
 			}
 		}
@@ -102,106 +174,118 @@ namespace OrariUnibg.Droid
 			public const int error = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int ic_bin = 2130837506;
+			public const int fab_shadow = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int ic_clock = 2130837507;
+			public const int fab_shadow_mini = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int ic_clock_blue = 2130837508;
+			public const int ic_bin = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int ic_clock_dark = 2130837509;
+			public const int ic_clock = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int ic_completo = 2130837510;
+			public const int ic_clock_blue = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int ic_completo_blue = 2130837511;
+			public const int ic_clock_dark = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int ic_completo_dark = 2130837512;
+			public const int ic_completo = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int ic_esami = 2130837513;
+			public const int ic_completo_blue = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int ic_home = 2130837514;
+			public const int ic_completo_dark = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int ic_home_blue = 2130837515;
+			public const int ic_esami = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int ic_home_dark = 2130837516;
+			public const int ic_home = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int ic_launcher = 2130837517;
+			public const int ic_home_blue = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int ic_menu = 2130837518;
+			public const int ic_home_dark = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int ic_next = 2130837519;
+			public const int ic_launcher = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int ic_nostar = 2130837520;
+			public const int ic_menu = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int ic_notification_school = 2130837521;
+			public const int ic_next = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int ic_settings_blue = 2130837522;
+			public const int ic_nostar = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int ic_settings_dark = 2130837523;
+			public const int ic_notification_school = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int ic_settings_gray = 2130837524;
+			public const int ic_settings_blue = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int ic_star = 2130837525;
+			public const int ic_settings_dark = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int ic_sync = 2130837526;
+			public const int ic_settings_gray = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int info = 2130837527;
+			public const int ic_share = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int LogoUnibg = 2130837528;
+			public const int ic_sharee = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int Screen1 = 2130837529;
+			public const int ic_star = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int Screen2 = 2130837530;
+			public const int ic_sync = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int selectable_background_example = 2130837531;
+			public const int info = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int splash = 2130837532;
+			public const int LogoUnibg = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public const int success = 2130837533;
+			public const int Screen1 = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int tab_bar_background = 2130837534;
+			public const int Screen2 = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int tab_bar_background_selected = 2130837535;
+			public const int selectable_background_example = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int tab_bar_background_selected_pressed = 2130837536;
+			public const int splash = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int tab_bar_text = 2130837537;
+			public const int success = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int UnibgOk = 2130837538;
+			public const int tab_bar_background = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int warning = 2130837539;
+			public const int tab_bar_background_selected = 2130837539;
+			
+			// aapt resource value: 0x7f020024
+			public const int tab_bar_background_selected_pressed = 2130837540;
+			
+			// aapt resource value: 0x7f020025
+			public const int tab_bar_text = 2130837541;
+			
+			// aapt resource value: 0x7f020026
+			public const int UnibgOk = 2130837542;
+			
+			// aapt resource value: 0x7f020027
+			public const int warning = 2130837543;
 			
 			static Drawable()
 			{
@@ -216,17 +300,23 @@ namespace OrariUnibg.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070002
-			public const int desc = 2131165186;
+			// aapt resource value: 0x7f080004
+			public const int desc = 2131230724;
 			
-			// aapt resource value: 0x7f070000
-			public const int image = 2131165184;
+			// aapt resource value: 0x7f080002
+			public const int image = 2131230722;
 			
-			// aapt resource value: 0x7f070003
-			public const int splash_layout = 2131165187;
+			// aapt resource value: 0x7f080000
+			public const int mini = 2131230720;
 			
-			// aapt resource value: 0x7f070001
-			public const int title = 2131165185;
+			// aapt resource value: 0x7f080001
+			public const int normal = 2131230721;
+			
+			// aapt resource value: 0x7f080005
+			public const int splash_layout = 2131230725;
+			
+			// aapt resource value: 0x7f080003
+			public const int title = 2131230723;
 			
 			static Id()
 			{
@@ -279,35 +369,35 @@ namespace OrariUnibg.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060002
-			public const int MyTheme = 2131099650;
+			// aapt resource value: 0x7f070002
+			public const int MyTheme = 2131165186;
 			
-			// aapt resource value: 0x7f060009
-			public const int MyTheme_ = 2131099657;
+			// aapt resource value: 0x7f070009
+			public const int MyTheme_ = 2131165193;
 			
-			// aapt resource value: 0x7f060007
-			public const int MyTheme_ActionBar_TabBarStyle = 2131099655;
+			// aapt resource value: 0x7f070007
+			public const int MyTheme_ActionBar_TabBarStyle = 2131165191;
 			
-			// aapt resource value: 0x7f060006
-			public const int MyTheme_ActionBar_TabStyle = 2131099654;
+			// aapt resource value: 0x7f070006
+			public const int MyTheme_ActionBar_TabStyle = 2131165190;
 			
-			// aapt resource value: 0x7f060008
-			public const int MyTheme_ActionBar_TabTextStyle = 2131099656;
+			// aapt resource value: 0x7f070008
+			public const int MyTheme_ActionBar_TabTextStyle = 2131165192;
 			
-			// aapt resource value: 0x7f060005
-			public const int MyTheme_ActionBar_TitleTextStyle = 2131099653;
+			// aapt resource value: 0x7f070005
+			public const int MyTheme_ActionBar_TitleTextStyle = 2131165189;
 			
-			// aapt resource value: 0x7f060004
-			public const int MyTheme_ActionBarStyle = 2131099652;
+			// aapt resource value: 0x7f070004
+			public const int MyTheme_ActionBarStyle = 2131165188;
 			
-			// aapt resource value: 0x7f060003
-			public const int MyTheme_ActionModeStyle = 2131099651;
+			// aapt resource value: 0x7f070003
+			public const int MyTheme_ActionModeStyle = 2131165187;
 			
-			// aapt resource value: 0x7f060001
-			public const int MyTheme_Base = 2131099649;
+			// aapt resource value: 0x7f070001
+			public const int MyTheme_Base = 2131165185;
 			
-			// aapt resource value: 0x7f060000
-			public const int Theme_Splash = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int Theme_Splash = 2131165184;
 			
 			static Style()
 			{
@@ -315,6 +405,45 @@ namespace OrariUnibg.Droid
 			}
 			
 			private Style()
+			{
+			}
+		}
+		
+		public partial class Styleable
+		{
+			
+			public static int[] FloatingActionButton = new int[] {
+					2130771968,
+					2130771969,
+					2130771970,
+					2130771971,
+					2130771972,
+					2130771973};
+			
+			// aapt resource value: 2
+			public const int FloatingActionButton_fab_colorDisabled = 2;
+			
+			// aapt resource value: 1
+			public const int FloatingActionButton_fab_colorNormal = 1;
+			
+			// aapt resource value: 0
+			public const int FloatingActionButton_fab_colorPressed = 0;
+			
+			// aapt resource value: 3
+			public const int FloatingActionButton_fab_colorRipple = 3;
+			
+			// aapt resource value: 4
+			public const int FloatingActionButton_fab_shadow = 4;
+			
+			// aapt resource value: 5
+			public const int FloatingActionButton_fab_size = 5;
+			
+			static Styleable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Styleable()
 			{
 			}
 		}
