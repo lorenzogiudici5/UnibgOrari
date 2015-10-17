@@ -261,31 +261,37 @@ namespace OrariUnibg.Droid
 			public const int Screen2 = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int selectable_background_example = 2130837535;
+			public const int Screen3 = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int splash = 2130837536;
+			public const int Screen4 = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int success = 2130837537;
+			public const int selectable_background_example = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int tab_bar_background = 2130837538;
+			public const int splash = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int tab_bar_background_selected = 2130837539;
+			public const int success = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int tab_bar_background_selected_pressed = 2130837540;
+			public const int tab_bar_background = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int tab_bar_text = 2130837541;
+			public const int tab_bar_background_selected = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int UnibgOk = 2130837542;
+			public const int tab_bar_background_selected_pressed = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int warning = 2130837543;
+			public const int tab_bar_text = 2130837543;
+			
+			// aapt resource value: 0x7f020028
+			public const int UnibgOk = 2130837544;
+			
+			// aapt resource value: 0x7f020029
+			public const int warning = 2130837545;
 			
 			static Drawable()
 			{

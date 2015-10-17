@@ -220,6 +220,18 @@ namespace OrariUnibg.Views
 
 			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
         }
+
+		private void IdentifyingUser()
+		{
+			Xamarin.Insights.Identify (Settings.Matricola, 
+				new Dictionary <string, string> { 
+					{Xamarin.Insights.Traits.Email, Settings.Email},
+					{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
+					{Xamarin.Insights.Traits.Description, "Writer, Developer, Explorer."},
+					{"Facoltà", Settings.Facolta},
+					{"Laurea", Settings.Laurea}
+			});
+		}
         #endregion
 
         #region Event Handlers

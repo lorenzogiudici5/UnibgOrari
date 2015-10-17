@@ -11,6 +11,7 @@ using OrariUnibg.Services.Database;
 using OrariUnibg.ViewModels;
 using OrariUnibg.Helpers;
 using System.Collections;
+using Xamarin;
 
 namespace OrariUnibg.Views
 {
@@ -196,6 +197,10 @@ namespace OrariUnibg.Views
         #region Event Handlers
 		private void share()
 		{
+			Insights.Track("Share", new Dictionary <string,string>{
+				{"Orario", "Completo"},
+			});
+
 			string text;
 			if (_viewModel.Group)
 				text = ListGroupToString();

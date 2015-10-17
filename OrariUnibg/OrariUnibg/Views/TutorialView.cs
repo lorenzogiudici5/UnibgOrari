@@ -20,23 +20,28 @@ namespace OrariUnibg
 		#endregion
 
 		#region Private Fields
-
+		ContentPage page1;
+		StackLayout layout1;
+		ContentPage page2;
+		StackLayout layout2;
+		ContentPage page3;
+		StackLayout layout3;
 		#endregion
 
 		#region Private Methods
 		private void getPages()
 		{
 			List<Page> pages = new List<Page> ();
-			String[] images = { "Screen1.png", "Screen2.png" };
+			String[] images = { "Screen.png" };
 
-			var _btnNext = new Button () {
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "Fine",
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.Transparent,
-			};
-			_btnNext.Clicked += _btnNext_Clicked;
+//			var _btnNext = new Button () {
+//				HorizontalOptions = LayoutOptions.CenterAndExpand,
+//				VerticalOptions = LayoutOptions.EndAndExpand,
+//				Text = "Fine",
+//				TextColor = ColorHelper.White,
+//				BackgroundColor = ColorHelper.Transparent,
+//			};
+//			_btnNext.Clicked += _btnNext_Clicked;
 
 //			var _btnSkip = new Button () {
 //				HorizontalOptions = LayoutOptions.StartAndExpand,
@@ -47,52 +52,78 @@ namespace OrariUnibg
 //
 //			_btnSkip.Clicked += _btnSkip_Clicked;
 
-			var endBar = new StackLayout () {
-				Orientation = StackOrientation.Horizontal,
-				VerticalOptions = LayoutOptions.EndAndExpand,
+//			var endBar = new StackLayout () {
+//				Orientation = StackOrientation.Horizontal,
+//				VerticalOptions = LayoutOptions.EndAndExpand,
+//				HorizontalOptions = LayoutOptions.FillAndExpand,
+//				Children = {_btnNext}
+//			};
+
+			layout1 = new StackLayout {
+				Padding = new Thickness(20, 10, 10, 5),
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				Children = {_btnNext}
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Orientation = StackOrientation.Vertical,
+				Children = {
+					new Label () {
+						Text = "Seleziona i tuoi corsi, visualizza le lezioni comodamente nella homepage e ricevi notifiche su variazioni o cambi di aula.",
+						TextColor = ColorHelper.White,
+						HorizontalOptions = LayoutOptions.CenterAndExpand,
+						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					},
+					new Image () {
+						Aspect = Aspect.AspectFill,
+						Source = "Screen2.png", 
+					},
+				}
 			};
 
-			foreach (var img in images) {
-				var page = new ContentPage { 
-					Content = 
-						new StackLayout {
-							HorizontalOptions = LayoutOptions.FillAndExpand,
-							VerticalOptions = LayoutOptions.FillAndExpand,
-							Children = {
-								new Image()
-								{
-								Aspect = Aspect.AspectFit,
-									Source = img, 
-//									VerticalOptions = LayoutOptions.FillAndExpand, 
-//									HorizontalOptions = LayoutOptions.FillAndExpand
-								},
-						}
-					}
-				};
-				this.Children.Add (page);
-			}
+			page1 = new ContentPage { Content = layout1};
 
-//			var layout = new StackLayout () {
-//				VerticalOptions = LayoutOptions.FillAndExpand,
-//				HorizontalOptions = LayoutOptions.FillAndExpand,
-//				Padding = new Thickness (0, 15, 0, 40),
-//				Children = {
-//					new Image () {
-//						HorizontalOptions = LayoutOptions.CenterAndExpand,
-//						Source = "splash.png", 
-//						//									VerticalOptions = LayoutOptions.FillAndExpand, 
-//						//									HorizontalOptions = LayoutOptions.FillAndExpand
-//					},
-//				}
-//			};
+			layout2 = new StackLayout {
+				Padding = new Thickness(10, 10, 10, 5),
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Orientation = StackOrientation.Vertical,
+				Children = {
+					new Label () {
+						Text = "Consulta gli orari del giorno di ogni facoltà e corso di laurea. Ordina, cerca ed esporta!",
+						TextColor = ColorHelper.White,
+						HorizontalOptions = LayoutOptions.CenterAndExpand,
+						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					},
+					new Image () {
+						Aspect = Aspect.AspectFill,
+						Source = "Screen1.png", 
+					},
+				}
+			};
+			page2 = new ContentPage {Content = layout2};
+
+			layout3 = new StackLayout {
+				Padding = new Thickness(10, 10, 10, 5),
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Orientation = StackOrientation.Vertical,
+				Children = {
+					new Label () {
+						Text = "Visualizza l'orario completo raggruppato per giorno o per corso",
+						TextColor = ColorHelper.White,
+						HorizontalOptions = LayoutOptions.CenterAndExpand,
+						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					},
+					new Image () {
+						Aspect = Aspect.AspectFill,
+						Source = "Screen3.png", 
+					},
+				}
+			};
+			page3 = new ContentPage {Content = layout3};
+					
+			this.Children.Add (page1);
+			this.Children.Add (page2);
+			this.Children.Add (page3);
 			this.Children.Add (new LoginView ());
-
-//			this.Children.Add (new ContentPage { 
-//				Content = layout
-//			});
-
 //			if (Settings.PrimoAvvio) //se tutorial da primo avvio aggiungo button per signin
 //				layout.Children.Add (getLayoutButtons ());
 //			else //altrimenti è tutorial da impostazioni
@@ -197,6 +228,34 @@ namespace OrariUnibg
 //			} else
 				Navigation.PopModalAsync ();
 
+		}
+		#endregion
+
+		#region Override
+		protected override bool OnBackButtonPressed ()
+		{
+			Navigation.PopModalAsync ();
+			return true;
+		}
+		protected override void OnSizeAllocated (double width, double height)
+		{
+			base.OnSizeAllocated (width, height);
+
+			SizeChanged += (sender, e) => {
+				if(height > width) //portrait
+				{
+					layout1.Orientation = StackOrientation.Vertical;
+					layout2.Orientation = StackOrientation.Vertical;
+					layout3.Orientation = StackOrientation.Vertical;
+				}
+				else //landscape
+				{
+					layout1.Orientation = StackOrientation.Horizontal;
+					layout2.Orientation = StackOrientation.Horizontal;
+					layout3.Orientation = StackOrientation.Horizontal;
+				}
+
+			};
 		}
 		#endregion
 	}

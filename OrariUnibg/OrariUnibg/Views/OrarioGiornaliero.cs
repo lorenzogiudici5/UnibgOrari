@@ -10,6 +10,7 @@ using OrariUnibg.Services.Database;
 using OrariUnibg.ViewModels;
 using OrariUnibg.Helpers;
 using System.Collections;
+using Xamarin;
 
 namespace OrariUnibg.Views
 {
@@ -49,6 +50,9 @@ namespace OrariUnibg.Views
 				Size = FloatingActionButtonSize.Normal,
 				Clicked = (sender, args) => 
 				{
+					Insights.Track("Share", new Dictionary <string,string>{
+						{"Orario", "Giornaliero"},
+					});
 					string text = _viewModel.ToString () + Settings.Firma;
 					DependencyService.Get<IMethods> ().Share (text);
 				}

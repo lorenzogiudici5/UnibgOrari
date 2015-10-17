@@ -12,6 +12,7 @@ using OrariUnibg.Droid.Services.Database;
 using OrariUnibg.Services.Database;
 using Android.Graphics.Drawables;
 using Toasts.Forms.Plugin.Droid;
+using Xamarin;
 
 namespace OrariUnibg.Droid
 {
@@ -29,6 +30,8 @@ namespace OrariUnibg.Droid
 
             //App.Init(new DbSQLite());
             App.Init(new DbSQLite(new SQLite_Android().GetConnection()));
+//			Insights.Initialize(Insights.DebugModeKey);
+			Insights.Initialize("37a1497d790f720508e527850ad82785c117c774", Xamarin.Forms.Forms.Context);
 
             //SetPage(App.GetMainPage());
             LoadApplication(new App()); // method is new in 1.3
