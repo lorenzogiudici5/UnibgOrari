@@ -60,10 +60,10 @@ namespace OrariUnibg.Views.ViewCells
 			var Venerdi = new Label() { Text = "VENERDI:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
 			var Sabato = new Label() { Text = "SABATO:", FontSize = Device.GetNamedSize(NamedSize.Small, this), TextColor = ColorHelper.Gray };
 
-			var lblLunedi = new Label()
-			{
-				FontSize = Device.GetNamedSize(NamedSize.Small, this)
-			};
+
+
+			var lblLunedi = new Label() { TextColor = ColorHelper.Gray };
+			lblLunedi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
 			var lblMartedi = new Label() { TextColor = ColorHelper.Gray };
 			lblMartedi.FontSize = Device.GetNamedSize(NamedSize.Small, this);
 			var lblMercoledi = new Label() { TextColor = ColorHelper.Gray };

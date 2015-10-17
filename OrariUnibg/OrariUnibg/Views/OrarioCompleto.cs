@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using OrariUnibg.Services.Database;
 using OrariUnibg.ViewModels;
 using OrariUnibg.Helpers;
+using System.Collections;
 
 namespace OrariUnibg.Views
 {
@@ -33,13 +34,15 @@ namespace OrariUnibg.Views
         private OrariCompletoViewModel _viewModel;
         private ToolbarItem tbiShowFav;
         private ToolbarItem tbiShowAll;
+		private FloatingActionButtonView fab;
+		private int appearingListItemIndex = 0;
 //		private ToolbarItem tbiShare;
         #endregion
 
         #region Private Methods
         private View getView()
         {
-			var fab = new FloatingActionButtonView() {
+			fab = new FloatingActionButtonView() {
 				ImageName = "ic_sharee.png",
 				ColorNormal = ColorHelper.Blue500,
 				ColorPressed = ColorHelper.Blue900,
@@ -198,7 +201,8 @@ namespace OrariUnibg.Views
 				text = ListGroupToString();
 			else
 				text = _viewModel.ToString ();
-			
+
+			text+= Settings.Firma;
 			DependencyService.Get<IMethods> ().Share (text);
 		}
 //		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -294,6 +298,54 @@ namespace OrariUnibg.Views
             lista = _viewModel.ListOrari;
             setUpListView();
         }
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			lv.ItemAppearing += List_ItemAppearing;
+			lv.ItemDisappearing += List_ItemDisappearing;
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			lv.ItemAppearing -= List_ItemAppearing;
+			lv.ItemDisappearing -= List_ItemDisappearing;
+		}
+
+		async void List_ItemDisappearing (object sender, ItemVisibilityEventArgs e)
+		{
+			await Task.Run(() =>
+				{
+					var items = lv.ItemsSource as IList;
+					if(items != null)
+					{
+						var index = items.IndexOf(e.Item);
+						if (index < appearingListItemIndex)
+						{
+							Device.BeginInvokeOnMainThread(() => fab.Hide());
+						}
+						appearingListItemIndex = index;
+					}
+				});
+		}
+
+		async void List_ItemAppearing (object sender, ItemVisibilityEventArgs e)
+		{
+			await Task.Run(() =>
+				{
+					var items = lv.ItemsSource as IList;
+					if(items != null)
+					{
+						var index = items.IndexOf(e.Item);
+						if (index < appearingListItemIndex)
+						{
+							Device.BeginInvokeOnMainThread(() => fab.Show());
+						}
+						appearingListItemIndex = index;
+					}
+				});
+		}
         #endregion
     }
 }

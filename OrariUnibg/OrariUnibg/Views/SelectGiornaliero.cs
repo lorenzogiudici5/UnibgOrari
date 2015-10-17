@@ -148,13 +148,8 @@ namespace OrariUnibg.Views
             DateTime data = pickData.Date;
             int order = pickerOrder.SelectedIndex;
 
-			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
-				activityIndicator.IsVisible = false;
-				lblError.IsVisible = true;
-				var toast = DependencyService.Get<IToastNotificator>();
-				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
-				return;
-			}
+			CheckNetwork ();
+
             string s = await Web.GetOrarioGiornaliero(db, facolta, laureaId, data.ToString("dd'/'MM'/'yyyy"));
 
             //Settings.FacoltaIndex = pickerFacoltà.SelectedIndex;
@@ -185,6 +180,17 @@ namespace OrariUnibg.Views
             }
                 
         }
+
+		private async void CheckNetwork()
+		{
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				activityIndicator.IsVisible = false;
+				lblError.IsVisible = true;
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				return;
+			}
+		}
 		#endregion
     }
 }

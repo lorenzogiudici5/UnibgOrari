@@ -40,5 +40,12 @@ namespace OrariUnibg.Models
         }
         public DateTime Data { get; set; }
         public String DateString { get { return Data.ToString("dd'/'MM'/'yyyy"); } }
+
+		#region Public Methods
+		public override string ToString ()
+		{
+			return string.Format ("{0} {1}", Ora, Aula);
+		}
+		#endregion
     }
 }

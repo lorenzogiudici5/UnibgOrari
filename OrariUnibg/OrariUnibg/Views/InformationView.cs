@@ -218,15 +218,22 @@ namespace OrariUnibg.Views
             return grid;
         }
 
-
+		private async void CheckNetwork()
+		{
+			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+				var toast = DependencyService.Get<IToastNotificator>();
+				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+				return;
+			}
+		}
         #endregion
 
         #region Event Handlers
-		protected override bool OnBackButtonPressed ()
-		{
-			return true;
-//			return base.OnBackButtonPressed ();
-		}
+//		protected override bool OnBackButtonPressed ()
+//		{
+//			return true;
+////			return base.OnBackButtonPressed ();
+//		}
 		protected override void OnAppearing()
 		{
 			tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
@@ -240,6 +247,8 @@ namespace OrariUnibg.Views
                 await DisplayAlert("ATTENZIONE", "Occorre compilare tutti i campi correttmente prima di procedere.", "OK");
                 return;
             }
+
+			CheckNetwork ();
 
 			ToolbarItems.Remove (tbiNext);
             _activityIndicator.IsVisible = true;

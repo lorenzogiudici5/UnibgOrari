@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OrariUnibg.Helpers;
 
 namespace OrariUnibg.Models
 {
@@ -74,5 +75,20 @@ namespace OrariUnibg.Models
 					return string.Empty;
             }
         }
+
+		#region Public Methods
+		public override string ToString ()
+		{
+			if (ListaLezioni.Count () == 0 && ListUtenza.Count () == 0)
+				string.Format ("{0}, {1}\n\nRilassati! Nessuna lezione per te oggi!", Day, DateString);
+			
+			string utenze = "";
+			if(ListUtenza.Count() > 0)
+				utenze = string.Format("UTENZE:\n{0}", string.Join("\n", ListUtenza));
+
+			return string.Format ("{0}, {1}\n\n{2}\n\n{3}", Day, DateString, string.Join("\n", ListaLezioni), utenze );
+		
+		}
+		#endregion
     }
 }

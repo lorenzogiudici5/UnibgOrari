@@ -36,7 +36,7 @@ namespace OrariUnibg.ViewModels
 		#region Public Methods
 		public override string ToString ()
 		{
-			return string.Format ("ORARIO COMPLETO: {0} - {1} \n\n{2}", LaureaString, AnnoSemestre, string.Join("\n", ListOrari));
+			return string.Format ("ORARIO di {0} - {1} \n\n{2}", LaureaString, AnnoSemestre, string.Join("\n", ListOrari));
 		}
 		#endregion
     }

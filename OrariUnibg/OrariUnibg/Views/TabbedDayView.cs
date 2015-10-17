@@ -24,8 +24,8 @@ namespace OrariUnibg.Views
 
         #region Private Fields
         private ListView _listView;
-        private Label _lblDay;
-        private Label _lblDate;
+//        private Label _lblDay;
+//        private Label _lblDate;
         private Label _lblInfo;
         private Label _lblTitleUtenza;
         private Label _lblUtenza;
@@ -33,26 +33,40 @@ namespace OrariUnibg.Views
         private DbSQLite _db;
         private ListView _listUtenze;
 		private StackLayout layoutListaUtenza;
+		private Giorno _viewModel;
         #endregion
 
         #region Private Methods
         private View getView()
         {
-            _lblDay = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, this),
-                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.EndAndExpand,
-            };
-            _lblDay.SetBinding(Label.TextProperty, "Day");
+			var fab = new FloatingActionButtonView() {
+				ImageName = "ic_sharee.png",
+				ColorNormal = ColorHelper.Blue500,
+				ColorPressed = ColorHelper.Blue900,
+				ColorRipple = ColorHelper.Blue500,
+				Size = FloatingActionButtonSize.Normal,
+				Clicked = (sender, args) => 
+				{
+					string text = _viewModel.ToString () + Settings.Firma;
+					DependencyService.Get<IMethods> ().Share (text);
+				}
+			};
 
-            _lblDate = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Small, this),
-                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-            };
-            _lblDate.SetBinding(Label.TextProperty, "DateString");
+//            _lblDay = new Label()
+//            {
+//                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+//                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
+//                HorizontalOptions = LayoutOptions.EndAndExpand,
+//            };
+//            _lblDay.SetBinding(Label.TextProperty, "Day");
+//
+//            _lblDate = new Label()
+//            {
+//                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+//                FontAttributes = Xamarin.Forms.FontAttributes.Bold,
+//                HorizontalOptions = LayoutOptions.StartAndExpand,
+//            };
+//            _lblDate.SetBinding(Label.TextProperty, "DateString");
 
             _lblInfo = new Label()
             {
@@ -166,19 +180,41 @@ namespace OrariUnibg.Views
 				{
 					_activityIndicator.IsRunning = true;
 					_activityIndicator.IsVisible = true;
+//					await Task.Run(() =>
+//					{
+//						Device.BeginInvokeOnMainThread(() => fab.Hide());
+//					});
 				}
 				else
 				{
 					_activityIndicator.IsRunning = false;
 					_activityIndicator.IsVisible = false;
+//					await Task.Run(() =>
+//					{
+//						Device.BeginInvokeOnMainThread(() => fab.Show());
+//					});
 				}
 			});
 
-			MessagingCenter.Subscribe<TabbedHomeView>(this, "share", (sender) => {
+			var absolute = new AbsoluteLayout() { 
+				VerticalOptions = LayoutOptions.FillAndExpand, 
+				HorizontalOptions = LayoutOptions.FillAndExpand 
+			};
 
-				});
+			// Position the pageLayout to fill the entire screen.
+			// Manage positioning of child elements on the page by editing the pageLayout.
+			AbsoluteLayout.SetLayoutFlags(layout, AbsoluteLayoutFlags.All);
+			AbsoluteLayout.SetLayoutBounds(layout, new Rectangle(0f, 0f, 1f, 1f));
+			absolute.Children.Add(layout);
 
-            return layout;
+			// Overlay the FAB in the bottom-right corner
+			AbsoluteLayout.SetLayoutFlags(fab, AbsoluteLayoutFlags.PositionProportional);
+			AbsoluteLayout.SetLayoutBounds(fab, new Rectangle(1f, 1f, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize));
+			absolute.Children.Add(fab);
+	
+			return absolute;
+
+//            return layout;
         }
         #endregion
 
@@ -238,6 +274,15 @@ namespace OrariUnibg.Views
 //        }
 
         #endregion
+
+		#region Override
+		protected override void OnBindingContextChanged()
+		{
+			base.OnBindingContextChanged();
+			_viewModel = (Giorno)BindingContext;
+
+		}
+		#endregion
     }
 
     #region Converter
@@ -331,6 +376,8 @@ namespace OrariUnibg.Views
         }
     }
     #endregion 
+
+
 
 
 }

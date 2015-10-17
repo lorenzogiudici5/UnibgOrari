@@ -60,8 +60,9 @@ namespace OrariUnibg
 				VerticalOptions = LayoutOptions.EndAndExpand,
 				Text = "Accedi",
 				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
+				TextColor = ColorHelper.Black,
+				BackgroundColor = ColorHelper.White,
+//				BackgroundColor = ColorHelper.LightBlue500,
 			};
 			_btnAccedi.Clicked += _btnAccedi_Clicked;
 
@@ -70,8 +71,8 @@ namespace OrariUnibg
 				VerticalOptions = LayoutOptions.EndAndExpand,
 				Text = "                 Registrati                 ",
 				FontSize = Device.GetNamedSize (NamedSize.Medium, this),
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
+				TextColor = ColorHelper.Black,
+				BackgroundColor = ColorHelper.White,
 			};
 			_btnRegister.Clicked += _btnRegister_Clicked;
 
@@ -80,8 +81,8 @@ namespace OrariUnibg
 				VerticalOptions = LayoutOptions.EndAndExpand,
 				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
 				Text = "Salta",
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
+				TextColor = ColorHelper.Black,
+				BackgroundColor = ColorHelper.White,
 			};
 			_btnSalta.Clicked += _btnSalta_Clicked;
 

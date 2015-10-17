@@ -21,6 +21,7 @@ namespace OrariUnibg.Helpers
       
       #region Setting Constants
 		private const string VersionKey = "version_key";
+		private const string FirmaKey = "firma_key";
        	private const string SettingsKey = "settings_key";
        	private const string PrimoAvvioKey = "primoAvvio_key";
 		private const string SuccessLoginKey = "successLogin_key";
@@ -50,7 +51,8 @@ namespace OrariUnibg.Helpers
 
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-		private static readonly string VersionString = "1.1.4";
+		private static readonly string VersionString = "1.1.5";
+		private static readonly string FirmaString = "\n\n\n. . .Condiviso da OrariUnibg";
       	private static readonly string DefaultString = string.Empty;
 		private static readonly int DefaultValue = 0;
       	private static readonly bool DefaultBool = true;
@@ -70,6 +72,18 @@ namespace OrariUnibg.Helpers
 			set
 			{
 				AppSettings.AddOrUpdateValue(VersionKey, value);
+			}
+		}
+
+		public static string Firma
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(FirmaKey, FirmaString);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(FirmaString, value);
 			}
 		}
 
@@ -357,6 +371,10 @@ namespace OrariUnibg.Helpers
           }
       }
       #endregion
+
+	#region Strings
+
+	#endregion
 
 
 

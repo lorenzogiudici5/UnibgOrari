@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace OrariUnibg.ViewModels
 {
@@ -29,7 +30,8 @@ namespace OrariUnibg.ViewModels
         public String LaureaString { get; set; }
 
         public DateTime Data { get; set; }
-        public String DataString { get { return string.Format("ORARIO DEL GIORNO: {0}", Data.ToString("dd'/'MM'/'yyyy")); } }
+		public String Day { get { return Data.ToString("dddd", new CultureInfo("it-IT")).ToUpper(); } }
+		public String DataString { get { return string.Format("ORARIO DI {0}, {1}", Day, Data.ToString("dd'/'MM'/'yyyy")); } }
 
 
 		#region Public Methods
