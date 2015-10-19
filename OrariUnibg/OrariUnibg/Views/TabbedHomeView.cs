@@ -24,6 +24,9 @@ namespace OrariUnibg.Views
             _db = new DbSQLite();
 			Logcat.Write("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
+
+			IdentifyingUser ();
+
             //BackgroundColor = ColorHelper.White;
 
 			checkDays (); //controllo che giorni sono necessari nelle tab
@@ -227,7 +230,7 @@ namespace OrariUnibg.Views
 				new Dictionary <string, string> { 
 					{Xamarin.Insights.Traits.Email, Settings.Email},
 					{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
-					{Xamarin.Insights.Traits.Description, "Writer, Developer, Explorer."},
+					{Xamarin.Insights.Traits.CreatedAt, DateTime.Today.Date.ToString()},
 					{"Facoltà", Settings.Facolta},
 					{"Laurea", Settings.Laurea}
 			});

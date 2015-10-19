@@ -60,6 +60,8 @@ namespace OrariUnibg.Helpers
             dictionary.Add(laurea.Nome, laurea.Id);
             laurea = new Laurea() { Nome = "Management Engineering", Id = 21, Anni = 2 };
             dictionary.Add(laurea.Nome, laurea.Id);
+			laurea = new Laurea() { Nome = "Tecnologie per la salute", Id = 22, Anni = 3 };
+			dictionary.Add(laurea.Nome, laurea.Id);
 
             return dictionary;
         }

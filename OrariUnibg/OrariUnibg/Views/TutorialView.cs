@@ -65,14 +65,25 @@ namespace OrariUnibg
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Orientation = StackOrientation.Vertical,
 				Children = {
-					new Label () {
-						Text = "Seleziona i tuoi corsi, visualizza le lezioni comodamente nella homepage e ricevi notifiche su variazioni o cambi di aula.",
-						TextColor = ColorHelper.White,
-						HorizontalOptions = LayoutOptions.CenterAndExpand,
-						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					new StackLayout(){Orientation = StackOrientation.Vertical, Children = 
+						{
+							new Label () {
+								Text = "Corsi Preferiti",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Large, this)
+							},
+
+							new Label () {
+								Text = "Seleziona i tuoi corsi preferiti per visualizzare ogni lezioni comodamente nella homepage e ricevere notifiche su variazioni o cambi di aula.",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Medium, this)
+							},
+						}
 					},
 					new Image () {
-						Aspect = Aspect.AspectFill,
+						Aspect = Aspect.AspectFit,
 						Source = "Screen2.png", 
 					},
 				}
@@ -81,19 +92,31 @@ namespace OrariUnibg
 			page1 = new ContentPage { Content = layout1};
 
 			layout2 = new StackLayout {
-				Padding = new Thickness(10, 10, 10, 5),
+				Padding = new Thickness(20, 10, 10, 5),
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Orientation = StackOrientation.Vertical,
 				Children = {
-					new Label () {
-						Text = "Consulta gli orari del giorno di ogni facoltà e corso di laurea. Ordina, cerca ed esporta!",
-						TextColor = ColorHelper.White,
-						HorizontalOptions = LayoutOptions.CenterAndExpand,
-						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					new StackLayout(){Orientation = StackOrientation.Vertical, Children = 
+						{
+							new Label () {
+								Text = "Orario Giornaliero",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Large, this)
+							},
+
+							new Label () {
+								Text = "Consulta gli orari del giorno di ogni facoltà e corso di laurea. Ordina, cerca ed esporta!",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Medium, this)
+							},
+						}
 					},
+
 					new Image () {
-						Aspect = Aspect.AspectFill,
+						Aspect = Aspect.AspectFit,
 						Source = "Screen1.png", 
 					},
 				}
@@ -101,19 +124,31 @@ namespace OrariUnibg
 			page2 = new ContentPage {Content = layout2};
 
 			layout3 = new StackLayout {
-				Padding = new Thickness(10, 10, 10, 5),
+				Padding = new Thickness(20, 10, 10, 5),
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Orientation = StackOrientation.Vertical,
 				Children = {
-					new Label () {
-						Text = "Visualizza l'orario completo raggruppato per giorno o per corso",
-						TextColor = ColorHelper.White,
-						HorizontalOptions = LayoutOptions.CenterAndExpand,
-						FontSize = Device.GetNamedSize (NamedSize.Large, this)
+					new StackLayout(){Orientation = StackOrientation.Vertical, Children = 
+						{
+							new Label () {
+								Text = "Orario Completo",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Large, this)
+							},
+
+							new Label () {
+								Text = "Visualizza l'orario completo raggruppato per giorno o per corso, il tuo orario settimanale non è mai stato così chiaro!",
+								TextColor = ColorHelper.White,
+//								HorizontalOptions = LayoutOptions.CenterAndExpand,
+								FontSize = Device.GetNamedSize (NamedSize.Medium, this)
+							},
+						}
 					},
+
 					new Image () {
-						Aspect = Aspect.AspectFill,
+						Aspect = Aspect.AspectFit,
 						Source = "Screen3.png", 
 					},
 				}
