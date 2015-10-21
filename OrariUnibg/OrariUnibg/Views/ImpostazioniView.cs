@@ -32,6 +32,9 @@ namespace OrariUnibg
 		private ViewCell _lastUpdateCell;
 		private ViewCell _corsiPreferitiCell;
 		private Label _lblCorsiPreferiti;
+		private Label _lblStatistic;
+		private ViewCell _statisticCell;
+		private Switch _statisticSwitch;
 		private ViewCell _versionCell;
 		private ViewCell _tutorialCell;
 		private ViewCell _logoutCell;
@@ -190,6 +193,41 @@ namespace OrariUnibg
 				_corsiPreferitiCell
 			};
 
+			#region DatiStatistici
+			_statisticSwitch = new Switch() {IsToggled = !Settings.DisableStatisticData, HorizontalOptions = LayoutOptions.EndAndExpand};
+			_lblStatistic = new Label () { Text = getStatisticString(), TextColor = ColorHelper.DarkGray };
+			var _statistcLayout = new Grid () {
+				Padding = new Thickness(20, 10, 20, 10),
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				RowSpacing = 0,
+
+				RowDefinitions = 
+				{
+					new RowDefinition { Height = GridLength.Auto },
+					new RowDefinition { Height = GridLength.Auto },
+				},
+				ColumnDefinitions = 
+				{ 
+					new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+				}
+				};
+			_statistcLayout.Children.Add(new Label(){Text = "Dati Statistici", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
+			_statistcLayout.Children.Add(_statisticSwitch, 1,2,0,1);
+			_statistcLayout.Children.Add(_lblStatistic, 0, 1, 1, 2);
+
+			_statisticCell = new ViewCell (){ View = _statistcLayout};
+			_statisticSwitch.Toggled += (object sender, ToggledEventArgs e) =>
+			{
+				if (_statisticSwitch.IsToggled) {
+					Settings.DisableStatisticData = false;
+				} else {
+					Settings.DisableStatisticData = true;
+				}
+
+				_lblStatistic.Text = getStatisticString();
+			};
+			#endregion
 
 			#region Tutorial
 			var _tutorialLayout = new StackLayout () 
@@ -221,7 +259,8 @@ namespace OrariUnibg
 					new Label () {Text = Settings.Versione, TextColor = ColorHelper.DarkGray}
 				}					
 			};
-			_versionCell = new ViewCell () {View = _versionLayout, IsEnabled = false };
+			_versionCell = new ViewCell () {View = _versionLayout}; //, IsEnabled = false };
+			_versionCell.Tapped += async (object sender, EventArgs e) => await Navigation.PushModalAsync(new AboutView());
 			#endregion
 
 			#region Logout
@@ -244,6 +283,7 @@ namespace OrariUnibg
 
 
 			var sectionInfo = new TableSection ("Informazioni") {
+				_statisticCell,
 				_tutorialCell,
 				_versionCell,
 				_logoutCell
@@ -271,6 +311,15 @@ namespace OrariUnibg
 				return "Attive";
 			} else {
 				return "Non attive";
+			}
+		}
+
+		private string getStatisticString()
+		{
+			if (!Settings.DisableStatisticData) {
+				return "Raccolta dati statici attivata";
+			} else {
+				return "Raccolta dati statici disattivata";
 			}
 		}
 

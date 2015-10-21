@@ -25,23 +25,10 @@ namespace OrariUnibg
 				else //utente non login
 					MainPage = new LoginView ();
             }
-            
+//			MainPage = new ImpostazioniView ();
         }
 
-        //public static Page GetMainPage()
-        //{
-        //    if (Settings.PrimoAvvio)
-        //    {
-        //        var nav = new NavigationPage(new InformationView())
-        //        {
-        //            BarBackgroundColor = ColorHelper.Blue700,
-        //            BarTextColor = ColorHelper.White
-        //        };
-        //        return nav;
-        //    }
-        //    else
-        //        return new MasterDetailView();
-        //}
+
 
         public static void Init(DbSQLite sqlite)
         {

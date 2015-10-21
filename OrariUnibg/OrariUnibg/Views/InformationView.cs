@@ -54,12 +54,14 @@ namespace OrariUnibg.Views
                 Placeholder = "Nome",
                 //Text = "Lorenzo",
                 HorizontalOptions = LayoutOptions.FillAndExpand,
+				Keyboard = Keyboard.Text,
             };
             _entryCognome = new Entry()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 //Text = "Giudici",
-                Placeholder = "Cognome"
+                Placeholder = "Cognome",
+				Keyboard = Keyboard.Text,
             };
 
             _entryCognome.TextChanged += _entryCognome_TextChanged;
@@ -263,9 +265,9 @@ namespace OrariUnibg.Views
             string laurea = _pickLaurea.Items[_pickLaurea.SelectedIndex];
             int annoIndex = _pickAnno.SelectedIndex + 1;
             string anno = _pickAnno.Items[annoIndex - 1];
-            Settings.Nome = _entryNome.Text;
-            Settings.Cognome = _entryCognome.Text;
-            Settings.Email = _entryMail.Text + "@studenti.unibg.it";
+			Settings.Nome = _entryNome.Text.TrimEnd();
+			Settings.Cognome = _entryCognome.Text.TrimEnd();
+			Settings.Email = _entryMail.Text.Trim () + "@studenti.unibg.it";
             Settings.Matricola = _entryMatricola.Text;
             Settings.Facolta = facolta;
             Settings.DBfacolta = db;
@@ -279,6 +281,8 @@ namespace OrariUnibg.Views
             Settings.LaureaIndex = laureaIndex;
             Settings.FacoltaIndex = facoltaIndex;
             Settings.AnnoIndex = annoIndex;
+
+			Settings.DateCreatedAt = DateTime.Now.ToString();
 
 			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
 				var toast = DependencyService.Get<IToastNotificator> ();

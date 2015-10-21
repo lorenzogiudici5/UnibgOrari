@@ -27,6 +27,7 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Private Fields
+		private Label _lblInfo;
         private List<CorsoCompleto> _listSource;
         private List<MieiCorsi> _preferiti;
         private ListView _list;
@@ -42,6 +43,14 @@ namespace OrariUnibg.Views
         private View getView()
         {
             _db = new DbSQLite();
+
+			_lblInfo = new Label () {
+				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+				Text = "Seleziona i tuoi corsi",
+				TextColor = ColorHelper.Green500,
+				HorizontalOptions = LayoutOptions.CenterAndExpand,
+			};
+
             var _listaGroup = _listSource.GroupBy(x => x.Semestre);
             _list = new ListView()
             {
@@ -73,7 +82,7 @@ namespace OrariUnibg.Views
                 Padding = new Thickness(15, 10, 15, 10),
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Spacing = 5,
-                Children = { _list, _activityIndicator}
+                Children = { _lblInfo, _list, _activityIndicator}
             };
             return layout;
         }

@@ -22,7 +22,8 @@ namespace OrariUnibg.Helpers
       #region Setting Constants
 		private const string VersionKey = "version_key";
 		private const string FirmaKey = "firma_key";
-       	private const string SettingsKey = "settings_key";
+		private const string DisableStatisticDataKey = "disablestatisticdata_key";
+//       	private const string SettingsKey = "settings_key";
        	private const string PrimoAvvioKey = "primoAvvio_key";
 		private const string SuccessLoginKey = "successLogin_key";
        	private const string FacoltaKey = "facolta_key";
@@ -33,6 +34,7 @@ namespace OrariUnibg.Helpers
        	private const string CognomeKey = "cognome_key";
        	private const string MailKey = "mail_key";
       	private const string MatricolaKey = "matricola_key";
+		private const string DateCreatedAtKey = "datecreatedat_key";
 
 		private const string LastUpdateKey = "lastUpdate_key";
       	private const string SyncKey = "sync_key";
@@ -56,6 +58,7 @@ namespace OrariUnibg.Helpers
       	private static readonly string DefaultString = string.Empty;
 		private static readonly int DefaultValue = 0;
       	private static readonly bool DefaultBool = true;
+		private static readonly bool DefaultBoolFalse = false;
 		private static readonly int DefaultUpdateHours = 18;
 		private static readonly int DefaultUpdateMinute = 13;
 		private static readonly int DefaultUpdateInterval = 3;
@@ -84,6 +87,18 @@ namespace OrariUnibg.Helpers
 			set
 			{
 				AppSettings.AddOrUpdateValue(FirmaString, value);
+			}
+		}
+
+		public static bool DisableStatisticData
+		{
+			get
+			{
+				return AppSettings.GetValueOrDefault(DisableStatisticDataKey, DefaultBoolFalse);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(DisableStatisticDataKey, value);
 			}
 		}
 
@@ -296,6 +311,17 @@ namespace OrariUnibg.Helpers
         }
     }
 
+	public static string DateCreatedAt
+	{
+		get
+		{
+			return AppSettings.GetValueOrDefault(DateCreatedAtKey, DefaultString);
+		}
+		set
+		{
+			AppSettings.AddOrUpdateValue(DateCreatedAtKey, value);
+		}
+	}
 
     #endregion
 

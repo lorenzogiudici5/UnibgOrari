@@ -230,7 +230,7 @@ namespace OrariUnibg.Views
 				new Dictionary <string, string> { 
 					{Xamarin.Insights.Traits.Email, Settings.Email},
 					{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
-					{Xamarin.Insights.Traits.CreatedAt, DateTime.Today.Date.ToString()},
+					{Xamarin.Insights.Traits.CreatedAt, Settings.DateCreatedAt},
 					{"Facoltà", Settings.Facolta},
 					{"Laurea", Settings.Laurea}
 			});
