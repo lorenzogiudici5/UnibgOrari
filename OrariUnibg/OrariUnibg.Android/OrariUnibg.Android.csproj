@@ -135,6 +135,7 @@
     <Compile Include="Helpers\Logcat.cs" />
     <Compile Include="Services\Methods_Android.cs" />
     <Compile Include="FloatingActionButtonViewRenderer.cs" />
+    <Compile Include="Services\FileSystem\File.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -307,5 +308,6 @@
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
+    <Folder Include="Services\FileSystem\" />
   </ItemGroup>
 </Project>

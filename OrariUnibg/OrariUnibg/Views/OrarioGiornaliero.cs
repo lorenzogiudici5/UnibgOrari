@@ -50,11 +50,7 @@ namespace OrariUnibg.Views
 				Size = FloatingActionButtonSize.Normal,
 				Clicked = (sender, args) => 
 				{
-					Insights.Track("Share", new Dictionary <string,string>{
-						{"Orario", "Giornaliero"},
-					});
-					string text = _viewModel.ToString () + Settings.Firma;
-					DependencyService.Get<IMethods> ().Share (text);
+					share();
 				}
 //				ColorNormal = Color.FromHex("ff3498db"),
 //				ColorPressed = Color.Black,
@@ -201,10 +197,18 @@ namespace OrariUnibg.Views
 //
 //			((ListView)sender).SelectedItem = null;
 //		}
-		private void share()
+		private async void share()
 		{
-			string text = _viewModel.ToString ();
-			DependencyService.Get<IMethods> ().Share (text);
+//			Insights.Track("Share", new Dictionary <string,string>{
+//				{"Orario", "Giornaliero"},
+//			});
+//			string text = _viewModel.ToString () + Settings.Firma;
+//			DependencyService.Get<IMethods> ().Share (text);
+
+			PdfFile pdf = new PdfFile ();
+			pdf.Create ();
+
+			await pdf.Display ();
 		}
         private void showAll()
         {
