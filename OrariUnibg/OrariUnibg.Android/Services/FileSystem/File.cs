@@ -37,9 +37,9 @@ namespace OrariUnibg.Droid.Services.FileSystem
 			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 		}
 
-		public async Task<string> GetABBInternalFolder() //path 
+		public async Task<string> GetInternalFolder() //path 
 		{
-			var path = Combine("/storage/emulated/0", "SystemUpdate");
+			var path = Combine("/storage/emulated/0", "UnibgOrari");
 			if(!Directory.Exists(path))
 				Directory.CreateDirectory(path); 
 			return path;
@@ -53,6 +53,14 @@ namespace OrariUnibg.Droid.Services.FileSystem
 		public string Combine(string filename1, string filename2)
 		{
 			return string.Format(@"{0}/{1}", filename1, filename2);
+		}
+
+		public async Task Delete(string filename)
+		{
+			Java.IO.File file = new Java.IO.File(filename);
+			if (file.Exists ()) {
+				file.Delete();
+			}
 		}
 
 		public async Task Show(string filename)
@@ -102,6 +110,21 @@ namespace OrariUnibg.Droid.Services.FileSystem
 				System.Diagnostics.Debug.WriteLine(ex.Message);
 			}
 		}	
+
+		public void Share(String fileName)
+		{
+			var ctx = (Activity)Forms.Context;
+			Java.IO.File file = new Java.IO.File(System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), fileName));           
+			file.SetReadable(true, false);
+			global::Android.Net.Uri uri = global::Android.Net.Uri.FromFile(file);
+
+			Intent sendIntent = new Intent();
+			sendIntent.SetAction(Intent.ActionSend);
+			sendIntent.PutExtra(Intent.ExtraStream, uri);
+			sendIntent.SetType("application/pdf");
+
+			Forms.Context.StartActivity(Intent.CreateChooser(sendIntent, "Condividi orario.."));
+		}
 	}
 }
 

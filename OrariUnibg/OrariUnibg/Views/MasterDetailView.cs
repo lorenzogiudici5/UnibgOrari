@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views
 {
@@ -106,6 +107,18 @@ namespace OrariUnibg.Views
             BindingContext = viewModel;
             Icon = "ic_menu.png";
             //this.Icon = "ic_navigation_drawer.png";
+
+			var _imgAvatar = new CircleImage {
+				BorderColor = Color.White,
+				BorderThickness = 3,
+				HeightRequest = 65,
+				WidthRequest = 65,
+				Aspect = Aspect.AspectFill,
+				HorizontalOptions = LayoutOptions.StartAndExpand,
+//				Source = "avatar.jpg",
+				Source = "user.jpg",
+			};
+
             var _lblUtente = new Label()
             {
                 FontSize = Device.GetNamedSize(NamedSize.Large, this),
@@ -147,15 +160,21 @@ namespace OrariUnibg.Views
             //    }
             //};
 
+			var layoutImg = new StackLayout () {
+				Padding = new Thickness(15, 30, 10, 15),
+				BackgroundColor = ColorHelper.Blue700,
+			};
+
             var layoutUser = new StackLayout()
             {
-                Padding = new Thickness(15, 40, 10, 15),
+                Padding = new Thickness(15, 3, 10, 10),
                 Spacing = 0,
                 BackgroundColor = ColorHelper.Blue700,
 //                Children = { _lblUtente, _lblMail }
             };
 
 			if (Settings.SuccessLogin) {
+				layoutImg.Children.Add (_imgAvatar);
 				layoutUser.Children.Add (_lblUtente);
 				layoutUser.Children.Add (_lblMail);
 			}
@@ -183,6 +202,7 @@ namespace OrariUnibg.Views
             var scrollview = new ScrollView()
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
+				BackgroundColor = ColorHelper.White, 
                 Content = new StackLayout()
                 {
                     Children = { _listView }
@@ -191,9 +211,9 @@ namespace OrariUnibg.Views
 
             var layout = new StackLayout 
             {
-                BackgroundColor = ColorHelper.White, 
+				BackgroundColor = ColorHelper.Blue700, 
                 Orientation = StackOrientation.Vertical,
-                Children = { layoutUser, scrollview}
+                Children = { layoutImg, layoutUser, scrollview}
             };
 
             Content = layout;

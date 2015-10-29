@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OrariUnibg
 {
@@ -32,6 +33,9 @@ namespace OrariUnibg
 		private ViewCell _lastUpdateCell;
 		private ViewCell _corsiPreferitiCell;
 		private Label _lblCorsiPreferiti;
+		private ViewCell _fileCell;
+		private Label _lblFile;
+		private int fileCount;
 		private Label _lblStatistic;
 		private ViewCell _statisticCell;
 		private Switch _statisticSwitch;
@@ -168,7 +172,8 @@ namespace OrariUnibg
 			};
 
 			#region Corsi Preferiti
-			_lblCorsiPreferiti = new Label () { Text = getPreferitiString(), TextColor = ColorHelper.DarkGray };
+			_lblCorsiPreferiti = new Label () {TextColor = ColorHelper.DarkGray };
+			getPreferitiString();
 			var _corsiPrefLayout = new StackLayout()
 			{
 				Padding = new Thickness(20, 10, 20, 10),
@@ -189,9 +194,39 @@ namespace OrariUnibg
 			};
 			#endregion
 
-			var sectionFavourit = new TableSection ("Gestione Preferiti") { //TableSection constructor takes title as an optional parameter
-				_corsiPreferitiCell
+			#region Manage File
+			_lblFile = new Label () { TextColor = ColorHelper.DarkGray };
+			getFileString();
+
+			var _fileLayout = new StackLayout()
+			{
+				Padding = new Thickness(20, 10, 20, 10),
+				Orientation = StackOrientation.Vertical,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Spacing = 3,
+				Children = {
+					new Label(){Text = "File generati", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+					_lblFile
+				}
 			};
+			_fileCell = new ViewCell () { View = _fileLayout};
+			_fileCell.Tapped += async (object sender, EventArgs e) => 
+			{
+				if(fileCount > 0)
+				{
+					var nav = new ManageFileView();
+					await this.Navigation.PushAsync(nav);
+				}
+
+			};
+			#endregion
+
+			var sectionFavourit = new TableSection ("Gestione") { //TableSection constructor takes title as an optional parameter
+				_corsiPreferitiCell,
+				_fileCell
+			};
+
+
 
 			#region DatiStatistici
 			_statisticSwitch = new Switch() {IsToggled = !Settings.DisableStatisticData, HorizontalOptions = LayoutOptions.EndAndExpand};
@@ -298,11 +333,22 @@ namespace OrariUnibg
 			return table;
 		}
 
-		private string getPreferitiString(){
+		private void getPreferitiString(){
 			if(Settings.MieiCorsiCount == 1)
-				return String.Format ("{0} corso", Settings.MieiCorsiCount);
+				_lblCorsiPreferiti.Text = String.Format ("{0} corso", Settings.MieiCorsiCount);
 			else
-				return String.Format ("{0} corsi", Settings.MieiCorsiCount);
+				_lblCorsiPreferiti.Text = String.Format ("{0} corsi", Settings.MieiCorsiCount);
+		}
+
+		private async void getFileString(){
+			
+			var path = await DependencyService.Get<IFile> ().GetInternalFolder ();
+			var files = DependencyService.Get<IFile> ().GetFiles (path); //.Count();
+			fileCount = files.Count();
+			if(fileCount == 1)
+				_lblFile.Text = String.Format ("{0} file", fileCount);
+			else
+				_lblFile.Text = String.Format ("{0} files", fileCount);
 		}
 
 		private string getNotificheString()
@@ -380,8 +426,10 @@ namespace OrariUnibg
 		{
 			base.OnAppearing ();
 			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
-			_lblCorsiPreferiti.Text = getPreferitiString ();
+			getPreferitiString ();
 			_lblLastUpdate.Text = Settings.LastUpdate;
+
+			getFileString ();
 		}
 		#endregion
 	}

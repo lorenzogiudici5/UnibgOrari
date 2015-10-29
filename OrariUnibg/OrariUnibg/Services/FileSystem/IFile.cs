@@ -11,9 +11,11 @@ namespace OrariUnibg
 		Task WriteAllBytes(string filename, byte[] bytes);
 		string[] GetFiles(string path);
 		string GetPersonalFolderPath();
-		Task<string> GetABBInternalFolder();
+		Task<string> GetInternalFolder();
+		Task Delete(string filename);
 		Task Show(string filename);
 		Task SendEmail(String fileName);
+		void Share (string fileName);
 		string Combine(string filename1, string filename2);
 	}
 }

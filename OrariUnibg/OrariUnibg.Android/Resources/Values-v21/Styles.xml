@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <resources> 
-
-	<style name="MyTheme" parent="@android:style/Theme.Material.Light.DarkActionBar"> 
+	<style name="MyTheme" parent="MyTheme.Base">
+	    <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+	    <item name="android:statusBarColor">@android:color/transparent</item>
+	</style>
+<!--	<style name="MyTheme" parent="@android:style/Theme.Material.Light.DarkActionBar"> 
 		<item name="android:colorPrimary">@color/material_blue_500</item> 
 		<item name="android:colorPrimaryDark">@color/material_blue_700</item> 
 		<item name="android:colorAccent">@color/accent</item> 
@@ -15,5 +18,5 @@
 		<item name="android:actionBarTabStyle">@style/MyTheme.ActionBar.TabStyle</item>
 		<item name="android:actionBarTabTextStyle">@style/MyTheme.ActionBar.TabTextStyle</item>
 		<item name="android:actionModeStyle">@style/MyTheme.ActionModeStyle</item>
-	</style> 
+	</style> -->
 </resources>

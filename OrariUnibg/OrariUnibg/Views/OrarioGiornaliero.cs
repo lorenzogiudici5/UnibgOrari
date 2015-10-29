@@ -11,6 +11,7 @@ using OrariUnibg.ViewModels;
 using OrariUnibg.Helpers;
 using System.Collections;
 using Xamarin;
+using OrariUnibg.Services;
 
 namespace OrariUnibg.Views
 {
@@ -152,63 +153,31 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
-//		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-//		{
-//			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
-//				return;
-//			var orario = (CorsoGiornaliero)lv.SelectedItem;
-//
-//			//if(il numero di facoltà presa dal ViewModel è uguale a Settings.Facolta allora displasy actionsheet) sennò vai direttamente alla pagina del corso
-//			if(_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
-//			{
-//				string action;
-//				if (_db.CheckAppartieneMieiCorsi(orario))
-//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
-//				else
-//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Aggiungi ai preferiti");
-//
-//				switch (action)
-//				{
-//				case "Rimuovi dai preferiti":
-//					var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
-//					if (conferma)
-//					{
-//						var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-//						_db.DeleteMieiCorsi(corso);
-//					}
-//					else
-//						return;
-//
-//					break;
-//				case "Aggiungi ai preferiti":
-//					_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-//					await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
-//					break;
-//				case "Dettagli":
-//					//var nav = new DettagliCorsoView();
-//					////nav.BindingContext = 
-//					//await this.Navigation.PushAsync(nav);
-//					break;
-//				}
-//			}
-//
-//
-//			//MessagingCenter.Send<OrarioGiornaliero, CorsoGiornaliero>(this, "item_clicked", orario);
-//
-//			((ListView)sender).SelectedItem = null;
-//		}
+
 		private async void share()
 		{
-//			Insights.Track("Share", new Dictionary <string,string>{
-//				{"Orario", "Giornaliero"},
-//			});
-//			string text = _viewModel.ToString () + Settings.Firma;
-//			DependencyService.Get<IMethods> ().Share (text);
+			string text = _viewModel.ToString ();
 
-			PdfFile pdf = new PdfFile ();
-			pdf.Create ();
+			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
+			if (s.Contains("PDF")) {
+				PdfFile pdf = new PdfFile () { Title = "Orario giornaliero", Text = text };
+				pdf.CreateGiornaliero ();
 
-			await pdf.Display ();
+				await pdf.Save ();
+				if(s.Contains("Condividi")) //Condividi PDF
+					DependencyService.Get<IFile> ().Share (pdf._filename);
+				else
+					await pdf.Display (); //visualizza PDF
+			} 
+			else{
+				text+= Settings.Firma;
+				DependencyService.Get<IMethods> ().Share (text); //condividi testo
+			}
+				
+			Insights.Track("Share", new Dictionary <string,string>{
+				{"Orario", "Giornaliero_" + s},
+			});
+
 		}
         private void showAll()
         {

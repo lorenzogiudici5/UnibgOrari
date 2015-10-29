@@ -30,7 +30,7 @@ namespace OrariUnibg.Droid
         }
         private void SlowMethod()
         {
-            Thread.Sleep(2000); //thread dorme
+            Thread.Sleep(1000); //thread dorme
             var intent = new Intent(this, typeof(MainActivity)); //creo l'intent da lanciare
             StartActivity(intent); //faccio partire l'activity
         }

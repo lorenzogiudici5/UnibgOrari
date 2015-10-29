@@ -195,20 +195,34 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
-		private void share()
+		private async void share()
 		{
-			Insights.Track("Share", new Dictionary <string,string>{
-				{"Orario", "Completo"},
-			});
-
 			string text;
 			if (_viewModel.Group)
 				text = ListGroupToString();
 			else
 				text = _viewModel.ToString ();
 
-			text+= Settings.Firma;
-			DependencyService.Get<IMethods> ().Share (text);
+
+			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
+			if (s.Contains ("PDF")) {
+				PdfFile pdf = new PdfFile () { Title = "Orario completo", Text = text };
+				pdf.CreateGiornaliero ();
+
+				await pdf.Save ();
+				if (s.Contains ("Condividi")) //Condividi PDF
+					DependencyService.Get<IFile> ().Share (pdf._filename);
+				else
+					await pdf.Display (); //visualizza PDF
+			} else {
+				text+= Settings.Firma;
+				DependencyService.Get<IMethods> ().Share (text); //condividi testo
+
+			}
+				
+			Insights.Track("Share", new Dictionary <string,string>{
+				{"Orario", "Completo_" + s},
+			});
 		}
 //		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
 //		{

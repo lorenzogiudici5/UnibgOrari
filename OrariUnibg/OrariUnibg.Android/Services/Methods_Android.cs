@@ -21,6 +21,16 @@ namespace OrariUnibg.Droid.Services
 
 			Forms.Context.StartActivity(Intent.CreateChooser(sendIntent, "Condividi orario.."));
 		}
+
+//		public void Share(Uri uri)
+//		{
+//			Intent sendIntent = new Intent();
+//			sendIntent.SetAction(Intent.ActionSend);
+//			sendIntent.PutExtra(Intent.ExtraStream, uri);
+//			sendIntent.SetType("application/pdf");
+//
+//			Forms.Context.StartActivity(Intent.CreateChooser(sendIntent, "Condividi orario.."));
+//		}
 	}
 }
 

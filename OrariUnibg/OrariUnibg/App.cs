@@ -25,7 +25,7 @@ namespace OrariUnibg
 				else //utente non login
 					MainPage = new LoginView ();
             }
-//			MainPage = new ImpostazioniView ();
+//			MainPage = new SelectGiornaliero ();
         }
 
 
