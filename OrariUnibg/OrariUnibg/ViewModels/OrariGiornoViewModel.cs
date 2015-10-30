@@ -13,6 +13,7 @@ namespace OrariUnibg.ViewModels
     {
         #region Private Fields
         private List<CorsoGiornaliero> _listOrari;
+		private string _laurea;
         #endregion
 
         public List<CorsoGiornaliero> ListOrari
@@ -27,17 +28,27 @@ namespace OrariUnibg.ViewModels
         public Facolta Facolta { get; set; }
         public String FacoltaString { get { return Facolta.Nome; } }
         public Laurea Laurea { get; set; }
-        public String LaureaString { get; set; }
+        public String LaureaString 
+		{ 
+			get 
+			{ 
+				if (_laurea.ToLower () == "generale")
+					return string.Format ("{0} - {1}", FacoltaString, _laurea);
+				else
+					return _laurea;
+			} 
+			set { _laurea = value;} 
+		}
 
         public DateTime Data { get; set; }
 		public String Day { get { return Data.ToString("dddd", new CultureInfo("it-IT")).ToUpper(); } }
-		public String DataString { get { return string.Format("ORARIO DI {0}, {1}", Day, Data.ToString("dd'/'MM'/'yyyy")); } }
+		public String DataString { get { return string.Format("{0}, {1}", Day, Data.ToString("dd'/'MM'/'yyyy")); } }
 
 
 		#region Public Methods
 		public override string ToString ()
 		{
-			return string.Format("{0} \n\n{1}", DataString, string.Join("\n", ListOrari));
+			return string.Format("ORARIO GIORNALIERO di {0} \n\n{1}", DataString, string.Join("\n", ListOrari));
 		}
 		#endregion
     }

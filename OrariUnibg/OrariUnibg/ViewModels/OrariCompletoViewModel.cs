@@ -12,6 +12,7 @@ namespace OrariUnibg.ViewModels
     {
         #region Private Fields
         private List<CorsoCompleto> _listOrari;
+		private string _laurea;
         #endregion
 
         public List<CorsoCompleto> ListOrari
@@ -26,7 +27,17 @@ namespace OrariUnibg.ViewModels
         public Facolta Facolta { get; set; }
         public String FacoltaString { get { return Facolta.Nome; } }
         public Laurea Laurea { get; set; }
-        public String LaureaString { get; set; }
+		public String LaureaString 
+		{ 
+			get 
+			{ 
+				if (_laurea.ToLower () == "generale")
+					return string.Format ("{0} - {1}", FacoltaString, _laurea);
+				else
+					return _laurea;
+			} 
+			set { _laurea = value;} 
+		}
 
         public String Anno { get; set; }
         public String Semestre { get; set; }

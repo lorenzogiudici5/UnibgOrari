@@ -38,7 +38,7 @@ namespace OrariUnibg
 				Children = {
 					new Image () {
 						HorizontalOptions = LayoutOptions.CenterAndExpand,
-						Source = "splash.png", 
+						Source = "splashFlat.png", 
 					},
 				}
 			};

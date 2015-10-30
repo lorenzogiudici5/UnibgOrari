@@ -18,7 +18,7 @@ using ImageCircle.Forms.Plugin.Droid;
 
 namespace OrariUnibg.Droid
 {
-	[Activity(Label = "OrariUniBg", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/MyTheme")] // , Theme = "@style/ActionBarCustomHeader")]
+	[Activity(Label = "UnibgOrari", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/MyTheme")] // , Theme = "@style/ActionBarCustomHeader")]
 	public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)

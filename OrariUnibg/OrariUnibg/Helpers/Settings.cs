@@ -54,7 +54,7 @@ namespace OrariUnibg.Helpers
 
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-		private static readonly string VersionString = "1.1.6";
+		private static readonly string VersionString = "0.1.6";
 		private static readonly string AppNameString = "UnibgOrari";
 		private static readonly string FirmaString = string.Format ("\n\n\nCondiviso da {0}", AppNameString);
       	private static readonly string DefaultString = string.Empty;

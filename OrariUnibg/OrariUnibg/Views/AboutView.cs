@@ -40,7 +40,7 @@ namespace OrariUnibg
 						BackgroundColor = ColorHelper.Blue500,
 						Spacing = 10,
 						Children ={
-							new Image(){Source = "UnibgOk.png", HorizontalOptions = LayoutOptions.CenterAndExpand, Aspect = Aspect.AspectFit},
+							new Image(){Source = "ic_flatOK.png", HorizontalOptions = LayoutOptions.CenterAndExpand, Aspect = Aspect.AspectFit},
 							new Label() {Text = "UnibgOrari", TextColor = ColorHelper.White, HorizontalOptions = LayoutOptions.CenterAndExpand, FontSize = Device.GetNamedSize(NamedSize.Large, this)},
 							new Label() {Text = string.Format("Versione {0}", Settings.Versione), TextColor = ColorHelper.White, HorizontalOptions = LayoutOptions.CenterAndExpand, FontSize = Device.GetNamedSize(NamedSize.Medium, this)},
 

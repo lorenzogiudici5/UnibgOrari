@@ -37,6 +37,7 @@ namespace OrariUnibg.Views
         private ToolbarItem tbiShowAll;
 		private FloatingActionButtonView fab;
 		private int appearingListItemIndex = 0;
+		private string _listStringGroup;
 //		private ToolbarItem tbiShare;
         #endregion
 
@@ -183,14 +184,15 @@ namespace OrariUnibg.Views
 		{
 			string text = string.Format ("ORARIO COMPLETO: {0} - {1} \n\n", _viewModel.LaureaString, _viewModel.AnnoSemestre);
 			var days = Enum.GetValues (typeof(OrariUnibg.Models.Lezione.Day));
+
+			_listStringGroup = string.Empty;
 			foreach (var day in days) {
-				
 				var list = listaGroup.Where (z => z.Key.ToString() == day.ToString()).SelectMany(value => value);
 				if(list.Count ()>0)
-					text += string.Format ("{0}\n{1}\n\n", day.ToString ().ToUpper (), string.Join("\n", list));
+					_listStringGroup += string.Format ("{0}\n{1}\n\n", day.ToString ().ToUpper (), string.Join("\n", list));
 			}
 
-			return text;
+			return text += _listStringGroup;
 		}
         #endregion
 
@@ -198,16 +200,19 @@ namespace OrariUnibg.Views
 		private async void share()
 		{
 			string text;
-			if (_viewModel.Group)
-				text = ListGroupToString();
-			else
-				text = _viewModel.ToString ();
-
 
 			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
-			if (s.Contains ("PDF")) {
-				PdfFile pdf = new PdfFile () { Title = "Orario completo", Text = text };
-				pdf.CreateGiornaliero ();
+			if (s.Contains ("PDF")) { //devo creare il PDF
+
+				if (_viewModel.Group) {
+					ListGroupToString ();
+					text = _listStringGroup;  //lista corsi raggruppati
+				}
+				else
+					text = string.Join ("\n", _viewModel.ListOrari); //lista corsi
+				
+				PdfFile pdf = new PdfFile () { Title = "Orario completo", TitleFacolta = _viewModel.LaureaString, TitleInfo = _viewModel.AnnoSemestre, Text = text };
+				pdf.CreateCompleto ();
 
 				await pdf.Save ();
 				if (s.Contains ("Condividi")) //Condividi PDF
@@ -215,6 +220,10 @@ namespace OrariUnibg.Views
 				else
 					await pdf.Display (); //visualizza PDF
 			} else {
+				if (_viewModel.Group)
+					text = ListGroupToString();
+				else
+					text = _viewModel.ToString ();
 				text+= Settings.Firma;
 				DependencyService.Get<IMethods> ().Share (text); //condividi testo
 
@@ -224,60 +233,7 @@ namespace OrariUnibg.Views
 				{"Orario", "Completo_" + s},
 			});
 		}
-//		async void lv_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-//		{
-//			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
-//				return;
-//
-//			Corso orario;
-//			if(_viewModel.Group)
-//			{
-//				CorsoCompletoGroupViewModel o = (CorsoCompletoGroupViewModel)lv.SelectedItem;
-//				orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
-//			}
-//
-//			else
-//			{
-//				CorsoCompleto o = (CorsoCompleto)lv.SelectedItem;
-//				orario = new Corso() { Insegnamento = o.Insegnamento, Codice = o.Codice, Docente = o.Docente };
-//			}
-//
-//			if (_viewModel.Facolta.IdFacolta == Settings.FacoltaId)
-//			{
-//				string action;
-//				if (_db.CheckAppartieneMieiCorsi(orario))
-//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
-//				else
-//					action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Aggiungi ai preferiti");
-//
-//				switch (action)
-//				{
-//				case "Rimuovi dai preferiti":
-//					var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
-//					if (conferma)
-//					{
-//						var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-//						_db.DeleteMieiCorsi(corso);
-//					}
-//					else
-//						return;
-//
-//					break;
-//				case "Aggiungi ai preferiti":
-//					_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-//					await DisplayAlert("PREFERITO AGGIUNTO!", string.Format("Complimenti! Hai aggiunto il corso di {0} ai preferiti!", orario.Insegnamento), "OK");
-//					break;
-//				default:
-//					//case "Dettagli":
-//					//    var nav = new DettagliCorsoView();
-//					//    //nav.BindingContext = 
-//					//    await this.Navigation.PushAsync(nav);
-//					break;
-//				}
-//			}
-//
-//			((ListView)sender).SelectedItem = null;
-//		}
+
         private void showAll()
         {
 			ToolbarItems.Remove (tbiShowAll);

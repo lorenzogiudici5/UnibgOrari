@@ -52,7 +52,7 @@ namespace OrariUnibg.Views
 					share();
 				}
 			};
-
+			fab.SetBinding(Label.IsVisibleProperty, new Binding("ListaLezioni", converter: new IsINVisibleCountConverter()));
 //            _lblDay = new Label()
 //            {
 //                FontSize = Device.GetNamedSize(NamedSize.Small, this),
@@ -220,85 +220,36 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Event Handlers
-		private async void share()
+		private void share()
 		{
 			string text = _viewModel.ToString ();
+			string s = "Condividi Testo";
+			//possibilità di condividere solo il testo
 
-			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
-			if (s.Contains("PDF")) {
-				PdfFile pdf = new PdfFile () { Title = "Orario giornaliero", Text = text };
-				pdf.CreateGiornaliero ();
+//			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
+//			if (s.Contains("PDF")) {
+//				PdfFile pdf = new PdfFile () { Title = "Orario giornaliero", Text = text };
+//				pdf.CreateGiornaliero ();
+//
+//				await pdf.Save ();
+//				if(s.Contains("Condividi")) //Condividi PDF
+//					DependencyService.Get<IFile> ().Share (pdf._filename);
+//				else
+//					await pdf.Display (); //visualizza PDF
+//			} 
+//			else{
+//				text+= Settings.Firma;
+//				DependencyService.Get<IMethods> ().Share (text); //condividi testo
+//			}
 
-				await pdf.Save ();
-				if(s.Contains("Condividi")) //Condividi PDF
-					DependencyService.Get<IFile> ().Share (pdf._filename);
-				else
-					await pdf.Display (); //visualizza PDF
-			} 
-			else{
-				text+= Settings.Firma;
-				DependencyService.Get<IMethods> ().Share (text); //condividi testo
-			}
+			text+= Settings.Firma;
+			DependencyService.Get<IMethods> ().Share (text); //condividi testo
 
 			Insights.Track("Share", new Dictionary <string,string>{
 				{"Orario", "Preferiti_"+s},
 			});
 
 		}
-//		async void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-//		{
-//			if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
-//				return;
-//			var orario = (Orari)_listView.SelectedItem;
-//
-//			string action;
-//			//if(_db.CheckAppartieneMieiCorsi(orario))
-//			action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Rimuovi dai preferiti");
-//
-//			//else
-//			//    action = await DisplayActionSheet(orario.Insegnamento, "Annulla", null, "Dettagli", "Aggiungi ai preferiti");
-//
-//			switch (action)
-//			{
-//			case "Rimuovi dai preferiti":
-//				var conferma = await DisplayAlert("RIMUOVI", string.Format("Sei sicuro di volere rimuovere {0} dai corsi preferiti?", orario.Insegnamento), "Conferma", "Annulla");
-//				if (conferma)
-//				{
-//					var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-//					_db.DeleteMieiCorsi(corso);
-//					MessagingCenter.Send<TabbedDayView>(this, "delete_corso");
-//				}
-//				else
-//					return;
-//				break;
-//				//case "Aggiungi ai preferiti":
-//				//    _db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-//				//    break;
-//			default:
-//				//case "Dettagli":
-//				//    var nav = new DettagliCorsoView();
-//				//    //nav.BindingContext = 
-//				//    await this.Navigation.PushAsync(nav);
-//				break;
-//			}
-//
-//			((ListView)sender).SelectedItem = null;
-//		}
-
-//        private void sync(TabbedHomeView arg1, bool arg2)
-//        {
-//            if (arg2)
-//            {
-//                _activityIndicator.IsRunning = true;
-//                _activityIndicator.IsVisible = true;
-//            }
-//            else
-//            {
-//                _activityIndicator.IsRunning = false;
-//                _activityIndicator.IsVisible = false;
-//            }
-//        }
-
         #endregion
 
 		#region Override
@@ -376,7 +327,7 @@ namespace OrariUnibg.Views
         }
     }
 
-    public class IsVisibleCountConverter : IValueConverter
+    public class IsVisibleCountConverter : IValueConverter //PER LA LABEL nessuna lezione
     {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -401,6 +352,32 @@ namespace OrariUnibg.Views
             throw new NotImplementedException();
         }
     }
+
+	public class IsINVisibleCountConverter : IValueConverter //per il FAB BUTTON
+	{
+
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value is IEnumerable<Orari>)
+			{
+				var x = (IEnumerable<Orari>)value;
+				switch (x.Count())
+				{
+				case 0:
+					return false;
+				default:
+					return true;
+				}
+			}
+
+			return string.Empty;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
     #endregion 
 
 

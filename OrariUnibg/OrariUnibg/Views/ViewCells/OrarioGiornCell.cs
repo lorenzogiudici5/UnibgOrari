@@ -30,7 +30,7 @@ namespace OrariUnibg.Views.ViewCells
         private Label _lblDocente;
         private Label _lblNote;
 		private DbSQLite _db;
-		private Orari orario;
+//		private Orari orario;
 //		private Xamarin.Forms.MenuItem removeAction;
 		private Xamarin.Forms.MenuItem addAction;
         #endregion

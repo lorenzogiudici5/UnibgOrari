@@ -160,7 +160,7 @@ namespace OrariUnibg.Views
 
 			var s = await DisplayActionSheet ("Condividi", "Annulla", null, "Visualizza PDF", "Condividi PDF", "Condividi Testo");
 			if (s.Contains("PDF")) {
-				PdfFile pdf = new PdfFile () { Title = "Orario giornaliero", Text = text };
+				PdfFile pdf = new PdfFile () { Title = "Orario Giornaliero", TitleFacolta = _viewModel.LaureaString, TitleInfo = _viewModel.DataString, Text = string.Join("\n", _viewModel.ListOrari) };
 				pdf.CreateGiornaliero ();
 
 				await pdf.Save ();

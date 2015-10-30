@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace OrariUnibg.Droid
 {
-    [Activity(Label = "OrariUniBg", MainLauncher = true, NoHistory = true, Theme = "@style/Theme.Splash", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "UnibgOrari", MainLauncher = true, NoHistory = true, Theme = "@style/Theme.Splash", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class Splash : Activity
     {
         protected override void OnCreate(Bundle bundle)

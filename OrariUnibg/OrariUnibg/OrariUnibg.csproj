@@ -95,7 +95,6 @@
     <Compile Include="Services\PdfFile.cs" />
     <Compile Include="Services\FileSystem\IFile.cs" />
     <Compile Include="Views\ManageFileView.cs" />
-    <Compile Include="Views\ViewCells\FileViewCell.cs" />
     <Compile Include="ViewModels\FileViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

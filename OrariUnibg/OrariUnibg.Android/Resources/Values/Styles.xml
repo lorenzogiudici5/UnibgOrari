@@ -3,7 +3,7 @@
     <!-- <item name="android:windowBackground">@drawable/splash</item> -->
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowFullscreen">true</item>
-    <item name="android:background">@color/blue</item>
+    <item name="android:background">@color/primaryDark</item>
     <!--<item name="android:windowIsTranslucent">false</item> -->
     <!--<item name="android:windowIsFloating">false</item> -->
     <!--<item name="android:backgroundDimEnabled">true</item>-->

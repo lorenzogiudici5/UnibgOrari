@@ -18,6 +18,7 @@ namespace OrariUnibg
 		#region Private Fields
 		ListView _listView;
 		List<FileViewModel> _filesList;
+		ToolbarItem tbiDelete;
 		#endregion
 
 		#region Private Methods
@@ -50,7 +51,12 @@ namespace OrariUnibg
 
 				Children = { _listView }
 			};
-					
+
+
+			//Toolbar Item
+			tbiDelete = new ToolbarItem("Rimuovi tutti", null, deleteAll, 0,0);
+			ToolbarItems.Add(tbiDelete);
+
 			return layout;
 		}
 
@@ -83,7 +89,7 @@ namespace OrariUnibg
 			var a = await DisplayActionSheet (filename, "Annulla", null, "Apri", "Condividi", "Cancella");
 			switch (a) {
 			case "Apri":
-				DependencyService.Get<IFile> ().Show (path);
+				await DependencyService.Get<IFile> ().Show (path);
 				break;
 
 			case "Condividi":
@@ -91,7 +97,7 @@ namespace OrariUnibg
 				break;
 
 			case "Cancella":
-				DependencyService.Get<IFile> ().Delete (path);
+				await DependencyService.Get<IFile> ().Delete (path);
 				getFiles ();
 				break;
 
@@ -100,6 +106,21 @@ namespace OrariUnibg
 			}
 
 			((ListView)sender).SelectedItem = null;
+		}
+
+		private async void deleteAll()
+		{
+			var confirmDelete = await DisplayAlert ("Attenzione", "Rimuovere definitivamente tutti i file generati?", "Si", "No");
+			if (!confirmDelete)
+				return;
+
+			var folder = await DependencyService.Get<IFile> ().GetInternalFolder ();
+			foreach (var file in _filesList) {
+				var path = DependencyService.Get<IFile> ().Combine (folder, file.Name);
+				await DependencyService.Get<IFile> ().Delete (path);
+			}
+
+			await this.Navigation.PopAsync ();
 		}
 		#endregion
 	}

@@ -215,13 +215,9 @@ namespace OrariUnibg.Services.Database
         public bool Notify 
         {
             get { return _notify; }
-            set 
-            {
-                if (value == null)
-                    _notify = false;
-                else
-                    _notify = value;
-                } 
+            set {
+				_notify = value;
+			}
         }
         //public string Codice { get; set; }
         //public string Insegnamento { get; set; }
