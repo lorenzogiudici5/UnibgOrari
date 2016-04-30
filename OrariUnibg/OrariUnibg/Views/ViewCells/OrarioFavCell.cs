@@ -230,10 +230,10 @@ namespace OrariUnibg
 
 			MessagingCenter.Send<OrarioFavCell>(this, "delete_corso_fav");
 
-			var toast = DependencyService.Get<IToastNotificator>();
-			await toast.Notify (ToastNotificationType.Error, "Complimenti", orario.Insegnamento + " rimosso dai preferiti!", TimeSpan.FromSeconds (3));
+            var toast = DependencyService.Get<IToastNotificator>();
+            await toast.Notify(ToastNotificationType.Error, "Complimenti", orario.Insegnamento + " rimosso dai preferiti!", TimeSpan.FromSeconds(3));
 
-		}
+        }
 		#endregion
 
 	}

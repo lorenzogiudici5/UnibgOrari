@@ -21,6 +21,7 @@ namespace OrariUnibg.Services.Database
             db.CreateTable<MieiCorsi>();
             db.CreateTable<Orari>();
             db.CreateTable<Utenze>();
+            db.CreateTable<LogTb>();
         }
 
         public DbSQLite()
@@ -197,6 +198,26 @@ namespace OrariUnibg.Services.Database
             return (from i in db.Table<Utenze>() select i).ToList();
         }
         #endregion
+
+        #region Logcat
+        public void InsertLog(String log)
+        {
+            var logcat = new LogTb() {Date = DateTime.Now, Log = log };
+            db.Insert(logcat);
+        }
+
+        public IEnumerable<LogTb> GetAllLogs()
+        {
+            return (from i in db.Table<LogTb>() select i).ToList();
+        }
+
+        public int ClearLog()
+        {
+            return db.DeleteAll<LogTb>();
+        }
+
+        #endregion
+
     }
 
     [Table("MieiCorsi")]
@@ -231,4 +252,14 @@ namespace OrariUnibg.Services.Database
 		[PrimaryKey, AutoIncrement, Column("_id")]
 		public int Id { get; set; }
 	}
+
+    [Table("LogTb")]
+    public class LogTb
+    {
+        [PrimaryKey, AutoIncrement, Column("_id")]
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+
+        public String Log { get; set; }
+    }
 }

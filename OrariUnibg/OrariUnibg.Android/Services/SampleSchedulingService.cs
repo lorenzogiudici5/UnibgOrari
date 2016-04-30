@@ -7,11 +7,9 @@ using OrariUnibg.Helpers;
 using OrariUnibg.Models;
 using OrariUnibg.Services;
 using OrariUnibg.Services.Database;
-using OrariUnibg.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Connectivity.Plugin;
@@ -37,11 +35,10 @@ namespace OrariUnibg.Droid.Services.Notifications
         protected async override void OnHandleIntent(Android.Content.Intent intent)
         {
 			Logcat.Write("ALARM: " + DateTime.Now.ToLongTimeString());
-            //SendNotification();
-            //App.Database = new DbSQLite(new SQLite_Android().GetConnection());
+
             _db = App.Database;
 
-			if (_db == null) {
+            if (_db == null) {
 				App.Init (new DbSQLite (new SQLite_Android ().GetConnection ()));
 				_db = App.Database;
 //				if (_db == null)
@@ -49,15 +46,13 @@ namespace OrariUnibg.Droid.Services.Notifications
 //				else
 //					Logcat.Write ("_db NOT NULL dopo INIT");
 			} else
-				Logcat.Write ("_db NOT NULL");
+                Logcat.Write("_db NOT NULL");
 
-
-			Logcat.Write("NUMERO MIEI CORSI: " + _db.GetAllMieiCorsi().Count());
+            Logcat.WriteDB(_db, "Allarme attivato");
+            Logcat.Write("NUMERO MIEI CORSI: " + _db.GetAllMieiCorsi().Count());
 
             _intent = intent;
             _listOrariGiorno = _db.GetAllOrari();
-
-            //_mieiCorsiList = db.GetItemsMieiCorsi();
 
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
             {
@@ -78,6 +73,8 @@ namespace OrariUnibg.Droid.Services.Notifications
             * */
             await updateDbOrariUtenza();
 
+            Logcat.WriteDB(_db, "AGGIORNAMENTO COMPLETATO!");
+            Logcat.Write("AGGIORNAMENTO COMPLETATO!");
             // Release the wake lock provided by the BroadcastReceiver.
             SampleAlarmReceiver.CompleteWakefulIntent(intent);
         }
@@ -96,21 +93,25 @@ namespace OrariUnibg.Droid.Services.Notifications
             };
 
 			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
-				var toast = DependencyService.Get<IToastNotificator>();
-				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+                Logcat.WriteDB(_db, "*************ERRORE");
+                Logcat.WriteDB(_db, "AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
+                Logcat.Write("AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
+                //var toast = DependencyService.Get<IToastNotificator>();
+				//await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
 				return;
 			}
 			
             foreach (var d in arrayDate)
             {
 				Logcat.Write ("Data Considerata: " + d.ToString());
+                Logcat.WriteDB(_db, "Ottenimento orari del " + d.Date.ToString());
 
                 string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
 				if (listaCorsi.Count () != 0)
 					updateSingleCorso (listaCorsi);
-					              
+                Logcat.WriteDB(_db, "Ottenimento orari del " + d.Date.ToString() + " OK");
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
@@ -144,8 +145,12 @@ namespace OrariUnibg.Droid.Services.Notifications
 							o.AulaOra = corso.AulaOra;
 							if (o.Note != null && o.Note != "" && !o.Notify)
 							{
-								SendNotification(corso);
-								o.Notify = true;
+                                Logcat.Write("---------- - Invio Notifica: " + o.Insegnamento);
+                                Logcat.WriteDB(_db, "-----------Invio Notifica: " + o.Insegnamento);
+                                SendNotification(corso);
+                                Logcat.Write("-----------Invio Notifica OK");
+                                Logcat.WriteDB(_db, "-----------Invio Notifica OK");
+                                o.Notify = true;
 							}
 							_db.Update(o);
 						}
@@ -174,10 +179,13 @@ namespace OrariUnibg.Droid.Services.Notifications
 		{
 			if (!Settings.Notify)
 				return;
-//			Logcat.Write("SEND NOTIFICATION");
+            //			Logcat.Write("SEND NOTIFICATION");
 
-			// Set up an intent so that tapping the notifications returns to this app:
-			Intent intent = new Intent(Forms.Context, typeof(MainActivity));
+            Logcat.Write("Creazione Notifica");
+            Logcat.WriteDB(_db, "Creazione notifica");
+            Logcat.WriteDB(_db, l.Note.ToUpper() + l.Insegnamento + " - " + l.Date + " - " + l.Ora);
+            // Set up an intent so that tapping the notifications returns to this app:
+            Intent intent = new Intent(Forms.Context, typeof(MainActivity));
 
 			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
 			const int pendingIntentId = 0;

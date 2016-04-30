@@ -1,0 +1,28 @@
+﻿<Properties StartupItem="OrariUnibg\OrariUnibg.Android\OrariUnibg.Android.csproj" GitUserInfo="UsingGIT">
+  <DisabledProjects>
+    <String>OrariUnibg\OrariUnibg.iOS\OrariUnibg.iOS.csproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="Android.Xamarin_Android_API_21" />
+  <MonoDevelop.Ide.Workbench>
+    <Files>
+      <File FileName="OrariUnibg\OrariUnibg.Android\Resources\Values\Styles.xml" Line="1" Column="1" />
+      <File FileName="OrariUnibg\OrariUnibg.Android\MainActivity.cs" Line="1" Column="1" />
+      <File FileName="OrariUnibg\OrariUnibg.Android\Splash.cs" Line="1" Column="1" />
+      <File FileName="OrariUnibg\OrariUnibg\Views\LoginView.cs" Line="1" Column="1" />
+      <File FileName="OrariUnibg\OrariUnibg\Helpers\Settings.cs" Line="57" Column="52" />
+      <File FileName="OrariUnibg\OrariUnibg\Views\TabbedHomeView.cs" Line="1" Column="1" />
+      <File FileName="OrariUnibg\OrariUnibg\Views\TabbedDayView.cs" Line="55" Column="7" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\Development\Git_Repositories\orariunibg.git\OrariUnibg\OrariUnibg\Views\ViewCells\OrarioGiornCell.cs" line="209" column="1" />
+      <Breakpoint file="D:\Development\Git_Repositories\orariunibg.git\OrariUnibg\OrariUnibg\Views\TabbedHomeView.cs" line="176" column="1" />
+      <Breakpoint file="D:\Development\Git_Repositories\orariunibg.git\OrariUnibg\OrariUnibg\Views\GestionePreferitiView.cs" line="51" column="51" />
+      <Breakpoint file="D:\Development\Git_Repositories\orariunibg.git\OrariUnibg\OrariUnibg\Views\ViewCells\OrarioFavCell.cs" line="231" column="66" />
+      <Breakpoint file="D:\Development\Git_Repositories\orariunibg.git\OrariUnibg\OrariUnibg\Views\ViewCells\OrarioComplCellGroup.cs" line="105" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.OrariUnibg.Android AndroidDesignerPreferredDevice="Nexus 4" />
+</Properties>

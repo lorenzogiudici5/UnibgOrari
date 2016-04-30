@@ -25,11 +25,13 @@ namespace OrariUnibg.Views
 			Logcat.Write("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
 
-			IdentifyingUser ();
+            //IdentifyingUser (); //IDENTIFYING USER DISABLE!!
 
             //BackgroundColor = ColorHelper.White;
 
-			checkDays (); //controllo che giorni sono necessari nelle tab
+            Logcat.Write(string.Format("{0}: {1}", "TabbedHomeView", "costruttore"));
+
+            checkDays (); //controllo che giorni sono necessari nelle tab
 			loadListCorsiGiorno(); //carico la lista dei giorni         
 
             this.ItemTemplate = new DataTemplate(() =>

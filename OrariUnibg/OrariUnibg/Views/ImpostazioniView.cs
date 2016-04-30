@@ -4,6 +4,7 @@ using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using System.Linq;
 using System.Threading.Tasks;
+using OrariUnibg.Views;
 
 namespace OrariUnibg
 {
@@ -40,7 +41,8 @@ namespace OrariUnibg
 		private ViewCell _statisticCell;
 		private Switch _statisticSwitch;
 		private ViewCell _versionCell;
-		private ViewCell _tutorialCell;
+        private ViewCell _logCell;
+        private ViewCell _tutorialCell;
 		private ViewCell _logoutCell;
 		#endregion
 
@@ -296,10 +298,30 @@ namespace OrariUnibg
 			};
 			_versionCell = new ViewCell () {View = _versionLayout}; //, IsEnabled = false };
 			_versionCell.Tapped += async (object sender, EventArgs e) => await Navigation.PushModalAsync(new AboutView());
-			#endregion
+            #endregion
 
-			#region Logout
-			var _logoutLayout = new StackLayout () 
+            #region Log
+            var _logLayout = new StackLayout()
+            {
+                Padding = new Thickness(20, 10, 20, 10),
+                Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Spacing = 3,
+                Children =
+                {
+                    new Label() {Text = "Log", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"},
+                }
+            };
+            _logCell = new ViewCell() { View = _logLayout }; //, IsEnabled = false };
+            _logCell.Tapped += async (object sender, EventArgs e) =>
+            {
+                var nav = new LogView();
+                await this.Navigation.PushAsync(nav);
+            };
+            #endregion
+
+            #region Logout
+            var _logoutLayout = new StackLayout () 
 			{
 				Padding = new Thickness(20, 10, 20, 10),
 				Orientation = StackOrientation.Vertical,
@@ -321,6 +343,7 @@ namespace OrariUnibg
 				_statisticCell,
 				_tutorialCell,
 				_versionCell,
+                _logCell,
 				_logoutCell
 			};
 				
@@ -395,9 +418,13 @@ namespace OrariUnibg
 		}
 		async void _updateIntervallCell_Tapped (object sender, EventArgs e)
 		{
-			var interval = await DisplayActionSheet ("Scegli intervallo di aggiornamento", "Annulla", null, "1 ora", "3 ore", "6 ore", "12 ore", "24 ore");
-			switch (interval) {
-			case "1 ora":
+			//var interval = await DisplayActionSheet ("Scegli intervallo di aggiornamento", "Annulla", null, "30 minuti", "1 ora", "3 ore", "6 ore", "12 ore", "24 ore");
+            var interval = await DisplayActionSheet("Scegli intervallo di aggiornamento", "Annulla", null, "1 ora", "3 ore", "6 ore", "12 ore", "24 ore");
+            switch (interval) {
+            //case "30 minuti": //*** SOLO TEST!! ELIMINARE
+            //    Settings.UpdateInterval = (long) 0.5F;
+            //    break;
+            case "1 ora":
 				Settings.UpdateInterval = 1;
 				break;
 			case "3 ore":

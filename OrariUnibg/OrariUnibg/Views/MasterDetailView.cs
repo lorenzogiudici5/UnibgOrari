@@ -220,6 +220,8 @@ namespace OrariUnibg.Views
 
         void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            Logcat.Write(string.Format("{0}: {1}", "MASTERDETAIL", "click select menu item" ));
+
             if (e.SelectedItem == null)                         // ensures we ignore this handler when the selection is just being cleared
                 return;
 
@@ -228,24 +230,31 @@ namespace OrariUnibg.Views
 
             foreach (var x in _viewModel.MenuItems)
                 x.Selected = false;
-			
+
+            Logcat.Write(string.Format("{0}: {1}", "MASTERDETAIL", "prima dello switch"));
+
             switch (menuItem.MenuType)
             {
 	            case MenuType.Home:
 	                if (mainView == null)
 	                    mainView = new TabbedHomeView();
 
-//	                _viewModel.MenuItems[0].Selected = true;
-					_viewModel.MenuItems.Where(x => x.Id == 0).FirstOrDefault().Selected = true;
-	                PageSelection = mainView;
-	                break;
+                    Logcat.Write(string.Format("{0}: {1}", "MASTERDETAIL", "HOME"));
+                    //	                _viewModel.MenuItems[0].Selected = true;
+
+                    Logcat.Write(string.Format("{0}: {1}", "MASTERDETAIL", "menu items count")); 
+                    _viewModel.MenuItems.Where(x => x.Id == 0).FirstOrDefault().Selected = true;
+
+                    PageSelection = mainView;
+                    Logcat.Write(string.Format("{0}: {1}", "MASTERDETAIL", "page selection ok"));
+                    break;
 
 	            case MenuType.Giornaliero:
 	                if (selectGiornView == null)
 	                    selectGiornView = new SelectGiornaliero();
 
 //	                _viewModel.MenuItems[1].Selected = true;
-				_viewModel.MenuItems.Where(x => x.Id == 1).FirstOrDefault().Selected = true;
+				    _viewModel.MenuItems.Where(x => x.Id == 1).FirstOrDefault().Selected = true;
 	                PageSelection = selectGiornView;
 	                break;
 
@@ -254,7 +263,7 @@ namespace OrariUnibg.Views
 	                    selectCompletoView = new SelectCompleto();
 
 //	                _viewModel.MenuItems[2].Selected = true;
-				_viewModel.MenuItems.Where(x => x.Id == 2).FirstOrDefault().Selected = true;
+				    _viewModel.MenuItems.Where(x => x.Id == 2).FirstOrDefault().Selected = true;
 	                PageSelection = selectCompletoView;
 	                break;
 
@@ -263,7 +272,7 @@ namespace OrariUnibg.Views
 						impostazioniView = new ImpostazioniView();
 
 //					_viewModel.MenuItems[3].Selected = true;
-				_viewModel.MenuItems.Where(x => x.Id == 3).FirstOrDefault().Selected = true;
+				    _viewModel.MenuItems.Where(x => x.Id == 3).FirstOrDefault().Selected = true;
 					PageSelection = impostazioniView;
 					break;
 

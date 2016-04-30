@@ -54,7 +54,7 @@ namespace OrariUnibg.Helpers
 
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-		private static readonly string VersionString = "0.1.6";
+		private static readonly string VersionString = "0.1.7";
 		private static readonly string AppNameString = "UnibgOrari";
 		private static readonly string FirmaString = string.Format ("\n\n\nCondiviso da {0}", AppNameString);
       	private static readonly string DefaultString = string.Empty;
@@ -63,7 +63,7 @@ namespace OrariUnibg.Helpers
 		private static readonly bool DefaultBoolFalse = false;
 		private static readonly int DefaultUpdateHours = 18;
 		private static readonly int DefaultUpdateMinute = 13;
-		private static readonly int DefaultUpdateInterval = 3;
+		private static readonly long DefaultUpdateInterval = 3;
 
       #endregion
       
@@ -187,7 +187,7 @@ namespace OrariUnibg.Helpers
 			}
 		}
 
-		public static int UpdateInterval
+		public static long UpdateInterval
 		{
 			get
 			{

@@ -20,6 +20,9 @@ namespace OrariUnibg.Views
         {
             _db = new DbSQLite();
             this.SetBinding(ContentPage.TitleProperty, "Day");
+
+            Logcat.Write(string.Format("{0}: {1}", "TABBEDDAYVIEW", "before content"));
+
             Content = getView();
         }
         #endregion
@@ -77,7 +80,6 @@ namespace OrariUnibg.Views
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
             _lblInfo.SetBinding(Label.IsVisibleProperty, new Binding("ListaLezioni", converter: new IsVisibleCountConverter()));
-
 
 		
             _listView = new ListView()

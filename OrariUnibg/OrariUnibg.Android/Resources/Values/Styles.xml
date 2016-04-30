@@ -12,12 +12,29 @@
     <style name="MyTheme" parent="MyTheme.Base">
     </style>
 
-    <style name="MyTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MyTheme.Base" parent="Theme.AppCompat.Light.NoActionBar"> <!--.NoActionBar">-->
     	<item name="colorPrimary">@color/primary</item>
 	    <item name="colorPrimaryDark">@color/primaryDark</item>
 	    <item name="colorAccent">@color/accent</item>
 	    <item name="android:windowBackground">@color/window_background</item>
+      <item name="windowActionModeOverlay">true</item>
+      <item name="actionModeStyle">@style/MyTheme.ActionMode</item>
 	 </style>
+
+  <style name="MyTheme.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+    <!--<item name="android:textColorPrimary">@color/white</item>
+    <item name="titleTextStyle">@color/material_blue_500</item>
+    <item name="subtitleTextStyle">@style/MyTheme.ActionMode.Subtitle</item>
+    <item name="background">@color/material_blue_500</item>-->
+  </style>
+  
+  <style name="MyTheme.ActionMode.Title" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+    <item name="android:textColor">@color/material_blue_500</item>
+  </style>
+
+  <style name="MyTheme.ActionMode.Subtitle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle">
+      <item name="android:textColor">@color/material_blue_500</item>
+  </style>
 
 
 <!--    <style name="MyTheme.Base" parent="@android:style/Theme.Holo.Light.DarkActionBar"> 

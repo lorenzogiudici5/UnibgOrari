@@ -35,6 +35,7 @@ namespace OrariUnibg.Droid
 
 			FormsAppCompatActivity.ToolbarResource = Resource.Layout.toolbar;
 			FormsAppCompatActivity.TabLayoutResource = Resource.Layout.tabs;
+
             LoadApplication(new App()); // method is new in 1.3
 			ToastNotificatorImplementation.Init();  //TOAST NOTIFICATION
 

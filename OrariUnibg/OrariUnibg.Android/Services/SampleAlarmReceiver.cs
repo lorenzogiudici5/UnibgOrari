@@ -15,12 +15,14 @@ using Xamarin.Forms;
 using Android.Content.PM;
 using OrariUnibg.Droid.Services.Notifications;
 using OrariUnibg.Helpers;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg.Droid.Services.Notifications
 {
     [BroadcastReceiver]
     public class SampleAlarmReceiver : WakefulBroadcastReceiver
     {
+        //private DbSQLite _db;
         PendingIntent pi;
         AlarmManager am;
         public override void OnReceive(Context context, Intent intent)
@@ -53,11 +55,12 @@ namespace OrariUnibg.Droid.Services.Notifications
             Intent intent = new Intent(context, typeof(SampleAlarmReceiver));
 			Intent sampleSchedulingService = new Intent(context, typeof(SampleSchedulingService));
 
-          pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
+            pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
 
-			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour*Settings.UpdateInterval, pi);
+            am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour * Settings.UpdateInterval, pi);
+            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi); //DA SISTEMARE!
 
-//			am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 60000, pi);
+            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 60000, pi);
             Console.WriteLine(alarmTime);
 			Logcat.Write("ALARM REPEATING");
 

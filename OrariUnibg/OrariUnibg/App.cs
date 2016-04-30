@@ -16,7 +16,7 @@ namespace OrariUnibg
         {
             if (Settings.PrimoAvvio) //prima volta che avvio la app
             {
-				MainPage = new TutorialView();
+                MainPage = new TutorialView();
             }
             else
             {
