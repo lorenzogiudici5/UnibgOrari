@@ -87,7 +87,7 @@ namespace OrariUnibg.Droid.Services.Authentication
             }
             catch (Exception ex)
             {
-
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
 

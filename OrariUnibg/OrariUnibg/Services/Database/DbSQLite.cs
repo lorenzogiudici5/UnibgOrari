@@ -1,4 +1,5 @@
 ﻿using OrariUnibg.Models;
+using OrariUnibg.Services.Azure;
 using SQLite.Net;
 using SQLite.Net.Attributes;
 using System;
@@ -22,6 +23,7 @@ namespace OrariUnibg.Services.Database
             db.CreateTable<Orari>();
             db.CreateTable<Utenze>();
             db.CreateTable<LogTb>();
+            _service = new AzureDataService();
         }
 
         public DbSQLite()
@@ -29,17 +31,73 @@ namespace OrariUnibg.Services.Database
             db = DependencyService.Get<ISQLite>().GetConnection();
             db.CreateTable<Preferiti>();
             db.CreateTable<Orari>();
+            _service = new AzureDataService();
         }
         #endregion
 
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
 
         #region Private Fields
+        private AzureDataService _service;
         SQLiteConnection db;
         #endregion
 
         #region Azure
-        public void SynchronizeAzureDb()
+        public async Task SynchronizeAzureDb()
         {
+            bool toAdd = false;
+            bool toDelete = false;
+            await _service.Initialize();
+            var preferitiAzure = await _service.GetAllPreferiti();
+            var preferitiDb = GetAllMieiCorsi();
+
+            //controllo se ci sono corsi da cancellare (AZURE no, DB si)
+            foreach (var preferitoDb in preferitiDb)
+            {
+                toDelete = preferitiAzure.Where(x => x.IdPreferito == preferitoDb.IdPreferito).FirstOrDefault() == null ? true : false;
+                if (toDelete)
+                    DeleteMieiCorsi(preferitoDb);
+            }
+
+            //Controllo se ci sono corsi da aggiungere (AZURE si, DB no)
+            foreach (var preferitoAzure in preferitiAzure)
+            {
+                toAdd = preferitiDb.Where(x => x.IdPreferito == preferitoAzure.IdPreferito).FirstOrDefault() == null ? true : false;
+
+                if (toAdd)
+                {
+                    preferitoAzure.Id = preferitoAzure.IdCorso;
+                    var corso = await _service.GetCorso(preferitoAzure);
+                    preferitoAzure.Insegnamento = corso.Insegnamento;
+                    preferitoAzure.Docente = corso.Docente;
+                    preferitoAzure.Codice = corso.Codice;
+
+                    Insert(preferitoAzure);
+                }
+
+            }
+
+                //foreach (var preferitoDb in preferitiDb)
+                //{
+                //    if (preferitoDb.IdCorso == preferitoAzure.IdCorso) //c'è già nel database
+                //    {
+                //        toAdd = true;
+                //        break;
+                //    }
+                //    else
+                //        toAdd = false;
+                //}
+                //if (!toAdd)
+                //    Insert(preferitoAzure);
+            //}
+
+
 
         }
         #endregion
@@ -51,7 +109,7 @@ namespace OrariUnibg.Services.Database
         }
         public Preferiti GetItem(int id)
         {
-            return db.Table<Preferiti>().FirstOrDefault(x => x.IdPref == id);
+            return db.Table<Preferiti>().FirstOrDefault(x => x.IdPrefDB == id);
         }
 
         public void Update(Preferiti item)
@@ -92,7 +150,7 @@ namespace OrariUnibg.Services.Database
         public int DeleteMieiCorsi(Preferiti corso)
         {
             DeleteOrari(corso);
-            return db.Delete<Preferiti>(corso.IdPref);
+            return db.Delete<Preferiti>(corso.IdPrefDB);
         }
         #endregion
 
@@ -161,7 +219,7 @@ namespace OrariUnibg.Services.Database
         {
             var list = GetAllOrari().Where(x => x.Insegnamento == corso.Insegnamento);
             foreach (var x in list)
-                db.Delete<Orari>(x.Id);
+                db.Delete<Orari>(x.IdOrario);
         }
 
         public int DeleteSingleOrari(int id)
@@ -233,7 +291,7 @@ namespace OrariUnibg.Services.Database
     {
         [Newtonsoft.Json.JsonIgnore]
         [PrimaryKey, AutoIncrement, Column("_id")]
-        public int IdPref { get; set; } //Id accoppiata corso-preferito DB LOCAL
+        public int IdPrefDB { get; set; } //Id accoppiata corso-preferito DB LOCAL
 
         [Newtonsoft.Json.JsonProperty("Id")] 
         public String IdPreferito { get; set; } //Id accoppiata corso-preferito AZURE
@@ -270,7 +328,7 @@ namespace OrariUnibg.Services.Database
     {
         private bool _notify;
         [PrimaryKey, AutoIncrement, Column("_id")]
-        public int Id { get; set; }
+        public int IdOrario { get; set; }
         public bool Notify 
         {
             get { return _notify; }

@@ -132,7 +132,12 @@ namespace OrariUnibg.Views
                 WidthRequest = 70,
                 Aspect = Aspect.AspectFill,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
-                Source = Settings.Picture
+                Source = new UriImageSource {
+                    Uri = new Uri(Settings.Picture),
+                    CachingEnabled = true,
+                    CacheValidity = new TimeSpan(30, 0, 0, 0)
+                }
+                //Source = Settings.Picture
             };
 
             var _lblUtente = new Label()

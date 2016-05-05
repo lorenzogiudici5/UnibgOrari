@@ -21,6 +21,7 @@ namespace OrariUnibg.Views
         public ListaCorsi(List<CorsoCompleto> lista_completo)
         {
             Title = "Corsi";
+            _db = new DbSQLite();
             //BackgroundColor = ColorHelper.White;
             _listSource = lista_completo;
             Content = getView();
@@ -53,8 +54,6 @@ namespace OrariUnibg.Views
         #region Private Methods
         private View getView()
         {
-            _db = new DbSQLite();
-
 			_lblInfo = new Label () {
 				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
 				Text = "Seleziona i tuoi corsi",

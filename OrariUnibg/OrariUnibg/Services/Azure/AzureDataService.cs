@@ -86,6 +86,7 @@ namespace OrariUnibg.Services.Azure
                 Settings.FacoltaId = User.FacoltaId;
                 Settings.LaureaId = User.LaureaId;
                 Settings.AnnoIndex = User.AnnoIndex;
+                Settings.FacoltaDB = User.FacoltaDB;
                 await userTable.UpdateAsync(User);
                 return false;
             }
@@ -185,7 +186,7 @@ namespace OrariUnibg.Services.Azure
 
         public async Task<Corso> GetCorso(Corso corso)
         {
-            var c = await corsoTable.Where(x => x.Insegnamento == corso.Insegnamento && x.Codice == corso.Codice).ToEnumerableAsync();
+            var c = await corsoTable.Where(x => (x.Id == corso.Id) || (x.Insegnamento == corso.Insegnamento && x.Codice == corso.Codice)).ToEnumerableAsync();
             return c.ToList().FirstOrDefault();
         }
         #endregion
@@ -217,7 +218,7 @@ namespace OrariUnibg.Services.Azure
             //    await userTable.UpdateAsync(User);
         }
 
-        public async Task<List<Preferiti>> GetPreferiti()
+        public async Task<List<Preferiti>> GetAllPreferiti()
         {
             await Initialize();
 
@@ -225,6 +226,18 @@ namespace OrariUnibg.Services.Azure
 
             var preferiti = await preferitiTable.OrderBy(c => c.Id).ToEnumerableAsync();
             //return new ObservableCollection<TazzaDiCaffe>(coffes);
+            return preferiti.ToList();
+        }
+
+        public async Task<List<Preferiti>> GetMieiPreferiti()
+        {
+            await Initialize();
+
+            checkAuthentication();
+
+            //solo i miei corsi
+            var preferiti = await preferitiTable.Where(c => c.UserId == Settings.UserId).OrderBy(c => c.Id).ToEnumerableAsync();
+            
             return preferiti.ToList();
         }
 

@@ -16,6 +16,7 @@ namespace OrariUnibg
 		public LoginView ()
 		{
             //_service = new AzureDataService();
+            //_db = new DbSQLite();
             Content = getView ();
 		}
         #endregion
@@ -30,6 +31,7 @@ namespace OrariUnibg
 
         #region Private Fields
         private AzureDataService _service;
+        private DbSQLite _db;
         private Button _btnAccedi;
         private Label _lblSalta;
         private Label _lblAlert;
@@ -196,9 +198,6 @@ namespace OrariUnibg
             //aggiunge utente alla tabella
             var isNewUser = await addUser();
 
-            _lblAlert.IsVisible = false;
-            _activityIndicator.IsVisible = false;
-
 
             //**NELL'IMPLEMENTAZIONE Dell'authentication
             //Settings.Email = user.Message.Email;
@@ -207,30 +206,30 @@ namespace OrariUnibg
             //Settings.SocialId = user.Message.SocialId;
 
             var name = Settings.Name;
-            //_lbl.Text = string.Format("Welcome {0}", name);
-            //_img.Source = Settings.Picture;
 
             NavigationPage nav;
 
             //if informazioni facoltà, laurea, anno NON sono già presenti -> è il primo accesso -> information view
-            //if (isNewUser || !checkUniversityInformation())
-                if (true) ///*********************************SOLO PER PROVA DEBUG TEST AZURE
+            //if (true) ///*********************************SOLO PER PROVA DEBUG TEST AZURE
+            if (isNewUser || !checkUniversityInformation())
             {
                 nav = new NavigationPage(new InformationView() { Service = _service })
                 {
                     BarBackgroundColor = ColorHelper.Blue700,
                     BarTextColor = ColorHelper.White,
                 };
+
                 await Navigation.PushModalAsync(nav);
             }
-            else //altrimenti accedo direttament
+            else //altrimenti accedo direttamente
             {
-                //_db = new DbSQLite();
+                _lblAlert.Text = string.Format("Sto sincronizzando i tuoi dati");
+                _db = new DbSQLite();
+                await _db.SynchronizeAzureDb();
+
                 Settings.SuccessLogin = true;
                 await Navigation.PushModalAsync(new MasterDetailView());
             }
-            
-            
         }
 
 		async void _btnSalta_Clicked (object sender, EventArgs e)

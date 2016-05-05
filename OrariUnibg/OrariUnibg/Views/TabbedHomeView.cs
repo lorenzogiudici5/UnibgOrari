@@ -183,10 +183,7 @@ namespace OrariUnibg.Views
 			ToolbarItems.Clear();
 			ToolbarItems.Remove(tbiSync);
 
-            //await _service.Initialize();
-            //await DependencyService.Get<IAuthentication>().LoginAsync(_service.MobileService, MobileServiceAuthenticationProvider.Google);
-
-
+            await _db.SynchronizeAzureDb();
 
             //****COMMENTATI PER TEST AZURE!!
             await updateDbOrariUtenza();
@@ -204,7 +201,7 @@ namespace OrariUnibg.Views
             foreach (var l in _listOrariGiorno)
             {
                 if (l.Date < _oggi.Data)
-                    _db.DeleteSingleOrari(l.Id);
+                    _db.DeleteSingleOrari(l.IdOrario);
             };
 
 			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
@@ -215,8 +212,9 @@ namespace OrariUnibg.Views
 
 			
 			foreach (var day in listGiorni)
-            {				
+            {
                 //Corsi generale, utenza + corsi
+                var db = Settings.FacoltaDB;
 				string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, day.DateString);
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
 
@@ -270,6 +268,11 @@ namespace OrariUnibg.Views
 		protected async override void OnAppearing()
 		{
 			var utenze = _db.GetAllUtenze ();
+
+
+            //viene fatto troppo spesso se lo metto qui! TO DO pull to refresh
+            //_db.SynchronizeAzureDb();
+
 			_db.CheckUtenzeDoppioni (); //verifica che non ci sono doppioni nelle utenze, non so perchè ma capita che me ne crea
 			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", true);
 			ToolbarItems.Remove(tbiSync);

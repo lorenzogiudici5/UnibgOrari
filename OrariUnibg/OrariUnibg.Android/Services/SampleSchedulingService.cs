@@ -89,7 +89,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 			foreach (var l in _listOrariGiorno)
             {
                 if (l.Date < _oggi.Data)
-                    _db.DeleteSingleOrari(l.Id);
+                    _db.DeleteSingleOrari(l.IdOrario);
             };
 
 			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
