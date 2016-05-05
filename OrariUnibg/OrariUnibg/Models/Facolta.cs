@@ -11,6 +11,7 @@ namespace OrariUnibg.Models
         public Facolta() {}
         public string Nome { get; set; }
         public string DB { get; set; }
+
         public int IdFacolta
         {
             get;

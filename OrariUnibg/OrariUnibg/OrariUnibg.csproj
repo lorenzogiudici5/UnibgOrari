@@ -56,7 +56,12 @@
     <Compile Include="Models\Lezione.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Models\SocialLoginResult.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Utenza.cs" />
+    <Compile Include="Services\Authentication\AuthHandler.cs" />
+    <Compile Include="Services\Authentication\IAuthentication.cs" />
+    <Compile Include="Services\Azure\AzureDataService.cs" />
     <Compile Include="Services\Database\DbSQLite.cs" />
     <Compile Include="Services\Database\ISQLite.cs" />
     <Compile Include="Services\INotification.cs" />
@@ -108,8 +113,32 @@
     <Reference Include="HtmlAgilityPack-PCL">
       <HintPath>..\..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
     </Reference>
-    <Reference Include="ImageCircle.Forms.Plugin.Abstractions, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Forms.ImageCircle.1.2.0\lib\portable-net45+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
+    <Reference Include="ImageCircle.Forms.Plugin.Abstractions, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Forms.ImageCircle.1.4.1\lib\portable-net45+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Mobile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Client.2.0.1\lib\portable-win+net45+wp8+wpa81+monotouch+monoandroid\Microsoft.WindowsAzure.Mobile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Connectivity, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.2.1.2\lib\portable-net45+wp80+wp81+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+Xamarin.Mac20+UAP10\Plugin.Connectivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Connectivity.Abstractions, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.2.1.2\lib\portable-net45+wp80+wp81+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+Xamarin.Mac20+UAP10\Plugin.Connectivity.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Settings, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.1.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Settings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.1.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Settings.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SQLite.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -125,41 +154,27 @@
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Refractored.Xam.Settings.Abstractions">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.1.5.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Refractored.Xam.Settings.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Refractored.Xam.Settings">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.1.5.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Refractored.Xam.Settings.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\portable-net45+wp80+win8+wpa81+dnxcore50\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Connectivity.Plugin.Abstractions">
-      <HintPath>..\..\packages\Xam.Plugin.Connectivity.1.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Connectivity.Plugin">
-      <HintPath>..\..\packages\Xam.Plugin.Connectivity.1.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
-    </Reference>
-    <Reference Include="Toasts.Forms.Plugin.Abstractions">
-      <HintPath>..\..\packages\Toasts.Forms.Plugin.1.0.6.18\lib\portable-net45+wp8+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Toasts.Forms.Plugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.0.0.6484\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.0.0.6484\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.0.0.6484\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Syncfusion.Pdf.Portable">
       <HintPath>C:\Program Files %28x86%29\Syncfusion\Essential Studio\13.3.0.7\lib\pcl\Syncfusion.Pdf.Portable.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.Compression.Portable">
       <HintPath>C:\Program Files %28x86%29\Syncfusion\Essential Studio\13.3.0.7\lib\pcl\Syncfusion.Compression.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Toasts.Forms.Plugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Toasts.Forms.Plugin.2.0.3\lib\portable-net45+wp8+win8+wpa81+netcore451+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Toasts.Forms.Plugin.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.2.2.0.31\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.2.2.0.31\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.2.2.0.31\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Insights, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Insights.1.11.2\lib\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.dll</HintPath>
@@ -169,7 +184,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -178,8 +192,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.0.0.6484\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.0.0.6484\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -193,6 +207,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Image\Unibg.jpg" />
   </ItemGroup>
-  <Import Project="..\..\packages\Xamarin.Forms.2.0.0.6484\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.0.0.6484\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets" Condition="Exists('..\..\packages\Xamarin.Insights.1.11.2\build\portable-win+net45+wp80+windows8+wpa+MonoAndroid10+MonoTouch10\Xamarin.Insights.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
 </Project>

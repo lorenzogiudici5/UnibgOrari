@@ -10,18 +10,32 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
-using Connectivity.Plugin;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Connectivity;
+using Plugin.Toasts;
 using OrariUnibg.Views.ViewCells;
+using OrariUnibg.Services.Azure;
+using OrariUnibg.Services.Authentication;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace OrariUnibg.Views
 {
     public class TabbedHomeView : TabbedPage
     {
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
+
         #region Constructor
         public TabbedHomeView()
         {
             _db = new DbSQLite();
+            _service = new AzureDataService();
+            
 			Logcat.Write("COUNT: " + _db.GetAllMieiCorsi().Count());
             this.Title = "Home";
 
@@ -59,6 +73,7 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Private Fields
+        private AzureDataService _service;
         private DbSQLite _db;
         private List<Giorno> listGiorni;
         private Giorno _oggi;
@@ -168,11 +183,17 @@ namespace OrariUnibg.Views
 			ToolbarItems.Clear();
 			ToolbarItems.Remove(tbiSync);
 
-			await updateDbOrariUtenza ();
+            //await _service.Initialize();
+            //await DependencyService.Get<IAuthentication>().LoginAsync(_service.MobileService, MobileServiceAuthenticationProvider.Google);
 
-			loadListCorsiGiorno();
 
-			ToolbarItems.Add(tbiSync);
+
+            //****COMMENTATI PER TEST AZURE!!
+            await updateDbOrariUtenza();
+
+            loadListCorsiGiorno();
+
+            ToolbarItems.Add(tbiSync);
 			MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
 		}
 
@@ -196,7 +217,7 @@ namespace OrariUnibg.Views
 			foreach (var day in listGiorni)
             {				
                 //Corsi generale, utenza + corsi
-				string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, day.DateString);
+				string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, day.DateString);
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
 
 				if (listaCorsi.Count () != 0)
@@ -232,7 +253,7 @@ namespace OrariUnibg.Views
 				new Dictionary <string, string> { 
 					{Xamarin.Insights.Traits.Email, Settings.Email},
 					{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
-					{Xamarin.Insights.Traits.CreatedAt, Settings.DateCreatedAt},
+					{Xamarin.Insights.Traits.CreatedAt, Settings.DateCreatedString},
 					{"Facoltà", Settings.Facolta},
 					{"Laurea", Settings.Laurea}
 			});

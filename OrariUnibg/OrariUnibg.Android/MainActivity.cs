@@ -11,10 +11,10 @@ using Android.Content.PM;
 using OrariUnibg.Droid.Services.Database;
 using OrariUnibg.Services.Database;
 using Android.Graphics.Drawables;
-using Toasts.Forms.Plugin.Droid;
 using Xamarin;
 using OrariUnibg.Helpers;
 using ImageCircle.Forms.Plugin.Droid;
+using Plugin.Toasts;
 
 namespace OrariUnibg.Droid
 {
@@ -37,7 +37,7 @@ namespace OrariUnibg.Droid
 			FormsAppCompatActivity.TabLayoutResource = Resource.Layout.tabs;
 
             LoadApplication(new App()); // method is new in 1.3
-			ToastNotificatorImplementation.Init();  //TOAST NOTIFICATION
+			ToastNotificatorImplementation.Init(this);  //TOAST NOTIFICATION
 
 //			if ((int)Android.OS.Build.VERSION.SdkInt >= 21) 
 //			{ 

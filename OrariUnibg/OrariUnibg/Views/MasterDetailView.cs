@@ -10,32 +10,48 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using ImageCircle.Forms.Plugin.Abstractions;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg.Views
 {
     class MasterDetailView : MasterDetailPage
     {
+        #region Private Fields
+        private AzureDataService _service;
+        MasterView master;
+        private Dictionary<MenuType, NavigationPage> pages;
+        #endregion
+
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
         private MasterDetailViewModel ViewModel
         {
             get { return BindingContext as MasterDetailViewModel; }
         }
-        
-        MasterView master;
-        private Dictionary<MenuType, NavigationPage> pages;
+        #endregion
 
         public MasterDetailView()
         {
+            if (Service == null)
+                Service = new AzureDataService();
+
             pages = new Dictionary<MenuType, NavigationPage>();
             BindingContext = new MasterDetailViewModel();
             NavigationPage.SetHasNavigationBar(this, false);
             Master = master = new MasterView(ViewModel);
 
 			NavigationPage homeNav;
-			if (Settings.SuccessLogin) {
-				homeNav = new NavigationPage (new TabbedHomeView ()) {
-					BarBackgroundColor = ColorHelper.Blue700,
-					BarTextColor = ColorHelper.White
-				};
+			//if (Settings.SuccessLogin) {
+            if (Settings.IsLoggedIn)
+            {
+                homeNav = new NavigationPage (new TabbedHomeView ()) {
+				BarBackgroundColor = ColorHelper.Blue700,
+				BarTextColor = ColorHelper.White
+			};
 
 			} else {
 				homeNav = new NavigationPage (new HomeSkipView ()) {
@@ -108,20 +124,21 @@ namespace OrariUnibg.Views
             Icon = "ic_menu.png";
             //this.Icon = "ic_navigation_drawer.png";
 
-//			var _imgAvatar = new CircleImage {
-//				BorderColor = Color.White,
-//				BorderThickness = 3,
-//				HeightRequest = 65,
-//				WidthRequest = 65,
-//				Aspect = Aspect.AspectFill,
-//				HorizontalOptions = LayoutOptions.StartAndExpand,
-//				Source = "user.jpg",
-//			};
+            var _imgAvatar = new CircleImage
+            {
+                BorderColor = Color.White,
+                BorderThickness = 1,
+                HeightRequest = 70,
+                WidthRequest = 70,
+                Aspect = Aspect.AspectFill,
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                Source = Settings.Picture
+            };
 
             var _lblUtente = new Label()
             {
                 FontSize = Device.GetNamedSize(NamedSize.Large, this),
-                Text = string.Format("{0} {1}", Settings.Nome, Settings.Cognome),
+                Text = string.Format("{0}", Settings.Name),
                 TextColor = ColorHelper.White,
                 FontAttributes =  FontAttributes.Bold,
             };
@@ -159,10 +176,11 @@ namespace OrariUnibg.Views
             //    }
             //};
 
-//			var layoutImg = new StackLayout () {
-//				Padding = new Thickness(15, 30, 10, 15),
-//				BackgroundColor = ColorHelper.Blue700,
-//			};
+            var layoutImg = new StackLayout()
+            {
+                Padding = new Thickness(15, 30, 10, 15),
+                BackgroundColor = ColorHelper.Blue700,
+            };
 
             var layoutUser = new StackLayout()
             {
@@ -173,8 +191,9 @@ namespace OrariUnibg.Views
             };
 
 			if (Settings.SuccessLogin) {
-//				layoutImg.Children.Add (_imgAvatar);
-				layoutUser.Children.Add (_lblUtente);
+                layoutImg.Children.Add(_imgAvatar);
+                layoutUser.Children.Add(_imgAvatar);
+                layoutUser.Children.Add (_lblUtente);
 				layoutUser.Children.Add (_lblMail);
 			}
 			else

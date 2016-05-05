@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using OrariUnibg.Helpers;
 using OrariUnibg.Views;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg
 {
@@ -13,14 +14,25 @@ namespace OrariUnibg
 			Padding = new Thickness (0, 0, 0, 0);
 			BackgroundColor = ColorHelper.Blue700;
 			Title = "Tutorial";
-			getPages ();
+            _service = new AzureDataService();
+            getPages ();
 
 		}
 
-		#endregion
+        #endregion
 
-		#region Private Fields
-		ContentPage page1;
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
+        #region Private Fields
+        private AzureDataService _service;
+
+        ContentPage page1;
 		StackLayout layout1;
 		ContentPage page2;
 		StackLayout layout2;
@@ -158,7 +170,7 @@ namespace OrariUnibg
 			this.Children.Add (page1);
 			this.Children.Add (page2);
 			this.Children.Add (page3);
-			this.Children.Add (new LoginView ());
+			this.Children.Add (new LoginView() { Service = _service});
 //			if (Settings.PrimoAvvio) //se tutorial da primo avvio aggiungo button per signin
 //				layout.Children.Add (getLayoutButtons ());
 //			else //altrimenti è tutorial da impostazioni
@@ -166,104 +178,25 @@ namespace OrariUnibg
 				
 		}
 
-		private StackLayout getLayoutButtons()
-		{
-			var _btnAccedi = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "Accedi",
-				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
-			};
-			_btnAccedi.Clicked += _btnAccedi_Clicked;
-
-			var _btnRegister = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "             Registrati             ",
-				FontSize = Device.GetNamedSize (NamedSize.Medium, this),
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
-			};
-			_btnRegister.Clicked += _btnRegister_Clicked;
-								
-			var _btnSalta = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				Text = "Salta",
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.LightBlue500,
-			};
-			_btnSalta.Clicked += _btnSalta_Clicked;
-				
-			var layout = new StackLayout () {
-				Orientation = StackOrientation.Vertical, 
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Spacing = 20, 
-				Children = { _btnAccedi, _btnRegister, _btnSalta  }
-			};
-					
-			return layout;
-		}
-			
-			
 		#endregion
 
 		#region Event Handler
-		void _btnRegister_Clicked (object sender, EventArgs e)
-		{
-			var nav = new NavigationPage (
-				new InformationView ()) 
-			{
-				BarBackgroundColor = ColorHelper.Blue700,
-				BarTextColor = ColorHelper.White
-			};
-			Navigation.PushModalAsync (nav);
-		}
+//        void _btnNext_Clicked (object sender, EventArgs e)
+//		{
+//			//IF PRIMO AVVIO -> information View
+//			//ELSE, l'ho kanciato dalle impostazioni, quindi, POP MODAL 
 
-		void _btnAccedi_Clicked (object sender, EventArgs e)
-		{
-			var nav = new MasterDetailView ();
-//				new NavigationPage (
-//				new MasterDetailView ()) 
-//				{
-//					BarBackgroundColor = ColorHelper.Blue700,
-//					BarTextColor = ColorHelper.White
-//				};
-			Navigation.PushModalAsync (nav);
-		}
+////			if (Settings.PrimoAvvio) {
+////				var nav = new NavigationPage (new InformationView ()) {
+////					BarBackgroundColor = ColorHelper.Blue700,
+////					BarTextColor = ColorHelper.White
+////				};
+////
+////				Navigation.PushModalAsync (nav);
+////			} else
+//				Navigation.PopModalAsync ();
 
-		void _btnSalta_Clicked (object sender, EventArgs e)
-		{
-			var nav = new MasterDetailView ();
-//			var nav = new NavigationPage (
-//				new MasterDetailView ()) 
-//				{
-//					BarBackgroundColor = ColorHelper.Blue700,
-//					BarTextColor = ColorHelper.White
-//				};
-			Navigation.PushModalAsync (nav);
-		}
-
-		void _btnNext_Clicked (object sender, EventArgs e)
-		{
-			//IF PRIMO AVVIO -> information View
-			//ELSE, l'ho kanciato dalle impostazioni, quindi, POP MODAL 
-
-//			if (Settings.PrimoAvvio) {
-//				var nav = new NavigationPage (new InformationView ()) {
-//					BarBackgroundColor = ColorHelper.Blue700,
-//					BarTextColor = ColorHelper.White
-//				};
-//
-//				Navigation.PushModalAsync (nav);
-//			} else
-				Navigation.PopModalAsync ();
-
-		}
+//		}
 		#endregion
 
 		#region Override

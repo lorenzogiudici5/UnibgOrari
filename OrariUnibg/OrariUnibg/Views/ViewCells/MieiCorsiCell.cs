@@ -4,7 +4,7 @@ using System.Linq;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Toasts;
 
 namespace OrariUnibg
 {
@@ -114,7 +114,7 @@ namespace OrariUnibg
 		async void RemoveAction_Clicked (object sender, EventArgs e)
 		{
 			var mi = ((Xamarin.Forms.MenuItem)sender);
-			var orario = mi.CommandParameter as MieiCorsi;
+			var orario = mi.CommandParameter as Preferiti;
 
 //			var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
 			_db.DeleteMieiCorsi(orario);

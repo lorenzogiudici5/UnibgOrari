@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Connectivity.Plugin;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Connectivity;
+using Plugin.Toasts;
 
 namespace OrariUnibg.Droid.Services.Notifications
 {
@@ -106,7 +106,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 				Logcat.Write ("Data Considerata: " + d.ToString());
                 Logcat.WriteDB(_db, "Ottenimento orari del " + d.Date.ToString());
 
-                string s = await Web.GetOrarioGiornaliero(Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
+                string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
 
 				if (listaCorsi.Count () != 0)

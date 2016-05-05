@@ -10,14 +10,16 @@ using Xamarin.Forms;
 using OrariUnibg.Services;
 using OrariUnibg.ViewModels;
 using OrariUnibg.Services.Database;
-using Connectivity.Plugin;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Toasts;
+using Plugin.Connectivity;
 
 namespace OrariUnibg.Views
 {
     public class SelectGiornaliero : ContentPage
     {
-		#region Private Fields
+        #region Private Fields
+        private int _facoltàIndex = 0;
+        private int _laureaIndex = 0;
         Picker pickerFacoltà;
         Picker pickerLaurea;
         Picker pickerOrder;
@@ -53,9 +55,14 @@ namespace OrariUnibg.Views
                 Title = "Corso di Laurea"
             };
 
+            var index = 0;
             foreach (var f in listFacolta)
             {
                 pickerFacoltà.Items.Add(f.Nome);
+                if (f.IdFacolta == Settings.FacoltaId && f.DB == Settings.FacoltaDB)
+                    _facoltàIndex = index;
+
+                index++;
             }
 
             pickerFacoltà.SelectedIndexChanged += (sender, args) =>
@@ -65,8 +72,15 @@ namespace OrariUnibg.Views
                 dictionaryLauree = LaureeDictionary.getLauree(facolta);
                 pickerLaurea.Items.Clear();
 
+                index = 0;
                 foreach (var item in dictionaryLauree)
+                {
                     pickerLaurea.Items.Add(item.Key);
+                    if (item.Value == Settings.LaureaId)
+                        _laureaIndex = index;
+
+                    index++;
+                }
 
                 pickerLaurea.SelectedIndex = 0;
             };
@@ -85,8 +99,8 @@ namespace OrariUnibg.Views
             foreach (var x in ordina)
                 pickerOrder.Items.Add(x);
 
-            pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
-            pickerLaurea.SelectedIndex = Settings.LaureaIndex + 1;
+            pickerFacoltà.SelectedIndex = _facoltàIndex;
+            pickerLaurea.SelectedIndex = _laureaIndex; //devo tenere conto di GENERALE
             pickerOrder.SelectedIndex = Settings.Order;
 
             var btn = new Button()

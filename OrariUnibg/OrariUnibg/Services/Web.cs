@@ -24,7 +24,7 @@ namespace OrariUnibg.Services
         //    return rootobject.earthquakes;
         //}
 
-        public static async Task<string> GetOrarioGiornaliero(string db, int fac, int laurea, string data)
+        public static async Task<string> GetOrarioGiornaliero(string db, int? fac, int? laurea, string data)
         {
             string tipo = laurea == 0 ? "LCSDIPRXE" : "LCSDR";
             string s = null;

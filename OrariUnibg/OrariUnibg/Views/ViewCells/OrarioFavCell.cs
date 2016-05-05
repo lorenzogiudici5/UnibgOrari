@@ -9,7 +9,7 @@ using OrariUnibg.Helpers;
 using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Toasts;
 
 namespace OrariUnibg
 {

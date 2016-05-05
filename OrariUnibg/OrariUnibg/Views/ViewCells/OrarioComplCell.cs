@@ -7,8 +7,9 @@ using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Toasts;
 using OrariUnibg.ViewModels;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -18,13 +19,23 @@ namespace OrariUnibg.Views.ViewCells
 		public OrarioComplCell()
 		{
 			_db = new DbSQLite();
+            _service = new AzureDataService();
 			setUpContextAction ();
 			View = getView ();
 		}
-		#endregion
+        #endregion
 
-		#region Private Fields
-		private DbSQLite _db;
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
+        #region Private Fields
+        private AzureDataService _service;
+        private DbSQLite _db;
 		private Xamarin.Forms.MenuItem addAction;
 		#endregion
 
@@ -155,11 +166,22 @@ namespace OrariUnibg.Views.ViewCells
 		{
 			var mi = ((Xamarin.Forms.MenuItem)sender);
 			var orario = mi.CommandParameter as CorsoCompleto ;
+
 			var toast = DependencyService.Get<IToastNotificator>();
 			if (_db.CheckAppartieneMieiCorsi (orario)) {
 				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
 			} else {
-				_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+                await _service.Initialize();
+                var preferito = new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento };
+                var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
+
+                await _service.AddCorso(corso);
+                corso = await _service.GetCorso(corso);
+
+                preferito.IdCorso = corso.Id;
+                await _service.AddPreferito(preferito);
+
+                _db.Insert(preferito);
 				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
 			}
 		}

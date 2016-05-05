@@ -18,7 +18,7 @@ namespace OrariUnibg.Services.Database
             db = sqliteConnection;
            // db = DependencyService.Get<ISQLite>().GetConnection();
             //db = App.SQLite.GetConnection();
-            db.CreateTable<MieiCorsi>();
+            db.CreateTable<Preferiti>();
             db.CreateTable<Orari>();
             db.CreateTable<Utenze>();
             db.CreateTable<LogTb>();
@@ -27,26 +27,34 @@ namespace OrariUnibg.Services.Database
         public DbSQLite()
         {
             db = DependencyService.Get<ISQLite>().GetConnection();
-            db.CreateTable<MieiCorsi>();
+            db.CreateTable<Preferiti>();
             db.CreateTable<Orari>();
         }
         #endregion
 
+
         #region Private Fields
         SQLiteConnection db;
-        #endregion 
+        #endregion
+
+        #region Azure
+        public void SynchronizeAzureDb()
+        {
+
+        }
+        #endregion
 
         #region MieiCorsi
-        public IEnumerable<MieiCorsi> GetAllMieiCorsi()
+        public IEnumerable<Preferiti> GetAllMieiCorsi()
         {
-            return (from i in db.Table<MieiCorsi>() select i).ToList();
+            return (from i in db.Table<Preferiti>() select i).ToList();
         }
-        public MieiCorsi GetItem(int id)
+        public Preferiti GetItem(int id)
         {
-            return db.Table<MieiCorsi>().FirstOrDefault(x => x.Id == id);
+            return db.Table<Preferiti>().FirstOrDefault(x => x.IdPref == id);
         }
 
-        public void Update(MieiCorsi item)
+        public void Update(Preferiti item)
         {
             db.Update(item);
         }
@@ -77,14 +85,14 @@ namespace OrariUnibg.Services.Database
 				return false;
 		}
 
-        public void Insert(MieiCorsi item)
+        public void Insert(Preferiti item)
         {
             db.Insert(item);
         }
-        public int DeleteMieiCorsi(MieiCorsi corso)
+        public int DeleteMieiCorsi(Preferiti corso)
         {
             DeleteOrari(corso);
-            return db.Delete<MieiCorsi>(corso.Id);
+            return db.Delete<Preferiti>(corso.IdPref);
         }
         #endregion
 
@@ -149,7 +157,7 @@ namespace OrariUnibg.Services.Database
                 Insegnamento = item.Insegnamento, Codice = item.Codice, AulaOra = item.AulaOra, Note = item.Note, Date = item.Date, Docente = item.Docente
             });
         }
-        private void DeleteOrari(MieiCorsi corso)
+        private void DeleteOrari(Preferiti corso)
         {
             var list = GetAllOrari().Where(x => x.Insegnamento == corso.Insegnamento);
             foreach (var x in list)
@@ -220,11 +228,41 @@ namespace OrariUnibg.Services.Database
 
     }
 
-    [Table("MieiCorsi")]
-    public class MieiCorsi : Corso
+    [Table("Preferiti")]
+    public class Preferiti : Corso
     {
+        [Newtonsoft.Json.JsonIgnore]
         [PrimaryKey, AutoIncrement, Column("_id")]
-        public int Id { get; set; }
+        public int IdPref { get; set; } //Id accoppiata corso-preferito DB LOCAL
+
+        [Newtonsoft.Json.JsonProperty("Id")] 
+        public String IdPreferito { get; set; } //Id accoppiata corso-preferito AZURE
+
+        //HO GIA' ID EREDITATO DEL CORSO
+        [Newtonsoft.Json.JsonProperty("idCorso")]
+        public string IdCorso { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("userId")]
+        public string UserId { get; set; } //Id utente che inserisce il corso preferito 
+
+        #region Serializer Json
+        public override bool ShouldSerializeId()
+        {
+            return false;
+        }
+        public override bool ShouldSerializeInsegnamento()
+        {
+            return false;
+        }
+        public override bool ShouldSerializeCodice()
+        {
+            return false;
+        }
+        public override bool ShouldSerializeDocente()
+        {
+            return false;
+        }
+        #endregion
     }
 
     [Table("Orari")]

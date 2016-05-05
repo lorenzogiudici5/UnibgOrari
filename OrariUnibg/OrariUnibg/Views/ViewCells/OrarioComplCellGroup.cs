@@ -7,8 +7,8 @@ using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Services.Database;
 using OrariUnibg.Helpers;
-using Toasts.Forms.Plugin.Abstractions;
 using OrariUnibg.ViewModels;
+using Plugin.Toasts;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -61,12 +61,12 @@ namespace OrariUnibg.Views.ViewCells
 
 			_lblAulaOra.SetBinding(Label.TextProperty, "AulaOra");
 
-			MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "select_fav", (sender, arg) =>
+			MessagingCenter.Subscribe<ListaCorsi, Preferiti>(this, "select_fav", (sender, arg) =>
 				{
 					if(arg.Insegnamento == _lblInsegnamento.Text)
 						_layout.BackgroundColor = ColorHelper.LightBlue500;
 				});
-			MessagingCenter.Subscribe<ListaCorsi, MieiCorsi>(this, "deselect_fav", (sender, arg) =>
+			MessagingCenter.Subscribe<ListaCorsi, Preferiti>(this, "deselect_fav", (sender, arg) =>
 				{
 					if (arg.Insegnamento == _lblInsegnamento.Text)
 						_layout.BackgroundColor = ColorHelper.White;
@@ -108,7 +108,7 @@ namespace OrariUnibg.Views.ViewCells
 			if (_db.CheckAppartieneMieiCorsi (orario)) {
 				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
 			} else {
-				_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+				_db.Insert(new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
 				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
 			}
 		}

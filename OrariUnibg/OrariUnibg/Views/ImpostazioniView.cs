@@ -5,6 +5,7 @@ using OrariUnibg.Services.Database;
 using System.Linq;
 using System.Threading.Tasks;
 using OrariUnibg.Views;
+using OrariUnibg.Services.Authentication;
 
 namespace OrariUnibg
 {
@@ -447,7 +448,8 @@ namespace OrariUnibg
 		async void _logoutCell_Tapped (object sender, EventArgs e)
 		{
 			Settings.SuccessLogin = false;
-			await Navigation.PushModalAsync(new LoginView());
+            DependencyService.Get<IAuthentication>().ClearCookies();
+            await Navigation.PushModalAsync(new LoginView());
 		}
 		protected override void OnAppearing ()
 		{

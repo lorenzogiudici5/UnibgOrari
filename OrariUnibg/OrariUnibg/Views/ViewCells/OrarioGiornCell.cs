@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using System.Diagnostics;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Toasts;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -192,7 +192,7 @@ namespace OrariUnibg.Views.ViewCells
 			if (_db.CheckAppartieneMieiCorsi (orario)) {
 				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
 			} else {
-				_db.Insert(new MieiCorsi() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+				_db.Insert(new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
 				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
 			}
 

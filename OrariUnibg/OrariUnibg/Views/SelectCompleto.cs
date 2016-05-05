@@ -8,14 +8,16 @@ using OrariUnibg.Models;
 using Xamarin.Forms;
 using OrariUnibg.Services;
 using OrariUnibg.ViewModels;
-using Connectivity.Plugin;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Connectivity;
+using Plugin.Toasts;
 
 namespace OrariUnibg.Views
 {
     class SelectCompleto : ContentPage
     {
         #region Private Fields
+        private int _facoltàIndex = 0;
+        private int _laureaIndex = 0;
         Picker pickerFacoltà;
         Picker pickerLaurea;
         Picker pickerAnno;
@@ -45,10 +47,17 @@ namespace OrariUnibg.Views
                 Title = "Corso di Laurea"
             };
 
+            int index = 0;
             foreach (var f in listFacolta)
             {
                 pickerFacoltà.Items.Add(f.Nome);
+                if (f.IdFacolta == Settings.FacoltaId && f.DB == Settings.FacoltaDB)
+                    _facoltàIndex = index;
+
+                index++;
             }
+
+            //pickerFacoltà.SelectedIndex = facoltàIndex;
 
             pickerFacoltà.SelectedIndexChanged += (sender, args) =>
             {
@@ -60,8 +69,17 @@ namespace OrariUnibg.Views
 
                 if (dictionaryLauree.Count == 0)
                     return;
+
+                index = 0;
                 foreach (var item in dictionaryLauree)
+                {
                     pickerLaurea.Items.Add(item.Key);
+                    if (item.Value == Settings.LaureaId)
+                        _laureaIndex = index;
+
+                    index++;
+                }
+
 
                 pickerLaurea.SelectedIndex = 0;
             };
@@ -114,15 +132,21 @@ namespace OrariUnibg.Views
             foreach (var g in ragg)
                 pickerRaggruppa.Items.Add(g);
 
-            pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
+            //pickerFacoltà.SelectedIndex = Settings.FacoltaIndex;
+            pickerFacoltà.SelectedIndex = _facoltàIndex;
 
-            if (Settings.LaureaIndex == 0)
-                pickerLaurea.SelectedIndex = 0;
-            else 
-                pickerLaurea.SelectedIndex = Settings.LaureaIndex;
+            //if (Settings.LaureaIndex == 0)
+            //    pickerLaurea.SelectedIndex = 0;
+            //else
+                pickerLaurea.SelectedIndex = _laureaIndex;
+            //pickerLaurea.SelectedIndex = Settings.LaureaIndex;
 
-            pickerAnno.SelectedIndex = Settings.AnnoIndex;
-            pickerSemestre.SelectedIndex = 0;
+            //pickerAnno.SelectedIndex = int.Parse(Settings.Anno) + 1;
+            pickerAnno.SelectedIndex = (int)Settings.AnnoIndex;
+
+            //Se siamo a Marzo, secondo semsestre
+            pickerSemestre.SelectedIndex = DateTime.Today.Month >= new DateTime(2016, 03, 01).Month ? 1 : 0;
+
             pickerRaggruppa.SelectedIndex = Settings.Raggruppa;
 
             lblError = new Label()

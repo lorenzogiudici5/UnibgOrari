@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Toasts.Forms.Plugin.Abstractions;
-using Connectivity.Plugin;
+using Plugin.Toasts;
+using Plugin.Connectivity;
+using OrariUnibg.Services.Azure;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace OrariUnibg.Views
 {
@@ -22,10 +24,20 @@ namespace OrariUnibg.Views
             Title = "Informazioni";
             BackgroundColor = ColorHelper.White;
             Content = getView();
-        }      
+        }
+        #endregion
+
+        #region Properties
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
         #endregion
 
         #region Private Fields
+        AzureDataService _service;
+        private CircleImage _imgAvatar;
         private Entry _entryNome;
         private Entry _entryCognome;
         private Entry _entryMail;
@@ -47,7 +59,20 @@ namespace OrariUnibg.Views
         #region Private Methods
         private View getView()
         {
+            var lblWelcome = new Label() { Text = string.Format("Welcome {0}", Settings.Name), HorizontalOptions = LayoutOptions.CenterAndExpand };
             listFacolta = Facolta.facolta;
+
+            _imgAvatar = new CircleImage
+            {
+                BorderColor = Color.White,
+                BorderThickness = 1,
+                HeightRequest = 150,
+                WidthRequest = 150,
+                Aspect = Aspect.AspectFill,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.StartAndExpand,
+                Source = Settings.Picture
+            };
 
             _entryNome = new Entry()
             {
@@ -55,6 +80,7 @@ namespace OrariUnibg.Views
                 //Text = "Lorenzo",
                 HorizontalOptions = LayoutOptions.FillAndExpand,
 				Keyboard = Keyboard.Text,
+                Text = Settings.GivenName
             };
             _entryCognome = new Entry()
             {
@@ -62,14 +88,15 @@ namespace OrariUnibg.Views
                 //Text = "Giudici",
                 Placeholder = "Cognome",
 				Keyboard = Keyboard.Text,
+                Text = Settings.Surname
             };
 
             _entryCognome.TextChanged += _entryCognome_TextChanged;
             _entryMail = new Entry()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                //Text = "l.giudici2"
-                Placeholder = "n.cognome2"
+                Text = Settings.Username,
+                //Placeholder = "n.cognome2"
             };
             _entryMatricola = new Entry()
             {
@@ -157,29 +184,30 @@ namespace OrariUnibg.Views
 
             _activityIndicator = new ActivityIndicator()
             {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
                 IsRunning = true,
 				IsVisible = false,
             };
 
             var grid = new Grid()
             {
-                Padding = new Thickness(15, 10, 15, 10),
+                Padding = new Thickness(15, 5, 15, 5),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 RowSpacing = 8,
                 ColumnSpacing = 8,
                 RowDefinitions = 
                 {
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-                     new RowDefinition { Height = GridLength.Auto },
-					 new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+					new RowDefinition { Height = GridLength.Auto },
                 },
                 ColumnDefinitions = 
                 { 
@@ -187,19 +215,21 @@ namespace OrariUnibg.Views
                     new ColumnDefinition { Width = new GridLength(0.6, GridUnitType.Star) },
                 }
             };
-           
-            grid.Children.Add(_entryNome, 0, 2, 0, 1);
-            grid.Children.Add(_entryCognome, 0, 2, 1, 2);
-            grid.Children.Add(_entryMail, 0, 1, 2, 3);
-            grid.Children.Add(_entryMatricola, 1, 2, 2, 3);
-            grid.Children.Add(_pickFacolta, 0, 2, 3, 4);
-            grid.Children.Add(_pickLaurea, 0, 1, 4, 5);
-            grid.Children.Add(_pickAnno, 1, 2, 4, 5);
-            grid.Children.Add(_lblSync, 0, 1, 5, 6);
-            grid.Children.Add(_switchSync, 1, 2, 5, 6);
-            grid.Children.Add(_lblNotific, 0, 1, 6, 7);
-            grid.Children.Add(_switchNotific, 1, 2, 6, 7);
-            grid.Children.Add(_activityIndicator, 0, 1, 7, 8);
+
+            //DA AGGIUNGERE ROW CON LABEL WELCOM NOME
+            grid.Children.Add(_imgAvatar, 0, 2, 0, 1);
+            grid.Children.Add(_entryNome, 0, 2, 1, 2);
+            grid.Children.Add(_entryCognome, 0, 2, 2, 3);
+            grid.Children.Add(_entryMail, 0, 1, 3, 4);
+            grid.Children.Add(_entryMatricola, 1, 2, 3, 4);
+            grid.Children.Add(_pickFacolta, 0, 2, 4, 5);
+            grid.Children.Add(_pickLaurea, 0, 1, 5, 6);
+            grid.Children.Add(_pickAnno, 1, 2, 5, 6);
+            grid.Children.Add(_lblSync, 0, 1, 6, 7);
+            grid.Children.Add(_switchSync, 1, 2, 6, 7);
+            grid.Children.Add(_lblNotific, 0, 1, 7, 8);
+            grid.Children.Add(_switchNotific, 1, 2, 7, 8);
+            grid.Children.Add(_activityIndicator, 0, 2, 8, 9);
 
 //            tbiNext = new ToolbarItem("Avanti", "ic_next.png", toolbarItem_next, 0, 0); 
 //            //if (Device.OS == TargetPlatform.Android)
@@ -268,23 +298,35 @@ namespace OrariUnibg.Views
 			Settings.Nome = _entryNome.Text.TrimEnd();
 			Settings.Cognome = _entryCognome.Text.TrimEnd();
 			Settings.Email = _entryMail.Text.Trim () + "@studenti.unibg.it";
-            Settings.Matricola = _entryMatricola.Text;
+
+            
             Settings.Facolta = facolta;
-            Settings.DBfacolta = db;
+            Settings.FacoltaDB = db;
             Settings.Laurea = laurea;
             Settings.Anno = anno;
             Settings.BackgroundSync = _switchSync.IsToggled;
             Settings.Notify = _switchNotific.IsToggled;
 
+            Settings.Matricola = _entryMatricola.Text;
             Settings.FacoltaId = facoltaId;
             Settings.LaureaId = laureaId;
             Settings.LaureaIndex = laureaIndex;
             Settings.FacoltaIndex = facoltaIndex;
             Settings.AnnoIndex = annoIndex;
 
-			Settings.DateCreatedAt = DateTime.Now.ToString();
+			Settings.DateCreatedString = DateTime.Now.ToString();
 
-			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
+            //aggiornamento User
+            _service.User.Matricola = _entryMatricola.Text;
+            _service.User.FacoltaDB = db;
+            _service.User.FacoltaId = facoltaId;
+            _service.User.LaureaId = laureaId;
+            _service.User.AnnoIndex = annoIndex;
+            _service.User.DateCreated = DateTime.Now;
+
+            await _service.UpdateUser(); 
+
+            if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
 				var toast = DependencyService.Get<IToastNotificator> ();
 				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
 				ToolbarItems.Add (tbiNext);
@@ -305,14 +347,14 @@ namespace OrariUnibg.Views
             Settings.PrimoAvvio = false;
 			Settings.SuccessLogin = true;
 
-			var nav = new NavigationPage (new ListaCorsi(lista_completo)) {
-				BarBackgroundColor = ColorHelper.Blue700,
-				BarTextColor = ColorHelper.White
-			};
+			//var nav = new NavigationPage (new ListaCorsi(lista_completo) { Service = _service}) {
+			//	BarBackgroundColor = ColorHelper.Blue700,
+			//	BarTextColor = ColorHelper.White
+			//};
 
-            await Navigation.PushAsync(new ListaCorsi(lista_completo));
+            await Navigation.PushAsync(new ListaCorsi(lista_completo) { Service = _service });
         }
-
+        
         void _entryCognome_TextChanged(object sender, TextChangedEventArgs e)
         {
             var s = (Entry)sender;

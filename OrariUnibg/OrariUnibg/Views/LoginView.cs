@@ -2,6 +2,11 @@
 using Xamarin.Forms;
 using OrariUnibg.Helpers;
 using OrariUnibg.Views;
+using OrariUnibg.Services.Azure;
+using OrariUnibg.Services.Authentication;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Threading.Tasks;
+using OrariUnibg.Services.Database;
 
 namespace OrariUnibg
 {
@@ -10,18 +15,31 @@ namespace OrariUnibg
 		#region Constructor
 		public LoginView ()
 		{
-			Content = getView ();
+            //_service = new AzureDataService();
+            Content = getView ();
 		}
-		#endregion
+        #endregion
 
-		#region Private Fields
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
 
-		#endregion
+        #region Private Fields
+        private AzureDataService _service;
+        private Button _btnAccedi;
+        private Label _lblSalta;
+        private Label _lblAlert;
+        private ActivityIndicator _activityIndicator;
+        #endregion
 
-		#region Private Methods
-		private View getView()
+        #region Private Methods
+        private View getView()
 		{
-			var _btnNext = new Button () {
+            var _btnNext = new Button () {
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.EndAndExpand,
 				Text = "Fine",
@@ -30,7 +48,23 @@ namespace OrariUnibg
 			};
 			_btnNext.Clicked += _btnNext_Clicked;
 
-			var layout = new StackLayout () {
+            _activityIndicator = new ActivityIndicator()
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                IsRunning = true,
+                IsVisible = false
+            };
+            _lblAlert = new Label()
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = ColorHelper.White,
+                FontSize = 25,
+                IsVisible = true,
+            };
+
+            var layout = new StackLayout () {
 				BackgroundColor = ColorHelper.Blue700,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -43,8 +77,13 @@ namespace OrariUnibg
 				}
 			};
 
-			if (Settings.PrimoAvvio || !Settings.SuccessLogin) //se tutorial da primo avvio aggiungo button per signin
-				layout.Children.Add (getLayoutButtons ());
+			if (Settings.PrimoAvvio || !Settings.IsLoggedIn) //se tutorial da primo avvio aggiungo button per signin
+            {
+                layout.Children.Add(_lblAlert);
+                layout.Children.Add(_activityIndicator);
+                layout.Children.Add(getLayoutButtons());
+            }
+
 			else //altrimenti è tutorial da impostazioni
 				layout.Children.Add (_btnNext);
 
@@ -55,53 +94,78 @@ namespace OrariUnibg
 
 		private StackLayout getLayoutButtons()
 		{
-			var _btnAccedi = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
+            _btnAccedi = new Button () {
+				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "Accedi",
-				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+				Text = "                 Accedi                 ",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
 				TextColor = ColorHelper.Black,
 				BackgroundColor = ColorHelper.White,
 //				BackgroundColor = ColorHelper.LightBlue500,
 			};
 			_btnAccedi.Clicked += _btnAccedi_Clicked;
 
-			var _btnRegister = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "                 Registrati                 ",
-				FontSize = Device.GetNamedSize (NamedSize.Medium, this),
-				TextColor = ColorHelper.Black,
-				BackgroundColor = ColorHelper.White,
-			};
-			_btnRegister.Clicked += _btnRegister_Clicked;
+            _lblSalta = new Label()
+            {
+                Text = "Salta>>",
+                TextColor = ColorHelper.White,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                HorizontalOptions = LayoutOptions.EndAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+            };
 
-			var _btnSalta = new Button () {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				FontSize = Device.GetNamedSize(NamedSize.Medium, this),
-				Text = "Salta",
-				TextColor = ColorHelper.Black,
-				BackgroundColor = ColorHelper.White,
-			};
-			_btnSalta.Clicked += _btnSalta_Clicked;
+            var salta_tap = new TapGestureRecognizer();
+            salta_tap.Tapped += _btnSalta_Clicked;
+            _lblSalta.GestureRecognizers.Add(salta_tap);
 
-			var layout = new StackLayout () {
-				Orientation = StackOrientation.Vertical, 
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
+            var layout = new StackLayout() {
+                Orientation = StackOrientation.Vertical,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                Padding = new Thickness(20, 0, 20, 0),
 				Spacing = 20, 
-				Children = { _btnAccedi, _btnRegister, _btnSalta  }
+				Children =
+                {
+                    //_lblAlert,
+                    _btnAccedi,
+                    //_activityIndicator,
+                    //_btnRegister,
+                    _lblSalta  }
 			};
 
 
 			return layout;
 
 		}
-		#endregion
 
-		#region Event Handler
-		protected override bool OnBackButtonPressed ()
+        private async Task<bool> addUser()
+        {
+            try
+            {
+                return await _service.AddUser();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("ECCEZIONE: " + ex.ToString());
+                return true;
+            }
+        }
+
+        private bool checkUniversityInformation()
+        {
+            if (_service.User.Matricola == string.Empty ||
+                _service.User.LaureaId == null ||
+                _service.User.FacoltaId == null ||
+                _service.User.FacoltaDB == string.Empty ||
+                _service.User.AnnoIndex == null)
+                return false;
+
+            else return true;
+        }
+        #endregion
+
+        #region Event Handler
+        protected override bool OnBackButtonPressed ()
 		{
 			DependencyService.Get<IMethods>().Close_App(); //altrmenti nulla
 			return true; //ALERT CHIUDERE APP??
@@ -117,19 +181,59 @@ namespace OrariUnibg
 			Navigation.PushModalAsync (nav);
 		}
 
-		void _btnAccedi_Clicked (object sender, EventArgs e)
+		private async void _btnAccedi_Clicked (object sender, EventArgs e)
 		{
-			var nav = new MasterDetailView ();
-			//				new NavigationPage (
-			//				new MasterDetailView ()) 
-			//				{
-			//					BarBackgroundColor = ColorHelper.Blue700,
-			//					BarTextColor = ColorHelper.White
-			//				};
-			Navigation.PushModalAsync (nav);
-		}
+            await _service.Initialize();
+            _btnAccedi.IsVisible = false;
+            _lblSalta.IsVisible = false;
+            _lblAlert.IsVisible = true;
+            _activityIndicator.IsVisible = true;
 
-		void _btnSalta_Clicked (object sender, EventArgs e)
+            _lblAlert.Text = string.Format("Accesso in corso");
+            var user = await DependencyService.Get<IAuthentication>().LoginAsync(_service.MobileService, MobileServiceAuthenticationProvider.Google);
+            _lblAlert.Text = string.Format("Sto ottenendo le tue informazioni");
+
+            //aggiunge utente alla tabella
+            var isNewUser = await addUser();
+
+            _lblAlert.IsVisible = false;
+            _activityIndicator.IsVisible = false;
+
+
+            //**NELL'IMPLEMENTAZIONE Dell'authentication
+            //Settings.Email = user.Message.Email;
+            //Settings.Username = Settings.Email.Split('@')[0];
+            //Settings.Name = user.Message.Name;
+            //Settings.SocialId = user.Message.SocialId;
+
+            var name = Settings.Name;
+            //_lbl.Text = string.Format("Welcome {0}", name);
+            //_img.Source = Settings.Picture;
+
+            NavigationPage nav;
+
+            //if informazioni facoltà, laurea, anno NON sono già presenti -> è il primo accesso -> information view
+            //if (isNewUser || !checkUniversityInformation())
+                if (true) ///*********************************SOLO PER PROVA DEBUG TEST AZURE
+            {
+                nav = new NavigationPage(new InformationView() { Service = _service })
+                {
+                    BarBackgroundColor = ColorHelper.Blue700,
+                    BarTextColor = ColorHelper.White,
+                };
+                await Navigation.PushModalAsync(nav);
+            }
+            else //altrimenti accedo direttament
+            {
+                //_db = new DbSQLite();
+                Settings.SuccessLogin = true;
+                await Navigation.PushModalAsync(new MasterDetailView());
+            }
+            
+            
+        }
+
+		async void _btnSalta_Clicked (object sender, EventArgs e)
 		{
 			var nav = new MasterDetailView ();
 			//			var nav = new NavigationPage (
@@ -138,7 +242,7 @@ namespace OrariUnibg
 			//					BarBackgroundColor = ColorHelper.Blue700,
 			//					BarTextColor = ColorHelper.White
 			//				};
-			Navigation.PushModalAsync (nav);
+			await Navigation.PushModalAsync (nav);
 		}
 
 		void _btnNext_Clicked (object sender, EventArgs e)

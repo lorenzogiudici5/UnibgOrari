@@ -9,8 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Connectivity.Plugin;
-using Toasts.Forms.Plugin.Abstractions;
+using Plugin.Connectivity;
+using Plugin.Toasts;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg.Views
 {
@@ -27,9 +28,10 @@ namespace OrariUnibg.Views
         #endregion
 
         #region Private Fields
-		private Label _lblInfo;
+        private AzureDataService _service;
+        private Label _lblInfo;
         private List<CorsoCompleto> _listSource;
-        private List<MieiCorsi> _preferiti;
+        private List<Preferiti> _preferiti;
         private ListView _list;
         private DbSQLite _db;
         private ActivityIndicator _activityIndicator;
@@ -38,6 +40,15 @@ namespace OrariUnibg.Views
         private Giorno _dopodomani;
 		private ToolbarItem tbiNext;
         #endregion
+
+        #region Properties
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
 
         #region Private Methods
         private View getView()
@@ -62,7 +73,7 @@ namespace OrariUnibg.Views
             };
             if (Device.OS != TargetPlatform.WinPhone)
                 _list.GroupHeaderTemplate = new DataTemplate(typeof(HeaderSemestreCell));
-            _preferiti = new List<MieiCorsi>();
+            _preferiti = new List<Preferiti>();
 
             _list.ItemSelected += _list_ItemSelected;
 
@@ -97,17 +108,17 @@ namespace OrariUnibg.Views
 				return;
 			var selected = (CorsoCompleto)_list.SelectedItem;
 
-			MieiCorsi newFavourite = new MieiCorsi() { Codice = selected.Codice, Insegnamento = selected.Insegnamento, Docente = selected.Docente };
+			Preferiti newFavourite = new Preferiti() { Codice = selected.Codice, Insegnamento = selected.Insegnamento, Docente = selected.Docente };
 
 			int index = _preferiti.FindIndex(f => f.Insegnamento == newFavourite.Insegnamento);
 			if (index >= 0)
 			{
-				MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "deselect_fav", newFavourite);
+				MessagingCenter.Send<ListaCorsi, Preferiti>(this, "deselect_fav", newFavourite);
 				_preferiti.RemoveAt(index);
 			}
 			else
 			{
-				MessagingCenter.Send<ListaCorsi, MieiCorsi>(this, "select_fav", newFavourite);
+				MessagingCenter.Send<ListaCorsi, Preferiti>(this, "select_fav", newFavourite);
 				_preferiti.Add(newFavourite);
 			}
 
@@ -121,8 +132,19 @@ namespace OrariUnibg.Views
             _activityIndicator.IsVisible = true;
 
 
-            foreach (var i in _preferiti)
-                _db.Insert(i);
+            foreach (var preferito in _preferiti)
+            {
+                //add corso 
+                var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
+                await _service.AddCorso(corso);
+                corso = await _service.GetCorso(corso);
+                preferito.IdCorso = corso.Id;
+                //add preferito
+                await _service.AddPreferito(preferito);
+
+                _db.Insert(preferito);
+            }
+
 			
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
@@ -148,7 +170,7 @@ namespace OrariUnibg.Views
 				foreach (var d in arrayDate) {
 
 					//Corsi generale, utenza + corsi
-					string s = await Web.GetOrarioGiornaliero (Settings.DBfacolta, Settings.FacoltaId, 0, d.ToString ("dd'/'MM'/'yyyy"));
+					string s = await Web.GetOrarioGiornaliero (Settings.FacoltaDB, Settings.FacoltaId, 0, d.ToString ("dd'/'MM'/'yyyy"));
 					List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero (s, 0, d);
 
 					if (listaCorsi.Count () != 0)
@@ -163,7 +185,7 @@ namespace OrariUnibg.Views
 			if(Settings.BackgroundSync)
 				DependencyService.Get<INotification> ().BackgroundSync ();
 			
-			await Navigation.PushModalAsync(new MasterDetailView());
+			await Navigation.PushModalAsync(new MasterDetailView() { Service = _service });
         }
         #endregion
 
