@@ -71,8 +71,11 @@ namespace OrariUnibg.Views
                 Aspect = Aspect.AspectFill,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.StartAndExpand,
-                Source = Settings.Picture
             };
+
+            if (Settings.Picture != string.Empty)
+                _imgAvatar.Source = Settings.Picture;
+            //else //immagine predefinita o possibilità di caricare una propria foto????
 
             _entryNome = new Entry()
             {
@@ -314,7 +317,8 @@ namespace OrariUnibg.Views
             Settings.FacoltaIndex = facoltaIndex;
             Settings.AnnoIndex = annoIndex;
 
-			Settings.DateCreatedString = DateTime.Now.ToString();
+            Settings.CreatedAtString = _service.User.CreatedAt.Date.ToString("d");
+            Settings.UpdatedAtString = _service.User.CreatedAt.Date.ToString("d");
 
             //aggiornamento User
             _service.User.Matricola = _entryMatricola.Text;
@@ -322,7 +326,6 @@ namespace OrariUnibg.Views
             _service.User.FacoltaId = facoltaId;
             _service.User.LaureaId = laureaId;
             _service.User.AnnoIndex = annoIndex;
-            _service.User.DateCreated = DateTime.Now;
 
             await _service.UpdateUser(); 
 

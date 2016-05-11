@@ -15,7 +15,10 @@ namespace OrariUnibg.Models
         public string Email { get; set; }
         public string Name { get; set; }
         public string Picture { get; set; }
-        public DateTime DateCreated { get; set; }
+        [Newtonsoft.Json.JsonProperty("createdAt")]
+        public DateTime CreatedAt { get; set; }
+        [Newtonsoft.Json.JsonProperty("updateddAt")]
+        public DateTime UpdatedAt { get; set; }
 
         //Univerisity
         public string Matricola { get; set; }

@@ -132,13 +132,12 @@ namespace OrariUnibg.Views
                 WidthRequest = 70,
                 Aspect = Aspect.AspectFill,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
-                Source = new UriImageSource {
-                    Uri = new Uri(Settings.Picture),
-                    CachingEnabled = true,
-                    CacheValidity = new TimeSpan(30, 0, 0, 0)
-                }
-                //Source = Settings.Picture
             };
+
+            if (Settings.Picture != string.Empty)
+                _imgAvatar.Source = new UriImageSource { Uri = new Uri(Settings.Picture), CachingEnabled = true, CacheValidity = new TimeSpan(30, 0, 0, 0) };
+            else
+                _imgAvatar.Source = Settings.Picture; //dovrei mettere un'immagine di default come source
 
             var _lblUtente = new Label()
             {
@@ -195,7 +194,7 @@ namespace OrariUnibg.Views
 //                Children = { _lblUtente, _lblMail }
             };
 
-			if (Settings.SuccessLogin) {
+			if (Settings.IsLoggedIn) { //Settings.SuccessLogin
                 layoutImg.Children.Add(_imgAvatar);
                 layoutUser.Children.Add(_imgAvatar);
                 layoutUser.Children.Add (_lblUtente);

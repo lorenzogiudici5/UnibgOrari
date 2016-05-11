@@ -449,6 +449,9 @@ namespace OrariUnibg
 		{
 			Settings.SuccessLogin = false;
             DependencyService.Get<IAuthentication>().ClearCookies();
+            //reset Settings!
+            Settings.UserId = string.Empty; //cosi diventa false Settings.IsLoggedIn
+            //.. . . 
             await Navigation.PushModalAsync(new LoginView());
 		}
 		protected override void OnAppearing ()

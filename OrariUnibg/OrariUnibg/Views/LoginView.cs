@@ -42,12 +42,13 @@ namespace OrariUnibg
         private View getView()
 		{
             var _btnNext = new Button () {
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
-				Text = "Fine",
-				TextColor = ColorHelper.White,
-				BackgroundColor = ColorHelper.Transparent,
-			};
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                Text = "                Fine                ",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                TextColor = ColorHelper.Black,
+                BackgroundColor = ColorHelper.White,
+            };
 			_btnNext.Clicked += _btnNext_Clicked;
 
             _activityIndicator = new ActivityIndicator()

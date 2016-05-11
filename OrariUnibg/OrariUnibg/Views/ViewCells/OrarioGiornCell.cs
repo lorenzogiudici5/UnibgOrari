@@ -9,6 +9,7 @@ using OrariUnibg.Helpers;
 using OrariUnibg.Services.Database;
 using System.Diagnostics;
 using Plugin.Toasts;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -18,11 +19,22 @@ namespace OrariUnibg.Views.ViewCells
         public OrarioGiornCell()
         {
 			_db = new DbSQLite();
-			setUpContextAction ();
+            _service = new AzureDataService();
+            setUpContextAction ();
             View = getView();
         }
         #endregion
+
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
         #region Private Fields
+        private AzureDataService _service;
         private Label _lblCorso;
         private Label _lblCodice;
         private Label _lblAula;
@@ -189,15 +201,35 @@ namespace OrariUnibg.Views.ViewCells
 			var x = _db.GetAllMieiCorsi ();
 
 			var toast = DependencyService.Get<IToastNotificator>();
-			if (_db.CheckAppartieneMieiCorsi (orario)) {
-				await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
-			} else {
-				_db.Insert(new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
-				await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
-			}
+			//if (_db.CheckAppartieneMieiCorsi (orario)) {
+			//	await toast.Notify (ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds (3));
+			//} else {
+			//	_db.Insert(new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento });
+			//	await toast.Notify (ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds (3));
+			//}
+
+            if (_db.CheckAppartieneMieiCorsi(orario))
+            {
+                await toast.Notify(ToastNotificationType.Error, "Attenzione!", orario.Insegnamento + " è già stato aggiunto ai tuoi preferiti!", TimeSpan.FromSeconds(3));
+            }
+            else
+            {
+                //await _service.Initialize();
+                var preferito = new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento };
+                var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
+
+                await _service.AddCorso(corso);
+                corso = await _service.GetCorso(corso);
+
+                preferito.IdCorso = corso.Id;
+                await _service.AddPreferito(preferito);
+
+                _db.Insert(preferito);
+                await toast.Notify(ToastNotificationType.Success, "Complimenti", orario.Insegnamento + " aggiunto ai preferiti!", TimeSpan.FromSeconds(3));
+            }
 
 
-		}
+        }
 		#endregion
 
     }

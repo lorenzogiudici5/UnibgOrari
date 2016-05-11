@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Models;
 using Plugin.Toasts;
+using OrariUnibg.Services.Azure;
 
 namespace OrariUnibg
 {
@@ -19,12 +20,23 @@ namespace OrariUnibg
 		public OrarioFavCell()
 		{
 			_db = new DbSQLite();
-			setUpContextAction ();
+            _service = new AzureDataService();
+            setUpContextAction ();
 			View = getView();
 		}
-		#endregion
-		#region Private Fields
-		private Label _lblCorso;
+        #endregion
+
+        #region Property
+        public AzureDataService Service
+        {
+            get { return _service; }
+            set { _service = value; }
+        }
+        #endregion
+
+        #region Private Fields
+        private AzureDataService _service;
+        private Label _lblCorso;
 		private Label _lblCodice;
 		private Label _lblAula;
 		private Label _lblOra;
@@ -222,17 +234,33 @@ namespace OrariUnibg
 		#region Event Handlers
 		async void RemoveAction_Clicked (object sender, EventArgs e)
 		{
-			var mi = ((Xamarin.Forms.MenuItem)sender);
-			var orario = mi.CommandParameter as Orari;
+            var mi = ((Xamarin.Forms.MenuItem)sender);
+            //var preferito = mi.CommandParameter as Preferiti;
+            ////var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+            //var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
 
-			var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
-			_db.DeleteMieiCorsi(corso);
+            //corso = await _service.GetCorso(preferito);
+            //preferito.IdCorso = corso.Id;
+            //await _service.DeletePreferito(preferito);
+            
 
-			MessagingCenter.Send<OrarioFavCell>(this, "delete_corso_fav");
+
+            var orario = mi.CommandParameter as Orari;
+            
+            var preferito = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
+            var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
+            corso = await _service.GetCorso(preferito);
+            preferito.IdCorso = corso.Id;
+            await _service.DeletePreferito(preferito);
+
+            _db.DeleteMieiCorsi(preferito);
+
+            MessagingCenter.Send<OrarioFavCell>(this, "delete_corso_fav");
 
             var toast = DependencyService.Get<IToastNotificator>();
             await toast.Notify(ToastNotificationType.Error, "Complimenti", orario.Insegnamento + " rimosso dai preferiti!", TimeSpan.FromSeconds(3));
 
+            Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
         }
 		#endregion
 

@@ -46,7 +46,9 @@ namespace OrariUnibg.Views
             Logcat.Write(string.Format("{0}: {1}", "TabbedHomeView", "costruttore"));
 
             checkDays (); //controllo che giorni sono necessari nelle tab
-			loadListCorsiGiorno(); //carico la lista dei giorni         
+
+            //RIMOSSO PER DEBUG!!
+			//loadListCorsiGiorno(); //carico la lista dei giorni         
 
             this.ItemTemplate = new DataTemplate(() =>
             {
@@ -179,19 +181,18 @@ namespace OrariUnibg.Views
 
 		private async void sync()
 		{
-			MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+			//MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
 			ToolbarItems.Clear();
 			ToolbarItems.Remove(tbiSync);
 
             await _db.SynchronizeAzureDb();
 
-            //****COMMENTATI PER TEST AZURE!!
             await updateDbOrariUtenza();
 
             loadListCorsiGiorno();
 
             ToolbarItems.Add(tbiSync);
-			MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+			//MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
 		}
 
         private async Task updateDbOrariUtenza()
@@ -245,17 +246,17 @@ namespace OrariUnibg.Views
 			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
         }
 
-		private void IdentifyingUser()
-		{
-			Xamarin.Insights.Identify (Settings.Matricola, 
-				new Dictionary <string, string> { 
-					{Xamarin.Insights.Traits.Email, Settings.Email},
-					{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
-					{Xamarin.Insights.Traits.CreatedAt, Settings.DateCreatedString},
-					{"Facoltà", Settings.Facolta},
-					{"Laurea", Settings.Laurea}
-			});
-		}
+		//private void IdentifyingUser()
+		//{
+		//	Xamarin.Insights.Identify (Settings.Matricola, 
+		//		new Dictionary <string, string> { 
+		//			{Xamarin.Insights.Traits.Email, Settings.Email},
+		//			{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
+		//			{Xamarin.Insights.Traits.CreatedAt, Settings.CreatedAtString},
+		//			{"Facoltà", Settings.Facolta},
+		//			{"Laurea", Settings.Laurea}
+		//	});
+		//}
         #endregion
 
         #region Event Handlers
@@ -267,29 +268,30 @@ namespace OrariUnibg.Views
 		}
 		protected async override void OnAppearing()
 		{
-			var utenze = _db.GetAllUtenze ();
-
+            //****TO DO
+            var utenze = _db.GetAllUtenze();
 
             //viene fatto troppo spesso se lo metto qui! TO DO pull to refresh
             //_db.SynchronizeAzureDb();
 
-			_db.CheckUtenzeDoppioni (); //verifica che non ci sono doppioni nelle utenze, non so perchè ma capita che me ne crea
-			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", true);
-			ToolbarItems.Remove(tbiSync);
-			checkDays ();
-			updateListaGiorni ();
+            _db.CheckUtenzeDoppioni(); //verifica che non ci sono doppioni nelle utenze, non so perchè ma capita che me ne crea
+            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+            ToolbarItems.Remove(tbiSync);
+            checkDays();
+            updateListaGiorni();
 
-//			var count = _db.GetAllMieiCorsi ().Count ();
-			if (_db.GetAllMieiCorsi ().Count () > Settings.MieiCorsiCount) { // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
-				await updateDbOrariUtenza ();
-//				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
-			}
-				
-			loadListCorsiGiorno();
-			MessagingCenter.Send<TabbedHomeView, bool> (this, "sync", false);
-			ToolbarItems.Add(tbiSync);
+            //			var count = _db.GetAllMieiCorsi ().Count ();
+            if (_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount)
+            { // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
+                await updateDbOrariUtenza();
+                //				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
+            }
 
-			base.OnAppearing();
+            loadListCorsiGiorno();
+            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+            ToolbarItems.Add(tbiSync);
+
+            base.OnAppearing();
 
 		}
         

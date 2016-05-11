@@ -29,15 +29,21 @@ namespace OrariUnibg.Droid
             App.Init(new DbSQLite(new SQLite_Android().GetConnection()));
 
 			ImageCircleRenderer.Init();
-			Insights.DisableCollection = true;
-//			Insights.DisableCollection = Settings.StatisticData;
-			Insights.Initialize("37a1497d790f720508e527850ad82785c117c774", Xamarin.Forms.Forms.Context);
+
+            DependencyService.Register<ToastNotificatorImplementation>(); // Register your dependency
+            ToastNotificatorImplementation.Init(this);  //TOAST NOTIFICATION
+
+            Insights.DisableCollection = true;
+            //Insights.DisableCollection = Settings.StatisticData;
+            Insights.Initialize("37a1497d790f720508e527850ad82785c117c774", Xamarin.Forms.Forms.Context);
 
 			FormsAppCompatActivity.ToolbarResource = Resource.Layout.toolbar;
 			FormsAppCompatActivity.TabLayoutResource = Resource.Layout.tabs;
 
+
+
             LoadApplication(new App()); // method is new in 1.3
-			ToastNotificatorImplementation.Init(this);  //TOAST NOTIFICATION
+
 
 //			if ((int)Android.OS.Build.VERSION.SdkInt >= 21) 
 //			{ 

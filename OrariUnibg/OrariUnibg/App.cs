@@ -14,11 +14,12 @@ namespace OrariUnibg
     public class App : Application
     {
         #region Private Fields
-        private AzureDataService _service;
+        private static AzureDataService _service;
         #endregion
+
         #region Properties
         public static DbSQLite Database { get; set; }
-        public AzureDataService Service
+        public static AzureDataService Service
         {
             get { return _service; }
             set { _service = value; }

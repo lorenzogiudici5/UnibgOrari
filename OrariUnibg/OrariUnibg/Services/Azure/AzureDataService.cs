@@ -100,6 +100,8 @@ namespace OrariUnibg.Services.Azure
 
         public async Task UpdateUser()
         {
+            await Initialize();
+
             await userTable.UpdateAsync(User);
         }
 
@@ -116,6 +118,8 @@ namespace OrariUnibg.Services.Azure
 
         public async Task<bool> ExistsUser()
         {
+            await Initialize();
+
             var users = await userTable.Where(x => x.Id == Settings.UserId).ToEnumerableAsync();
             if (users.Count() > 0)
             {
@@ -177,6 +181,8 @@ namespace OrariUnibg.Services.Azure
 
         public async Task<bool> ExistsCorso(Corso corso)
         {
+            await Initialize();
+
             var corsi = await corsoTable.Where(x => x.Insegnamento == corso.Insegnamento && x.Codice == corso.Codice).ToEnumerableAsync();
             if (corsi.Count() > 0)
                 return true;
@@ -186,8 +192,19 @@ namespace OrariUnibg.Services.Azure
 
         public async Task<Corso> GetCorso(Corso corso)
         {
+            await Initialize();
+
             var c = await corsoTable.Where(x => (x.Id == corso.Id) || (x.Insegnamento == corso.Insegnamento && x.Codice == corso.Codice)).ToEnumerableAsync();
             return c.ToList().FirstOrDefault();
+        }
+
+        public async Task DeleteCorso (Corso corso)
+        {
+            await Initialize();
+
+            var c = await GetCorso(corso);
+            if(c != null)
+                await corsoTable.DeleteAsync(c);
         }
         #endregion
 
@@ -226,7 +243,8 @@ namespace OrariUnibg.Services.Azure
 
             var preferiti = await preferitiTable.OrderBy(c => c.Id).ToEnumerableAsync();
             //return new ObservableCollection<TazzaDiCaffe>(coffes);
-            return preferiti.ToList();
+            var list = preferiti.ToList();
+            return list;
         }
 
         public async Task<List<Preferiti>> GetMieiPreferiti()
@@ -243,11 +261,39 @@ namespace OrariUnibg.Services.Azure
 
         public async Task<bool> ExistsPreferito(Preferiti preferito)
         {
+            await Initialize();
+
             var preferiti = await preferitiTable.Where(x => x.UserId == Settings.UserId && x.IdCorso == preferito.IdCorso).ToEnumerableAsync();
             if (preferiti.Count() > 0)
                 return true;
             else
                 return false;
+        }
+
+        public async Task DeletePreferito(Preferiti preferito)
+        {
+            await Initialize();
+
+            var preferiti = await preferitiTable.Where(x => x.UserId == Settings.UserId && x.IdCorso == preferito.IdCorso).ToEnumerableAsync();
+
+
+            if (preferiti.Count() > 0)
+            {
+                try
+                {
+                    await preferitiTable.DeleteAsync(preferiti.FirstOrDefault());
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+            }
+
+
+            //TO DO try to delete Corso
+            //devo verificare se ci sono altri utenti che hanno quel corso tra i preferiti, altrimenti lo "potrei" cancellare
+            //if preferitiTable.Where(x => x.IdCorso == preferito.IdCorso).ToEnumerableAsync().Count() == 0) 
+            //allora cancello anche dalla tabella corso
         }
         #endregion
 

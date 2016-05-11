@@ -29,6 +29,7 @@ namespace OrariUnibg.Droid.Services.Authentication
             try
             {
                 //Settings.LoginAttempts++;
+                //var user = await client.LoginAsync(Forms.Context, provider, new Dictionary<string, string> { { "access_type", "offline" } });
                 var user = await client.LoginAsync(Forms.Context, provider);
                 Settings.AuthToken = user?.MobileServiceAuthenticationToken ?? string.Empty;
                 Settings.UserId = user?.UserId ?? string.Empty;
@@ -36,8 +37,6 @@ namespace OrariUnibg.Droid.Services.Authentication
                 // Creates a TextInfo based on the "en-US" culture.
                 TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
 
-
-                //DA S-COMMENTARE!
                 var userData = await GetUserData(client);
 
                 Settings.Email = userData.Message.Email;

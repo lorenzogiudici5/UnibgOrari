@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json.Linq;
 using OrariUnibg.Helpers;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace OrariUnibg.Services.Authentication
 {
@@ -34,6 +36,7 @@ namespace OrariUnibg.Services.Authentication
                 try
                 {
                     var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                    //var user = await this.Client.LoginAsync()
                     // we're now logged in again.
 
                     // Clone the request

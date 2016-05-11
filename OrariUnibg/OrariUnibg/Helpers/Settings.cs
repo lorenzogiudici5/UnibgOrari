@@ -67,9 +67,10 @@ namespace OrariUnibg.Helpers
        	private const string CognomeKey = "cognome_key";
        	private const string MailKey = "mail_key";
       	private const string MatricolaKey = "matricola_key";
-        private const string DateCreatedStringKey = "datecreatedstring_key";
+        private const string CreatedAtStringKey = "createdAtstring_key";
+        private const string UpdatedAtStringKey = "datecreatedstring_key";
 
-		private const string LastUpdateKey = "lastUpdate_key";
+        private const string LastUpdateKey = "lastUpdate_key";
       	private const string SyncKey = "sync_key";
       	private const string NotifyKey = "notify_key";
 		private const string UpdateHourKey = "updateHour_key";
@@ -416,21 +417,33 @@ namespace OrariUnibg.Helpers
         }
     }
 
-    public static string DateCreatedString
+    public static string CreatedAtString
 	{
 		get
 		{
-			return AppSettings.GetValueOrDefault(DateCreatedStringKey, DefaultString);
+			return AppSettings.GetValueOrDefault(CreatedAtStringKey, DefaultString);
 		}
 		set
 		{
-			AppSettings.AddOrUpdateValue(DateCreatedStringKey, value);
+			AppSettings.AddOrUpdateValue(CreatedAtStringKey, value);
 		}
 	}
 
-    #endregion
+        public static string UpdatedAtString
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(CreatedAtStringKey, DefaultString);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(CreatedAtStringKey, value);
+            }
+        }
 
-      #region PickerIndex
+        #endregion
+
+        #region PickerIndex
         public static int FacoltaIndex
         {
             get
