@@ -244,7 +244,6 @@ namespace OrariUnibg
             //await _service.DeletePreferito(preferito);
             
 
-
             var orario = mi.CommandParameter as Orari;
             
             var preferito = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);

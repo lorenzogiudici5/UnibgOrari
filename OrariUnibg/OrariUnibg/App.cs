@@ -37,7 +37,11 @@ namespace OrariUnibg
             else
             {
                 if (Settings.IsLoggedIn) //login effettuto con successo
+                {
+                    Settings.ToUpdate = false;
                     MainPage = new MasterDetailView() { Service = _service };
+                }
+
                 else //utente non login
                     MainPage = new LoginView() { Service = _service };
             }

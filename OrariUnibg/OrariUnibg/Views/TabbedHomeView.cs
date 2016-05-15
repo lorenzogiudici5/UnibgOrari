@@ -16,6 +16,7 @@ using OrariUnibg.Views.ViewCells;
 using OrariUnibg.Services.Azure;
 using OrariUnibg.Services.Authentication;
 using Microsoft.WindowsAzure.MobileServices;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views
 {
@@ -28,7 +29,15 @@ namespace OrariUnibg.Views
             set { _service = value; }
         }
         #endregion
-
+        #region Private Fields
+        private AzureDataService _service;
+        private DbSQLite _db;
+        private List<DayViewModel> listGiorni;
+        private DayViewModel _oggi;
+        private DayViewModel _domani;
+        private DayViewModel _dopodomani;
+        //private ToolbarItem tbiSync;
+        #endregion
 
         #region Constructor
         public TabbedHomeView()
@@ -48,41 +57,41 @@ namespace OrariUnibg.Views
             checkDays (); //controllo che giorni sono necessari nelle tab
 
             //RIMOSSO PER DEBUG!!
-			//loadListCorsiGiorno(); //carico la lista dei giorni         
+            //loadListCorsiGiorno(); //carico la lista dei giorni         
 
             this.ItemTemplate = new DataTemplate(() =>
             {
                 return new TabbedDayView();
             });
 
-            tbiSync = new ToolbarItem("Sync", "ic_sync.png", sync, 0, 0);
-            ToolbarItems.Add(tbiSync);
-
+            //tbiSync = new ToolbarItem("Sync", "ic_sync.png", sync, 0, 0);
+            //ToolbarItems.Add(tbiSync);
 
 			MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", (sender) => {
-				loadListCorsiGiorno();
+                loadListCorsiGiorno();
 			});
 			MessagingCenter.Subscribe<OrarioFavCell> (this, "delete_corso_fav", (sender) => {
-				loadListCorsiGiorno();
+
+                loadListCorsiGiorno();
 			});
 
 			MessagingCenter.Subscribe<OrarioFavCell> (this, "delete_corso_fav_impostazioni", (sender) => {
 				loadListCorsiGiorno();
 			});
-//			MessagingCenter.Subscribe<OrarioGiornCell>(this, "delete_corso_context", deleteMioCorsoContext);
-//			MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", loadListCorsiGiorno());
+
+            MessagingCenter.Subscribe<TabbedDayView, int>(this, "pullToRefresh", (sender, x) =>
+            {
+                //serve per refreshare i corsi nella tabbed day view
+                //this.SelectedItem = null;
+                loadListCorsiGiorno();
+            });
+
+            //MessagingCenter.Subscribe<OrarioGiornCell>(this, "delete_corso_context", deleteMioCorsoContext);
+            //MessagingCenter.Subscribe<TabbedDayView>(this, "delete_corso", loadListCorsiGiorno());
         }
         #endregion
 
-        #region Private Fields
-        private AzureDataService _service;
-        private DbSQLite _db;
-        private List<Giorno> listGiorni;
-        private Giorno _oggi;
-        private Giorno _domani;
-        private Giorno _dopodomani;
-        private ToolbarItem tbiSync;
-		#endregion
+
                   
 		#region Public Methods
 		/**
@@ -148,23 +157,24 @@ namespace OrariUnibg.Views
 				}
 			}
 
-			//Settings.LastUpdate = DateTime.Now.ToString ("R");
-			Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
+            //Settings.LastUpdate = DateTime.Now.ToString ("R");
+            //Settings.ToUpdate = false;
+            Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
 		}
 
 		public void checkDays()
 		{
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
 			{
-				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today.AddDays(1) };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
 			}
 			else
 			{
-				_oggi = new Giorno() { Data = DateTime.Today };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
 			}
 		}
 		#endregion
@@ -172,28 +182,17 @@ namespace OrariUnibg.Views
         #region Private Methods
 		private void updateListaGiorni()
 		{
-			listGiorni = new List<Giorno>()
+			listGiorni = new List<DayViewModel>()
 			{
 				_oggi, _domani, _dopodomani
 			};
-			this.ItemsSource = listGiorni;
-		}
+            _oggi.ListGiorni = listGiorni;
+            _domani.ListGiorni = listGiorni;
+            _dopodomani.ListGiorni = listGiorni;
 
-		private async void sync()
-		{
-			//MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-			ToolbarItems.Clear();
-			ToolbarItems.Remove(tbiSync);
+            this.ItemsSource = listGiorni;
 
-            await _db.SynchronizeAzureDb();
-
-            await updateDbOrariUtenza();
-
-            loadListCorsiGiorno();
-
-            ToolbarItems.Add(tbiSync);
-			//MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
-		}
+        }
 
         private async Task updateDbOrariUtenza()
         {
@@ -205,62 +204,65 @@ namespace OrariUnibg.Views
                     _db.DeleteSingleOrari(l.IdOrario);
             };
 
-			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
-				var toast = DependencyService.Get<IToastNotificator>();
-				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
-				return;
-			}
+            if (!CrossConnectivity.Current.IsConnected)
+            { //non connesso a internet
+                var toast = DependencyService.Get<IToastNotificator>();
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                return;
+            }
 
-			
-			foreach (var day in listGiorni)
+
+            foreach (var day in listGiorni)
             {
                 //Corsi generale, utenza + corsi
                 var db = Settings.FacoltaDB;
-				string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, day.DateString);
-				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
+                string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, day.DateString);
+                List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
 
-				if (listaCorsi.Count () != 0)
-					updateSingleCorso (_db, listaCorsi);
+                if (listaCorsi.Count() != 0)
+                    updateSingleCorso(_db, listaCorsi);
             }
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
-			_db.CheckUtenzeDoppioni ();
+            _db.CheckUtenzeDoppioni();
         }
 
         private void loadListCorsiGiorno()
         {
-			var utenze = _db.GetAllUtenze ();
-			_oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Date.Date) == 0);
-//			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _oggi.Data.Date);
-			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Data.Date) == 0);
-			var count = _oggi.ListUtenza.Count ();
+            this.SelectedItem = null;
 
-			_domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Date.Date) == 0);
-			_domani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
+            var utenze = _db.GetAllUtenze();
+            _oggi.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Date.Date) == 0);
+            //			_oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(x => x.Data == _oggi.Data.Date);
+            _oggi.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_oggi.Data.Date, dateX.Data.Date) == 0);
+            var count = _oggi.ListUtenza.Count();
 
-			_dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data.Date, dateX.Date.Date) == 0);
-			_dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
+            _domani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Date.Date) == 0);
+            _domani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
 
-			updateListaGiorni();
+            _dopodomani.ListaLezioni = _db.GetAllOrari().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_dopodomani.Data.Date, dateX.Date.Date) == 0);
+            _dopodomani.ListUtenza = _db.GetAllUtenze().OrderBy(y => y.Ora).Where(dateX => DateTime.Compare(_domani.Data.Date, dateX.Data.Date) == 0);
 
-			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count();
+            updateListaGiorni();
+
+            Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
         }
 
-		//private void IdentifyingUser()
-		//{
-		//	Xamarin.Insights.Identify (Settings.Matricola, 
-		//		new Dictionary <string, string> { 
-		//			{Xamarin.Insights.Traits.Email, Settings.Email},
-		//			{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
-		//			{Xamarin.Insights.Traits.CreatedAt, Settings.CreatedAtString},
-		//			{"Facoltà", Settings.Facolta},
-		//			{"Laurea", Settings.Laurea}
-		//	});
-		//}
+        //private void IdentifyingUser()
+        //{
+        //	Xamarin.Insights.Identify (Settings.Matricola, 
+        //		new Dictionary <string, string> { 
+        //			{Xamarin.Insights.Traits.Email, Settings.Email},
+        //			{Xamarin.Insights.Traits.Name, string.Format("{0} {1}", Settings.Cognome, Settings.Nome)},
+        //			{Xamarin.Insights.Traits.CreatedAt, Settings.CreatedAtString},
+        //			{"Facoltà", Settings.Facolta},
+        //			{"Laurea", Settings.Laurea}
+        //	});
+        //}
         #endregion
 
         #region Event Handlers
-		protected override bool OnBackButtonPressed ()
+        protected override bool OnBackButtonPressed ()
 		{
 			DependencyService.Get<IMethods>().Close_App(); //altrmenti nulla
 			return true;
@@ -272,27 +274,30 @@ namespace OrariUnibg.Views
             var utenze = _db.GetAllUtenze();
 
             //viene fatto troppo spesso se lo metto qui! TO DO pull to refresh
-            //_db.SynchronizeAzureDb();
+            //if(ToUpdate)
+                //await _db.SynchronizeAzureDb();
 
             _db.CheckUtenzeDoppioni(); //verifica che non ci sono doppioni nelle utenze, non so perchè ma capita che me ne crea
-            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
-            ToolbarItems.Remove(tbiSync);
+            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", true);
+            //ToolbarItems.Remove(tbiSync);
+
             checkDays();
             updateListaGiorni();
 
-            //			var count = _db.GetAllMieiCorsi ().Count ();
-            if (_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount)
-            { // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
-                await updateDbOrariUtenza();
-                //				Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();
-            }
+            //var count = _db.GetAllMieiCorsi().Count();
+
+            //if (_db.GetAllMieiCorsi().Count() > Settings.MieiCorsiCount)
+            //{ // || listGiorni[0].Data != DateTime.Today) //ne è stato aggiunto uno nuovo, è cambiato giorno ATTENZIONE: domenica??
+            //    await updateDbOrariUtenza();
+            //    //Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
+            //    count = _db.GetAllMieiCorsi().Count();
+            //}
 
             loadListCorsiGiorno();
-            MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
-            ToolbarItems.Add(tbiSync);
+            //MessagingCenter.Send<TabbedHomeView, bool>(this, "sync", false);
+            //ToolbarItems.Add(tbiSync);
 
             base.OnAppearing();
-
 		}
         
         #endregion

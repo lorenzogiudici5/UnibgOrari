@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using Plugin.Connectivity;
 using Plugin.Toasts;
 using OrariUnibg.Services.Azure;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views
 {
@@ -36,9 +37,9 @@ namespace OrariUnibg.Views
         private ListView _list;
         private DbSQLite _db;
         private ActivityIndicator _activityIndicator;
-        private Giorno _oggi;
-        private Giorno _domani;
-        private Giorno _dopodomani;
+        private DayViewModel _oggi;
+        private DayViewModel _domani;
+        private DayViewModel _dopodomani;
 		private ToolbarItem tbiNext;
         #endregion
 
@@ -149,15 +150,15 @@ namespace OrariUnibg.Views
 
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
 			{
-				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today.AddDays(1) };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
 			}
 			else
 			{
-				_oggi = new Giorno() { Data = DateTime.Today };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
 			}
 
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };

@@ -451,6 +451,19 @@ namespace OrariUnibg
             DependencyService.Get<IAuthentication>().ClearCookies();
             //reset Settings!
             Settings.UserId = string.Empty; //cosi diventa false Settings.IsLoggedIn
+            Settings.Facolta = string.Empty;
+            Settings.FacoltaDB = string.Empty;
+            Settings.Laurea = string.Empty;
+            Settings.Anno = string.Empty;
+            Settings.BackgroundSync = true;
+            Settings.Notify = true;
+
+            Settings.Matricola = null;
+            Settings.FacoltaId = null;
+            Settings.LaureaId = null;
+            Settings.LaureaIndex = null;
+            Settings.FacoltaIndex = null;
+            Settings.AnnoIndex = null;
             //.. . . 
             await Navigation.PushModalAsync(new LoginView());
 		}

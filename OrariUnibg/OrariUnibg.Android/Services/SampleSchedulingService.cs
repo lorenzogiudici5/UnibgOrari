@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Plugin.Connectivity;
 using Plugin.Toasts;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Droid.Services.Notifications
 {
@@ -23,9 +24,9 @@ namespace OrariUnibg.Droid.Services.Notifications
         #region Private Fields
         private DbSQLite _db;
         private Intent _intent;
-        private Giorno _oggi;
-        private Giorno _domani;
-        private Giorno _dopodomani;
+        private DayViewModel _oggi;
+        private DayViewModel _domani;
+        private DayViewModel _dopodomani;
         private IEnumerable<Orari> _listOrariGiorno;
         #endregion 
 
@@ -56,15 +57,15 @@ namespace OrariUnibg.Droid.Services.Notifications
 
 			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
             {
-				_oggi = new Giorno() { Data = DateTime.Today.AddDays(1) };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today.AddDays(1) };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
             }
             else
             {
-				_oggi = new Giorno() { Data = DateTime.Today };
-				_domani = new Giorno() { Data = _oggi.Data.AddDays(1) };
-				_dopodomani = new Giorno() { Data = _domani.Data.AddDays(1) };
+				_oggi = new DayViewModel() { Data = DateTime.Today };
+				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
+				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
             }
             
             /*

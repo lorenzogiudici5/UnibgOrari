@@ -17,6 +17,7 @@ namespace OrariUnibg
 		{
             //_service = new AzureDataService();
             //_db = new DbSQLite();
+            _service = new AzureDataService();
             Content = getView ();
 		}
         #endregion
@@ -229,6 +230,7 @@ namespace OrariUnibg
                 await _db.SynchronizeAzureDb();
 
                 Settings.SuccessLogin = true;
+                Settings.ToUpdate = true;
                 await Navigation.PushModalAsync(new MasterDetailView());
             }
         }

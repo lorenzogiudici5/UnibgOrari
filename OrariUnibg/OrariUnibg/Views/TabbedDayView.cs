@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin;
 using OrariUnibg.Services;
+using Refractored.XamForms.PullToRefresh;
+using System.Diagnostics;
+using Plugin.Connectivity;
+using Plugin.Toasts;
+using OrariUnibg.ViewModels;
 
 namespace OrariUnibg.Views
 {
@@ -23,9 +28,14 @@ namespace OrariUnibg.Views
 
             Logcat.Write(string.Format("{0}: {1}", "TABBEDDAYVIEW", "before content"));
 
-            Content = getView();
+            //Content = getView();
+            Content = getPullToRefreshView();
         }
         #endregion
+
+        //#region Properties
+        //public DayViewModel ViewModel { get { return _viewModel; } set { if (_viewModel != value) _viewModel = value; } }
+        //#endregion
 
         #region Private Fields
         private ListView _listView;
@@ -34,14 +44,56 @@ namespace OrariUnibg.Views
         private Label _lblInfo;
         private Label _lblTitleUtenza;
         private Label _lblUtenza;
-        private ActivityIndicator _activityIndicator;
+        //private ActivityIndicator _activityIndicator;
         private DbSQLite _db;
         private ListView _listUtenze;
 		private StackLayout layoutListaUtenza;
-		private Giorno _viewModel;
+		private DayViewModel _viewModel;
+        PullToRefreshLayout _refreshView;
         #endregion
 
         #region Private Methods
+        private View getPullToRefreshView()
+        {
+            var scrollView = new ScrollView
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Content = getView() /* Anything you want in your ScrollView */
+            };
+
+            _refreshView = new PullToRefreshLayout
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Content = scrollView,
+                RefreshColor = Color.FromHex("#3498db"),
+            };
+
+            var refreshCommand = new Command( () => //(async () =>
+            {
+                sync();
+                //_refreshView.IsRefreshing = true;
+                //await _db.SynchronizeAzureDb();
+
+                //await updateDbOrariUtenza();
+
+                //MessagingCenter.Send<TabbedDayView, int>(this, "pullToRefresh", 0);
+                //Debug.WriteLine("Command executed");
+                //updateLabelInfo(); //aggiorna la label delle information (da aggiornare oppure rilassati)
+                //_refreshView.IsRefreshing = false;
+            });
+
+            _refreshView.RefreshCommand = refreshCommand;
+
+            //Set Bindings
+            //_refreshView.SetBinding<TestViewModel>(PullToRefreshLayout.IsRefreshingProperty, vm => vm.IsBusy, BindingMode.OneWay);
+            //_refreshView.SetBinding<TestViewModel>(PullToRefreshLayout.RefreshCommandProperty, command);
+            //_refreshView.SetBinding<TestViewModel>(PullToRefreshLayout.RefreshCommandProperty, vm => vm.RefreshCommand);
+
+
+            return _refreshView;
+        }
         private View getView()
         {
 			var fab = new FloatingActionButtonView() {
@@ -80,8 +132,8 @@ namespace OrariUnibg.Views
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
             _lblInfo.SetBinding(Label.IsVisibleProperty, new Binding("ListaLezioni", converter: new IsVisibleCountConverter()));
+            updateLabelInfo();
 
-		
             _listView = new ListView()
             {
                 ItemTemplate = new DataTemplate(typeof(OrarioFavCell)),
@@ -122,8 +174,6 @@ namespace OrariUnibg.Views
 			layoutListaUtenza.SetBinding(StackLayout.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleListUtenze()));
 			layoutListaUtenza.Children.Add(_listUtenze);
 
-            
-
             _lblTitleUtenza = new Label()
             {
                 Text = "USO UTENZA",
@@ -141,12 +191,12 @@ namespace OrariUnibg.Views
             _lblTitleUtenza.SetBinding(Label.IsVisibleProperty, new Binding("ListUtenza", converter: new IsVisibleUsoUtenza()));
 
 
-            _activityIndicator = new ActivityIndicator()
-            {
-                IsRunning = false,
-                IsVisible = false,
-                VerticalOptions = LayoutOptions.EndAndExpand,
-            };
+            //_activityIndicator = new ActivityIndicator()
+            //{
+            //    IsRunning = true,
+            //    IsVisible = false,
+            //    VerticalOptions = LayoutOptions.EndAndExpand,
+            //};
 
 //            var layoutUtenza = new StackLayout() 
 //            {
@@ -172,32 +222,18 @@ namespace OrariUnibg.Views
                     _lblInfo,
                     _listView,
 					layoutListaUtenza,
-					_activityIndicator,
+					//_activityIndicator,
 //                    layoutUtenza,
 //					_listUtenze
                 }
             };
 
-			MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", (sender, arg2) => {
-				if (arg2)
-				{
-					_activityIndicator.IsRunning = true;
-					_activityIndicator.IsVisible = true;
-//					await Task.Run(() =>
-//					{
-//						Device.BeginInvokeOnMainThread(() => fab.Hide());
-//					});
-				}
-				else
-				{
-					_activityIndicator.IsRunning = false;
-					_activityIndicator.IsVisible = false;
-//					await Task.Run(() =>
-//					{
-//						Device.BeginInvokeOnMainThread(() => fab.Show());
-//					});
-				}
-			});
+			//MessagingCenter.Subscribe<TabbedHomeView, bool>(this, "sync", (sender, arg2) => {
+			//	if (arg2)
+			//		_activityIndicator.IsVisible = true;
+			//	else
+			//		_activityIndicator.IsVisible = false;
+			//});
 
 			var absolute = new AbsoluteLayout() { 
 				VerticalOptions = LayoutOptions.FillAndExpand, 
@@ -219,10 +255,136 @@ namespace OrariUnibg.Views
 
 //            return layout;
         }
+
+        private async Task updateDbOrariUtenza()
+        {
+            var _listOrariGiorno = _db.GetAllOrari(); //Elimina gli orari già passati
+
+            //***TO CHECK! 
+            foreach (var l in _listOrariGiorno)
+            {
+                if (l.Date < DateTime.Today.Date) //se l'orario è di ieri lo cancello
+                    _db.DeleteSingleOrari(l.IdOrario);
+            };
+
+            if (!CrossConnectivity.Current.IsConnected)
+            { //non connesso a internet
+                var toast = DependencyService.Get<IToastNotificator>();
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                return;
+            }
+
+
+            foreach (var day in _viewModel.ListGiorni)
+            {
+                //Corsi generale, utenza + corsi
+                var db = Settings.FacoltaDB;
+                string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, day.DateString);
+                List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, day.Data);
+
+                if (listaCorsi.Count() != 0)
+                    updateSingleCorso(_db, listaCorsi);
+            }
+
+            Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
+            _db.CheckUtenzeDoppioni();
+        }
+
+
+        private void updateLabelInfo()
+        {
+            if (Settings.ToUpdate)
+                _lblInfo.Text = "Trascina verso il basso per aggiornare";
+            else
+                _lblInfo.Text = "Rilassati! Non hai lezioni!";
+        }
+
+        private async void sync()
+        {
+            _refreshView.IsRefreshing = true;
+            await _db.SynchronizeAzureDb();
+
+            await updateDbOrariUtenza();
+
+            MessagingCenter.Send<TabbedDayView, int>(this, "pullToRefresh", 0);
+            Debug.WriteLine("Command executed");
+            updateLabelInfo(); //aggiorna la label delle information (da aggiornare oppure rilassati)
+            _refreshView.IsRefreshing = false;
+        }
+        #endregion
+
+        #region Public Methods
+        /**
+		* Aggiorna il singolo corso, verificando se appartiene ai corsi e in caso, aggiorna, aggiunge o notifica
+		* */
+        public static void updateSingleCorso(DbSQLite _db, List<CorsoGiornaliero> listaCorsi)
+        {
+            foreach (var c in listaCorsi)
+            {
+                var corso = c;
+                Logcat.Write("ORARI_UNIBG: prima di Check");
+
+                if (_db.CheckAppartieneMieiCorsi(c))
+                {
+                    //_db.InsertUpdate(l);
+                    var orario = new Orari()
+                    {
+                        Insegnamento = corso.Insegnamento,
+                        Codice = corso.Codice,
+                        AulaOra = corso.AulaOra,
+                        Note = corso.Note,
+                        Date = corso.Date,
+                        Docente = corso.Docente,
+                    };
+
+                    if (_db.AppartieneOrari(orario)) //l'orario è già presente
+                    {
+                        Logcat.Write("Orario già PRESENTE nel DB: " + orario.Insegnamento);
+                        var o = _db.GetAllOrari().FirstOrDefault(y => y.Insegnamento == orario.Insegnamento && y.Date.Date == orario.Date.Date && orario.AulaOra == y.AulaOra);
+
+                        if ((string.Compare(o.Note, corso.Note) != 0) || !o.Notify)
+                        {
+                            o.Note = corso.Note;
+                            o.AulaOra = corso.AulaOra;
+                            if (o.Note != null && o.Note != "" && !o.Notify)
+                            {
+                                DependencyService.Get<INotification>().SendNotification(corso);
+                                o.Notify = true;
+                            }
+                            _db.Update(o);
+                        }
+                    }
+                    else // l'orario non è presente nel mio db
+                    {
+                        orario.Notify = false;
+                        Logcat.Write("Orario NUOVO" + orario.Insegnamento);
+                        if (orario.Note != null && orario.Note != "" && !orario.Notify)
+                        {
+                            DependencyService.Get<INotification>().SendNotification(corso);
+                            //SendNotification(corso);
+                            orario.Notify = true;
+                        }
+
+                        _db.Insert(orario);
+                    }
+                }
+
+                else if (corso.Insegnamento.Contains("UTENZA")) //verifico se è un utenza
+                {
+                    Utenze ut = new Utenze() { Data = corso.Date, AulaOra = corso.AulaOra };
+                    if (!_db.AppartieneUtenze(ut))
+                        _db.Insert(ut);
+                }
+            }
+
+            //Settings.LastUpdate = DateTime.Now.ToString ("R");
+            //Settings.ToUpdate = false;
+            Settings.LastUpdate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        }
         #endregion
 
         #region Event Handlers
-		private void share()
+        private void share()
 		{
 			string text = _viewModel.ToString ();
 			string s = "Condividi Testo";
@@ -258,16 +420,24 @@ namespace OrariUnibg.Views
 		protected override void OnBindingContextChanged()
 		{
 			base.OnBindingContextChanged();
-			_viewModel = (Giorno)BindingContext;
+			_viewModel = (DayViewModel)BindingContext;
 
 		}
-		#endregion
+
+        protected override void OnAppearing()
+        {
+            //if (Settings.ToUpdate)
+            //    sync();
+            updateLabelInfo();
+            base.OnAppearing();
+        }
+        #endregion
+
     }
 
     #region Converter
     public class IsVisibleListUtenze : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is IEnumerable<Utenza>)
@@ -334,6 +504,9 @@ namespace OrariUnibg.Views
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (Settings.ToUpdate)
+                return true;
+
             if (value is IEnumerable<Orari>)
             {
                 var x = (IEnumerable<Orari>)value;

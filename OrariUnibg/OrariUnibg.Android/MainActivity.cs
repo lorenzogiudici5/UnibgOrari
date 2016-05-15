@@ -15,6 +15,7 @@ using Xamarin;
 using OrariUnibg.Helpers;
 using ImageCircle.Forms.Plugin.Droid;
 using Plugin.Toasts;
+using Refractored.XamForms.PullToRefresh.Droid;
 
 namespace OrariUnibg.Droid
 {
@@ -32,6 +33,7 @@ namespace OrariUnibg.Droid
 
             DependencyService.Register<ToastNotificatorImplementation>(); // Register your dependency
             ToastNotificatorImplementation.Init(this);  //TOAST NOTIFICATION
+            PullToRefreshLayoutRenderer.Init();
 
             Insights.DisableCollection = true;
             //Insights.DisableCollection = Settings.StatisticData;

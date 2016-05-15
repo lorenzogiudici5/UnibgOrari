@@ -54,7 +54,7 @@ namespace OrariUnibg.Services.Database
             bool toAdd = false;
             bool toDelete = false;
             await _service.Initialize();
-            var preferitiAzure = await _service.GetAllPreferiti();
+            var preferitiAzure = await _service.GetMieiPreferiti();
             var preferitiDb = GetAllMieiCorsi();
 
             //controllo se ci sono corsi da cancellare (AZURE no, DB si)

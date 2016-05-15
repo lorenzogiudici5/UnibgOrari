@@ -1,6 +1,7 @@
 // Helpers/Settings.cs
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using System;
 
 namespace OrariUnibg.Helpers
 {
@@ -69,6 +70,7 @@ namespace OrariUnibg.Helpers
       	private const string MatricolaKey = "matricola_key";
         private const string CreatedAtStringKey = "createdAtstring_key";
         private const string UpdatedAtStringKey = "datecreatedstring_key";
+        private const string ToUpdateKey = "toupdate_key";
 
         private const string LastUpdateKey = "lastUpdate_key";
       	private const string SyncKey = "sync_key";
@@ -87,7 +89,7 @@ namespace OrariUnibg.Helpers
 
       	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
 
-		private static readonly string VersionString = "0.1.7";
+		private static readonly string VersionString = "0.1.8";
 		private static readonly string AppNameString = "UnibgOrari";
 		private static readonly string FirmaString = string.Format ("\n\n\nCondiviso da {0}", AppNameString);
       	private static readonly string DefaultString = string.Empty;
@@ -182,6 +184,17 @@ namespace OrariUnibg.Helpers
 			}
 		}
 
+        public static bool ToUpdate
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ToUpdateKey, DefaultBool);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(ToUpdateKey, value);
+            }
+        }
 
 
         public static string Firma
@@ -299,7 +312,8 @@ namespace OrariUnibg.Helpers
 			set
 			{
 				AppSettings.AddOrUpdateValue(LastUpdateKey, value);
-			}
+                ToUpdate = false;
+            }
 		}
     
     #endregion
@@ -444,7 +458,7 @@ namespace OrariUnibg.Helpers
         #endregion
 
         #region PickerIndex
-        public static int FacoltaIndex
+        public static int? FacoltaIndex
         {
             get
             {
@@ -455,7 +469,7 @@ namespace OrariUnibg.Helpers
                 AppSettings.AddOrUpdateValue(FacoltaIndexKey, value);
             }
         }
-        public static int LaureaIndex
+        public static int? LaureaIndex
         {
             get
             {

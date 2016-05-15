@@ -48,7 +48,7 @@ namespace OrariUnibg.Views
 			//if (Settings.SuccessLogin) {
             if (Settings.IsLoggedIn)
             {
-                homeNav = new NavigationPage (new TabbedHomeView ()) {
+                homeNav = new NavigationPage (new TabbedHomeView() ) {
 				BarBackgroundColor = ColorHelper.Blue700,
 				BarTextColor = ColorHelper.White
 			};

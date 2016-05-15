@@ -30,23 +30,49 @@ namespace OrariUnibg.Services.Authentication
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                // Oh noes, user is not logged in - we got a 401
-                // Log them in, this time hardcoded with Microsoft but you would
-                // trigger the login presentation in your application
+                // User is not logged in – we got a 401
                 try
                 {
-                    var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
-                    //var user = await this.Client.LoginAsync()
+                    MobileServiceUser user = Client.CurrentUser;
+
+                    if (user == null)
+                    {
+                        // prompt with login UI
+                        user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                    }
+                    else
+                    {
+                        // Refresh Tokens
+                        try
+                        {
+                            //EngagementAgent.Instance.StartActivity("RefreshToken");
+
+                            // Calling /.auth/refresh will update the tokens in the token store
+                            // and will also return a new mobile authentication token.
+                            JObject refreshJson = (JObject)await this.Client.InvokeApiAsync("/.auth/refresh",
+                                HttpMethod.Get,
+                                null);
+
+                            string newToken = refreshJson["authenticationToken"].Value<string>();
+                            user.MobileServiceAuthenticationToken = newToken;
+                        }
+                        catch
+                        {
+                            //EngagementAgent.Instance.StartActivity("Login");
+                            user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                        }
+                    }
+
                     // we're now logged in again.
+
+                    // Save the user to the app settings
+                    //saveUserDelegate(user);
 
                     // Clone the request
                     clonedRequest = await CloneRequest(request);
 
-
-                    Settings.UserId = user.UserId;
-                    Settings.AuthToken = user.MobileServiceAuthenticationToken;
-
                     clonedRequest.Headers.Remove("X-ZUMO-AUTH");
+
                     // Set the authentication header
                     clonedRequest.Headers.Add("X-ZUMO-AUTH", user.MobileServiceAuthenticationToken);
 
@@ -58,6 +84,35 @@ namespace OrariUnibg.Services.Authentication
                     // user cancelled auth, so lets return the original response
                     return response;
                 }
+
+                // Oh noes, user is not logged in - we got a 401
+                // Log them in, this time hardcoded with Microsoft but you would
+                // trigger the login presentation in your application
+                //try
+                //{
+                //    var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                //    //var user = await this.Client.LoginAsync()
+                //    // we're now logged in again.
+
+                //    // Clone the request
+                //    clonedRequest = await CloneRequest(request);
+
+
+                //    Settings.UserId = user.UserId;
+                //    Settings.AuthToken = user.MobileServiceAuthenticationToken;
+
+                //    clonedRequest.Headers.Remove("X-ZUMO-AUTH");
+                //    // Set the authentication header
+                //    clonedRequest.Headers.Add("X-ZUMO-AUTH", user.MobileServiceAuthenticationToken);
+
+                //    // Resend the request
+                //    response = await base.SendAsync(clonedRequest, cancellationToken);
+                //}
+                //catch (InvalidOperationException)
+                //{
+                //    // user cancelled auth, so lets return the original response
+                //    return response;
+                //}
             }
 
             return response;

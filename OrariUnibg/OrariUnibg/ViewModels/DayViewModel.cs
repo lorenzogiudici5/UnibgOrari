@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrariUnibg.Helpers;
+using OrariUnibg.Models;
 
-namespace OrariUnibg.Models
+namespace OrariUnibg.ViewModels
 {
-    public class Giorno : NotifyPropertyChangedBase
+    public class DayViewModel : NotifyPropertyChangedBase
     {
         #region Private Fields
         private IEnumerable<Orari> _listOrari;
@@ -18,6 +19,7 @@ namespace OrariUnibg.Models
         private DateTime _day;
         #endregion
 
+        #region Property
         public string Day 
         {
             get 
@@ -76,19 +78,31 @@ namespace OrariUnibg.Models
             }
         }
 
-		#region Public Methods
-		public override string ToString ()
-		{
-			if (ListaLezioni.Count () == 0 && ListUtenza.Count () == 0)
-				string.Format ("{0}, {1}\n\nRilassati! Nessuna lezione per te oggi!", Day, DateString);
-			
-			string utenze = "";
-			if(ListUtenza.Count() > 0)
-				utenze = string.Format("UTENZE:\n{0}", string.Join("\n", ListUtenza));
+        public List<DayViewModel> ListGiorni { get; set; }
+        #endregion
 
-			return string.Format ("{0}, {1}\n\n{2}\n\n{3}", Day, DateString, string.Join("\n", ListaLezioni), utenze );
-		
-		}
+
+
+        #region Public Methods
+        public override string ToString ()
+		{
+            if (ListaLezioni != null && ListUtenza != null)
+            {
+                if (ListaLezioni.Count() == 0 && ListUtenza.Count() == 0)
+                    return string.Format("{0}, {1}\n\nRilassati! Nessuna lezione per te oggi!", Day, DateString);
+
+                string utenze = "";
+                if (ListUtenza.Count() > 0)
+                    utenze = string.Format("UTENZE:\n{0}", string.Join("\n", ListUtenza));
+
+                return string.Format("{0}, {1}\n\n{2}\n\n{3}", Day, DateString, string.Join("\n", ListaLezioni), utenze);
+            }
+            else
+            { return String.Empty; }
+
+
+
+        }
 		#endregion
     }
 }

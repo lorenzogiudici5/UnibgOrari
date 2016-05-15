@@ -29,8 +29,8 @@ namespace OrariUnibg.Droid.Services.Authentication
             try
             {
                 //Settings.LoginAttempts++;
-                //var user = await client.LoginAsync(Forms.Context, provider, new Dictionary<string, string> { { "access_type", "offline" } });
-                var user = await client.LoginAsync(Forms.Context, provider);
+                var user = await client.LoginAsync(Forms.Context, provider, new Dictionary<string, string> { { "access_type", "offline" }, { "prompt", "consent" } });
+                //var user = await client.LoginAsync(Forms.Context, provider);
                 Settings.AuthToken = user?.MobileServiceAuthenticationToken ?? string.Empty;
                 Settings.UserId = user?.UserId ?? string.Empty;
 

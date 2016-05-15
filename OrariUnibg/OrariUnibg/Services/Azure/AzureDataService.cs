@@ -218,6 +218,9 @@ namespace OrariUnibg.Services.Azure
             if(! await ExistsPreferito(preferito))
                 await preferitiTable.InsertAsync(preferito);
 
+            //ho aggiunto un nuovo corso quindi devo aggiornare
+            Settings.ToUpdate = true;
+
             //if (!await ExistsPreferito(preferito)) //se il corso non esiste, lo aggiungo
             //    await corsoTable.InsertAsync(preferito);
             //else
