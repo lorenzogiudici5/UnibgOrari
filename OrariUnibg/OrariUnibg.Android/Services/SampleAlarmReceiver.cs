@@ -37,7 +37,11 @@ namespace OrariUnibg.Droid.Services.Notifications
         public void SetAlarm(Context context)
         {
             if (!Settings.BackgroundSync)
+            {
+                Logcat.Write("**Background Sync non attivo");
                 return;
+            }
+
 			
             Logcat.Write("SET ALARM");
 

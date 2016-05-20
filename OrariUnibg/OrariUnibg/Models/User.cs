@@ -30,5 +30,9 @@ namespace OrariUnibg.Models
         public int? LaureaId { get; set; }
         [Newtonsoft.Json.JsonProperty("Anno")]
         public int? AnnoIndex { get; set; }
+
+        //Options
+        [Newtonsoft.Json.JsonProperty("BackgroundSync")]
+        public bool BackgroundSync { get; set; }
     }
 }

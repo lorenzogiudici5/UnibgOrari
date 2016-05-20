@@ -31,6 +31,7 @@ namespace OrariUnibg.Views
         {
             _listView = new ListView()
             {
+                HasUnevenRows = true,
                 ItemsSource = _db.GetAllLogs(),
                 ItemTemplate = new DataTemplate(() =>
                 {

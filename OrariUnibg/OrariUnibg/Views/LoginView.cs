@@ -7,6 +7,9 @@ using OrariUnibg.Services.Authentication;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Threading.Tasks;
 using OrariUnibg.Services.Database;
+using OrariUnibg.Services;
+using Plugin.Connectivity;
+using Plugin.Toasts;
 
 namespace OrariUnibg
 {
@@ -227,10 +230,25 @@ namespace OrariUnibg
             {
                 _lblAlert.Text = string.Format("Sto sincronizzando i tuoi dati");
                 _db = new DbSQLite();
-                await _db.SynchronizeAzureDb();
+
+                var toast = DependencyService.Get<IToastNotificator>();
+                if (!CrossConnectivity.Current.IsConnected)
+                { //non connesso a internet
+                    await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                    return;
+                }
+
+                var success = await _db.SynchronizeAzureDb();
+
+                if (!success)
+                    await toast.Notify(ToastNotificationType.Error, "Errore", "Sincronizzazione fallita!", TimeSpan.FromSeconds(3));
 
                 Settings.SuccessLogin = true;
                 Settings.ToUpdate = true;
+
+                if(Settings.BackgroundSync)
+                    DependencyService.Get<INotification>().BackgroundSync();
+
                 await Navigation.PushModalAsync(new MasterDetailView());
             }
         }

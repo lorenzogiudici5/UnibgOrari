@@ -7,6 +7,7 @@ using OrariUnibg.Services.Database;
 using Plugin.Toasts;
 using OrariUnibg.Services.Azure;
 using OrariUnibg.Models;
+using Plugin.Connectivity;
 
 namespace OrariUnibg
 {
@@ -130,6 +131,15 @@ namespace OrariUnibg
             //var corso = _db.GetAllMieiCorsi().FirstOrDefault(x => x.Insegnamento == orario.Insegnamento);
             var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };
 
+            var toast = DependencyService.Get<IToastNotificator>();
+
+            //**NON C'E CONNESSIONE INTERNET**
+            if (!CrossConnectivity.Current.IsConnected)
+            {   //non connesso a internet
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                return;
+            }
+
             corso = await _service.GetCorso(preferito);
             preferito.IdCorso = corso.Id;
             await _service.DeletePreferito(preferito);
@@ -138,7 +148,7 @@ namespace OrariUnibg
 
 			MessagingCenter.Send<MieiCorsiCell>(this, "delete_corso_fav_impostazioni");
 
-			var toast = DependencyService.Get<IToastNotificator>();
+			//var toast = DependencyService.Get<IToastNotificator>();
 			await toast.Notify (ToastNotificationType.Error, "Complimenti", corso.Insegnamento + " rimosso dai preferiti!", TimeSpan.FromSeconds (3));
 		
 			Settings.MieiCorsiCount = _db.GetAllMieiCorsi ().Count ();

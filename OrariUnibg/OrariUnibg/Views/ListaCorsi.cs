@@ -131,6 +131,13 @@ namespace OrariUnibg.Views
             _activityIndicator.IsRunning = true;
             _activityIndicator.IsVisible = true;
 
+            //**NON C'E CONNESSIONE INTERNET**
+            if (!CrossConnectivity.Current.IsConnected)
+            {   //non connesso a internet
+                var toast = DependencyService.Get<IToastNotificator>();
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                return;
+            }
 
             foreach (var preferito in _preferiti)
             {

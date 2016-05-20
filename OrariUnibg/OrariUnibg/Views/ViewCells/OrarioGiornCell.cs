@@ -10,6 +10,7 @@ using OrariUnibg.Services.Database;
 using System.Diagnostics;
 using Plugin.Toasts;
 using OrariUnibg.Services.Azure;
+using Plugin.Connectivity;
 
 namespace OrariUnibg.Views.ViewCells
 {
@@ -214,6 +215,12 @@ namespace OrariUnibg.Views.ViewCells
             }
             else
             {
+                //**NON C'E CONNESSIONE INTERNET**
+                if (!CrossConnectivity.Current.IsConnected)
+                {   //non connesso a internet
+                    await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                    return;
+                }
                 //await _service.Initialize();
                 var preferito = new Preferiti() { Codice = orario.Codice, Docente = orario.Docente, Insegnamento = orario.Insegnamento };
                 var corso = new Corso() { Insegnamento = preferito.Insegnamento, Codice = preferito.Codice, Docente = preferito.Docente, };

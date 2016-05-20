@@ -37,7 +37,7 @@ namespace OrariUnibg
 					new StackLayout(){
 						Padding = new Thickness(20, 20, 20, 40),
 						Orientation = StackOrientation.Vertical,
-						BackgroundColor = ColorHelper.Blue500,
+						BackgroundColor = ColorHelper.Blue700,
 						Spacing = 10,
 						Children ={
 							new Image(){Source = "ic_flatOK.png", HorizontalOptions = LayoutOptions.CenterAndExpand, Aspect = Aspect.AspectFit},

@@ -274,7 +274,6 @@ namespace OrariUnibg.Views
                 return;
             }
 
-
             foreach (var day in _viewModel.ListGiorni)
             {
                 //Corsi generale, utenza + corsi
@@ -302,7 +301,18 @@ namespace OrariUnibg.Views
         private async void sync()
         {
             _refreshView.IsRefreshing = true;
-            await _db.SynchronizeAzureDb();
+
+            var toast = DependencyService.Get<IToastNotificator>();
+            if (!CrossConnectivity.Current.IsConnected)
+            { //non connesso a internet
+                
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
+                return;
+            }
+            var success = await _db.SynchronizeAzureDb();
+
+            if(!success)
+                await toast.Notify(ToastNotificationType.Error, "Errore", "Sincronizzazione fallita!", TimeSpan.FromSeconds(3));
 
             await updateDbOrariUtenza();
 

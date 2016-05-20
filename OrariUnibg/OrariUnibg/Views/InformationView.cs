@@ -320,6 +320,8 @@ namespace OrariUnibg.Views
             Settings.CreatedAtString = _service.User.CreatedAt.Date.ToString("d");
             Settings.UpdatedAtString = _service.User.CreatedAt.Date.ToString("d");
 
+            _service.User.BackgroundSync = Settings.BackgroundSync;
+
             //aggiornamento User
             _service.User.Matricola = _entryMatricola.Text;
             _service.User.FacoltaDB = db;

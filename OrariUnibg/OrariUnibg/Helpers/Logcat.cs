@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrariUnibg.Services.Database;
+using System;
 
 namespace OrariUnibg
 {
@@ -10,6 +11,11 @@ namespace OrariUnibg
 		{
 			System.Diagnostics.Debug.WriteLine (TAG + log);
 		}
-	}
+
+        public static void WriteDB(DbSQLite db, string log)
+        {
+            db.InsertLog(log);
+        }
+    }
 }
 

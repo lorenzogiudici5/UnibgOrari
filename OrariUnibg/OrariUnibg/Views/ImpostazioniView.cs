@@ -232,39 +232,39 @@ namespace OrariUnibg
 
 
 			#region DatiStatistici
-			_statisticSwitch = new Switch() {IsToggled = !Settings.DisableStatisticData, HorizontalOptions = LayoutOptions.EndAndExpand};
-			_lblStatistic = new Label () { Text = getStatisticString(), TextColor = ColorHelper.DarkGray };
-			var _statistcLayout = new Grid () {
-				Padding = new Thickness(20, 10, 20, 10),
-				VerticalOptions = LayoutOptions.FillAndExpand,
-				RowSpacing = 0,
+			//_statisticSwitch = new Switch() {IsToggled = !Settings.DisableStatisticData, HorizontalOptions = LayoutOptions.EndAndExpand};
+			//_lblStatistic = new Label () { Text = getStatisticString(), TextColor = ColorHelper.DarkGray };
+			//var _statistcLayout = new Grid () {
+			//	Padding = new Thickness(20, 10, 20, 10),
+			//	VerticalOptions = LayoutOptions.FillAndExpand,
+			//	RowSpacing = 0,
 
-				RowDefinitions = 
-				{
-					new RowDefinition { Height = GridLength.Auto },
-					new RowDefinition { Height = GridLength.Auto },
-				},
-				ColumnDefinitions = 
-				{ 
-					new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-				}
-				};
-			_statistcLayout.Children.Add(new Label(){Text = "Dati Statistici", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
-			_statistcLayout.Children.Add(_statisticSwitch, 1,2,0,1);
-			_statistcLayout.Children.Add(_lblStatistic, 0, 1, 1, 2);
+			//	RowDefinitions = 
+			//	{
+			//		new RowDefinition { Height = GridLength.Auto },
+			//		new RowDefinition { Height = GridLength.Auto },
+			//	},
+			//	ColumnDefinitions = 
+			//	{ 
+			//		new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
+			//		new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+			//	}
+			//	};
+			//_statistcLayout.Children.Add(new Label(){Text = "Dati Statistici", TextColor = ColorHelper.Black, FontFamily = "Droid Sans Mono"}, 0, 1, 0, 1);
+			//_statistcLayout.Children.Add(_statisticSwitch, 1,2,0,1);
+			//_statistcLayout.Children.Add(_lblStatistic, 0, 1, 1, 2);
 
-			_statisticCell = new ViewCell (){ View = _statistcLayout};
-			_statisticSwitch.Toggled += (object sender, ToggledEventArgs e) =>
-			{
-				if (_statisticSwitch.IsToggled) {
-					Settings.DisableStatisticData = false;
-				} else {
-					Settings.DisableStatisticData = true;
-				}
+			//_statisticCell = new ViewCell (){ View = _statistcLayout};
+			//_statisticSwitch.Toggled += (object sender, ToggledEventArgs e) =>
+			//{
+			//	if (_statisticSwitch.IsToggled) {
+			//		Settings.DisableStatisticData = false;
+			//	} else {
+			//		Settings.DisableStatisticData = true;
+			//	}
 
-				_lblStatistic.Text = getStatisticString();
-			};
+			//	_lblStatistic.Text = getStatisticString();
+			//};
 			#endregion
 
 			#region Tutorial
@@ -341,14 +341,20 @@ namespace OrariUnibg
 
 
 			var sectionInfo = new TableSection ("Informazioni") {
-				_statisticCell,
+				//_statisticCell,
 				_tutorialCell,
 				_versionCell,
-                _logCell,
-				_logoutCell
 			};
-				
-			table.Root = new TableRoot () {
+
+            //ONLY FOR ADMIN USER = sid:e5a1e2a28de7725e0c27afcb4ed0a9e4
+            if (Settings.UserId == "sid:e5a1e2a28de7725e0c27afcb4ed0a9e4")
+            {
+                sectionInfo.Add(_logCell);
+            }
+
+            sectionInfo.Add(_logoutCell);
+
+            table.Root = new TableRoot () {
 				sectionSync,
 				sectionFavourit,
 				sectionInfo

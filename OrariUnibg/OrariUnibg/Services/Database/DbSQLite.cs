@@ -49,56 +49,52 @@ namespace OrariUnibg.Services.Database
         #endregion
 
         #region Azure
-        public async Task SynchronizeAzureDb()
+        public async Task<bool> SynchronizeAzureDb()
         {
             bool toAdd = false;
             bool toDelete = false;
             await _service.Initialize();
-            var preferitiAzure = await _service.GetMieiPreferiti();
-            var preferitiDb = GetAllMieiCorsi();
 
-            //controllo se ci sono corsi da cancellare (AZURE no, DB si)
-            foreach (var preferitoDb in preferitiDb)
+            try
             {
-                toDelete = preferitiAzure.Where(x => x.IdPreferito == preferitoDb.IdPreferito).FirstOrDefault() == null ? true : false;
-                if (toDelete)
-                    DeleteMieiCorsi(preferitoDb);
-            }
+                var preferitiAzure = await _service.GetMieiPreferiti();
+                var preferitiDb = GetAllMieiCorsi();
 
-            //Controllo se ci sono corsi da aggiungere (AZURE si, DB no)
-            foreach (var preferitoAzure in preferitiAzure)
-            {
-                toAdd = preferitiDb.Where(x => x.IdPreferito == preferitoAzure.IdPreferito).FirstOrDefault() == null ? true : false;
-
-                if (toAdd)
+                //controllo se ci sono corsi da cancellare (AZURE no, DB si)
+                foreach (var preferitoDb in preferitiDb)
                 {
-                    preferitoAzure.Id = preferitoAzure.IdCorso;
-                    var corso = await _service.GetCorso(preferitoAzure);
-                    preferitoAzure.Insegnamento = corso.Insegnamento;
-                    preferitoAzure.Docente = corso.Docente;
-                    preferitoAzure.Codice = corso.Codice;
-
-                    Insert(preferitoAzure);
+                    toDelete = preferitiAzure.Where(x => x.IdPreferito == preferitoDb.IdPreferito).FirstOrDefault() == null ? true : false;
+                    if (toDelete)
+                        DeleteMieiCorsi(preferitoDb);
                 }
 
+                //Controllo se ci sono corsi da aggiungere (AZURE si, DB no)
+                foreach (var preferitoAzure in preferitiAzure)
+                {
+                    toAdd = preferitiDb.Where(x => x.IdPreferito == preferitoAzure.IdPreferito).FirstOrDefault() == null ? true : false;
+
+                    if (toAdd)
+                    {
+                        preferitoAzure.Id = preferitoAzure.IdCorso;
+                        var corso = await _service.GetCorso(preferitoAzure);
+                        preferitoAzure.Insegnamento = corso.Insegnamento;
+                        preferitoAzure.Docente = corso.Docente;
+                        preferitoAzure.Codice = corso.Codice;
+
+                        Insert(preferitoAzure);
+                    }
+
+                }
+                return true;
             }
-
-                //foreach (var preferitoDb in preferitiDb)
-                //{
-                //    if (preferitoDb.IdCorso == preferitoAzure.IdCorso) //c'è già nel database
-                //    {
-                //        toAdd = true;
-                //        break;
-                //    }
-                //    else
-                //        toAdd = false;
-                //}
-                //if (!toAdd)
-                //    Insert(preferitoAzure);
-            //}
-
-
-
+            catch(Exception ex)
+            {
+                Logcat.Write(string.Format("DB_SyncAzure: {0}", ex.Message));
+                Logcat.WriteDB(this, string.Format("DB_SyncAzure: {0}", ex.Message));
+                
+                return false;
+            }
+            
         }
         #endregion
 

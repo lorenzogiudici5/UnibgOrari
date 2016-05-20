@@ -52,6 +52,8 @@ namespace OrariUnibg.Droid.Services.Notifications
             Logcat.WriteDB(_db, "Allarme attivato");
             Logcat.Write("NUMERO MIEI CORSI: " + _db.GetAllMieiCorsi().Count());
 
+
+
             _intent = intent;
             _listOrariGiorno = _db.GetAllOrari();
 
@@ -67,12 +69,37 @@ namespace OrariUnibg.Droid.Services.Notifications
 				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
 				_dopodomani = new DayViewModel() { Data = _domani.Data.AddDays(1) };
             }
-            
-            /*
+
+           
+            if (!CrossConnectivity.Current.IsConnected)
+            { //non connesso a internet
+                Logcat.WriteDB(_db, "*************ERRORE");
+                Logcat.WriteDB(_db, "AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
+                Logcat.Write("AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
+                //var toast = DependencyService.Get<IToastNotificator>();
+                //await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+                return;
+            }
+
+            /*SYNCRONIZZAZIONE BACKGROUND
             * lista dei corsi salvati. Scandisco ogni elemento della lista con la lista di tutti i corsi di giornata
             * se insegnamento+ora sono uguali, verifico se le Note cambiano. Se cambiano, la salvo nel database e invio la notifica
             * */
-            await updateDbOrariUtenza();
+            try
+            {
+                var success = await _db.SynchronizeAzureDb();
+                if(!success)
+                {
+                    Logcat.WriteDB(_db, "*************ERRORE");
+                    Logcat.WriteDB(_db, "SINCRONIZZAZIONE AZURE NON RIUSCITA, nessun accesso a internet");
+                }
+                await updateDbOrariUtenza();
+            }
+            catch(Exception ex)
+            {
+                Logcat.Write(ex.Message);
+            }
+
 
             Logcat.WriteDB(_db, "AGGIORNAMENTO COMPLETATO!");
             Logcat.Write("AGGIORNAMENTO COMPLETATO!");
