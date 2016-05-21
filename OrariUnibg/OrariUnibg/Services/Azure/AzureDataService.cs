@@ -87,8 +87,8 @@ namespace OrariUnibg.Services.Azure
                 Settings.LaureaId = User.LaureaId;
                 Settings.AnnoIndex = User.AnnoIndex;
                 Settings.FacoltaDB = User.FacoltaDB;
-                //Settings.BackgroundSync = User.BackgroundSync;
-                Settings.BackgroundSync = true; //***DEBUG ONLY!
+                Settings.BackgroundSync = User.BackgroundSync;
+                //Settings.BackgroundSync = true; //***DEBUG ONLY!
                 await userTable.UpdateAsync(User);
                 return false;
             }

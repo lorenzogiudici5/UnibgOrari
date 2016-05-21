@@ -121,9 +121,9 @@ namespace OrariUnibg.Droid.Services.Notifications
         {
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
 
-            Logcat.WriteDB(this, "Getting All Orari");
+            Logcat.WriteDB(_db, "Getting All Orari");
             var _listOrariGiorno = _db.GetAllOrari(); //Elimina gli orari già passati
-            Logcat.WriteDB(this, "Finished: gettig all orari");
+            Logcat.WriteDB(_db, "Finished: gettig all orari");
 
 
             foreach (var l in _listOrariGiorno)
