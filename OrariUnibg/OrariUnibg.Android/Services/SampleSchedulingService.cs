@@ -52,12 +52,11 @@ namespace OrariUnibg.Droid.Services.Notifications
             Logcat.WriteDB(_db, "Allarme attivato");
             Logcat.Write("NUMERO MIEI CORSI: " + _db.GetAllMieiCorsi().Count());
 
-
-
             _intent = intent;
-            _listOrariGiorno = _db.GetAllOrari();
+            //_listOrariGiorno = _db.GetAllOrari();
 
-			if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
+            Logcat.Write("Updating Date Time");
+            if (DateTime.Now.Hour > Settings.UpdateHour) // && DateTime.Now.Minute > Settings.UpdateMinute)
             {
 				_oggi = new DayViewModel() { Data = DateTime.Today.AddDays(1) };
 				_domani = new DayViewModel() { Data = _oggi.Data.AddDays(1) };
@@ -87,22 +86,32 @@ namespace OrariUnibg.Droid.Services.Notifications
             * */
             try
             {
-                var success = await _db.SynchronizeAzureDb();
-                if(!success)
+                for(int i=0; i<3; i++)
                 {
-                    Logcat.WriteDB(_db, "*************ERRORE");
-                    Logcat.WriteDB(_db, "SINCRONIZZAZIONE AZURE NON RIUSCITA, nessun accesso a internet");
+                    Logcat.WriteDB(_db, string.Format("Tentativo {0} - SyncAzure", i+1));
+                    var success = await _db.SynchronizeAzureDb();
+
+                    if (!success)
+                    {
+                        Logcat.WriteDB(_db, "*************ERRORE");
+                        Logcat.WriteDB(_db, "SINCRONIZZAZIONE AZURE NON RIUSCITA, nessun accesso a internet");
+                        //RETRYING??
+                        continue; //riprovo
+                        //return;
+                    }
+                    Logcat.WriteDB(_db, "---Autenticazione avvenuta con succeso!");
+
+                    await updateDbOrariUtenza();
+                    break; //se autenticazione avvenuta con successo, esco dal ciclo
                 }
-                await updateDbOrariUtenza();
+                
             }
             catch(Exception ex)
             {
+                Logcat.WriteDB(_db, ex.Message);
                 Logcat.Write(ex.Message);
             }
 
-
-            Logcat.WriteDB(_db, "AGGIORNAMENTO COMPLETATO!");
-            Logcat.Write("AGGIORNAMENTO COMPLETATO!");
             // Release the wake lock provided by the BroadcastReceiver.
             SampleAlarmReceiver.CompleteWakefulIntent(intent);
         }
@@ -112,10 +121,14 @@ namespace OrariUnibg.Droid.Services.Notifications
         {
             DateTime[] arrayDate = new DateTime[] { _oggi.Data, _domani.Data, _dopodomani.Data };
 
+            Logcat.WriteDB(this, "Getting All Orari");
             var _listOrariGiorno = _db.GetAllOrari(); //Elimina gli orari già passati
-            
-			foreach (var l in _listOrariGiorno)
+            Logcat.WriteDB(this, "Finished: gettig all orari");
+
+
+            foreach (var l in _listOrariGiorno)
             {
+                Logcat.WriteDB(_db, "Checking old orari!");
                 if (l.Date < _oggi.Data)
                     _db.DeleteSingleOrari(l.IdOrario);
             };
@@ -124,26 +137,34 @@ namespace OrariUnibg.Droid.Services.Notifications
                 Logcat.WriteDB(_db, "*************ERRORE");
                 Logcat.WriteDB(_db, "AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
                 Logcat.Write("AGGIORNAMENTO NON RIUSCITO, nessun accesso a internet");
-                //var toast = DependencyService.Get<IToastNotificator>();
-				//await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
 				return;
 			}
 			
             foreach (var d in arrayDate)
             {
 				Logcat.Write ("Data Considerata: " + d.ToString());
-                Logcat.WriteDB(_db, "Ottenimento orari del " + d.Date.ToString());
+                Logcat.WriteDB(_db, string.Format("Ottenimento orari del {0}", d.Date.ToString("dd'/'MM'/'yyyy")));
 
                 string s = await Web.GetOrarioGiornaliero(Settings.FacoltaDB, Settings.FacoltaId, 0, d.ToString("dd'/'MM'/'yyyy"));
 				List<CorsoGiornaliero> listaCorsi = Web.GetSingleOrarioGiornaliero(s, 0, d);
+                Logcat.WriteDB(_db, string.Format("Lista corsi ottenuta {0}", d.Date.ToString("dd'/'MM'/'yyyy")));
 
-				if (listaCorsi.Count () != 0)
-					updateSingleCorso (listaCorsi);
-                Logcat.WriteDB(_db, "Ottenimento orari del " + d.Date.ToString() + " OK");
+                if (listaCorsi.Count () != 0)
+                {
+                    Logcat.WriteDB(_db, string.Format("Lista corsi non vuota, aggiornamento singolo corso"));
+                    updateSingleCorso(listaCorsi);
+                }
+
+                Logcat.WriteDB(_db, string.Format("Ottenimento orari del {0} COMPLETATO", d.Date.ToString("dd'/'MM'/'yyyy")));
             }
 
+            Logcat.WriteDB(_db, string.Format("Last Update: {0}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")));
+            Settings.LastUpdate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
 
+
+            Logcat.WriteDB(_db, "AGGIORNAMENTO COMPLETATO!");
+            Logcat.Write("AGGIORNAMENTO COMPLETATO!");
         }
 
 		private void updateSingleCorso(List<CorsoGiornaliero> listaCorsi)
@@ -199,9 +220,8 @@ namespace OrariUnibg.Droid.Services.Notifications
 				}
 				else if (corso.Insegnamento.Contains("UTENZA"))
 					_db.Insert(new Utenze() { Data = corso.Date, AulaOra = corso.AulaOra });
-			}		
+			}
 
-			Settings.LastUpdate = DateTime.Now.ToString ("dd/MM/yyyy HH:mm:ss");
 		}
 		public void SendNotification(CorsoGiornaliero l)
 		{

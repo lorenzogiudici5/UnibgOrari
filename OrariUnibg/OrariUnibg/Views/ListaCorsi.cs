@@ -173,6 +173,7 @@ namespace OrariUnibg.Views
 			if (!CrossConnectivity.Current.IsConnected) { //non connesso a internet
 				var toast = DependencyService.Get<IToastNotificator>();
 				await toast.Notify (ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds (3));
+                return;
 			}else { //CONNESSIONE A INTERNET
 				foreach (var d in arrayDate) {
 

@@ -194,7 +194,7 @@ namespace OrariUnibg.Views
 //                Children = { _lblUtente, _lblMail }
             };
 
-			if (Settings.IsLoggedIn) { //Settings.SuccessLogin
+			if (Settings.IsLoggedIn && Settings.SuccessLogin) { //Settings.SuccessLogin
                 layoutImg.Children.Add(_imgAvatar);
                 layoutUser.Children.Add(_imgAvatar);
                 layoutUser.Children.Add (_lblUtente);

@@ -42,7 +42,6 @@ namespace OrariUnibg.Droid.Services.Notifications
                 return;
             }
 
-			
             Logcat.Write("SET ALARM");
 
             Calendar alarmTime = Calendar.GetInstance(Java.Util.TimeZone.Default);
@@ -62,9 +61,10 @@ namespace OrariUnibg.Droid.Services.Notifications
             pi = PendingIntent.GetBroadcast(context, 0, intent, 0);
 
             am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour * Settings.UpdateInterval, pi);
-            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi); //DA SISTEMARE!
+            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi); //Ogni Ora
+            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 400000, pi); //5minuti
 
-            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 60000, pi);
+
             Console.WriteLine(alarmTime);
 			Logcat.Write("ALARM REPEATING");
 

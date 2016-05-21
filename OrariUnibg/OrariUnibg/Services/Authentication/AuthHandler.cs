@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
 using OrariUnibg.Helpers;
+using OrariUnibg.Services.Azure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,17 @@ namespace OrariUnibg.Services.Authentication
 {
     public class AuthHandler : DelegatingHandler
     {
+        //#region Private Fields
+        //private AzureDataService _service;
+        //#endregion
+
+        //#region Properties
+        //public AzureDataService Service
+        //{
+        //    get { return _service; }
+        //    set { _service = value; }
+        //}
+        //#endregion
         public IMobileServiceClient Client { get; set; }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -38,7 +50,8 @@ namespace OrariUnibg.Services.Authentication
                     if (user == null)
                     {
                         // prompt with login UI
-                        user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                        await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
+                        //user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
                     }
                     else
                     {
@@ -55,11 +68,13 @@ namespace OrariUnibg.Services.Authentication
 
                             string newToken = refreshJson["authenticationToken"].Value<string>();
                             user.MobileServiceAuthenticationToken = newToken;
+                            Settings.AuthToken = newToken;
                         }
                         catch
                         {
                             //EngagementAgent.Instance.StartActivity("Login");
-                            user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+
+                            return response;
                         }
                     }
 

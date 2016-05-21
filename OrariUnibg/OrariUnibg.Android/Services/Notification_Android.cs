@@ -26,6 +26,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 
         public void BackgroundSync()
         {
+            Logcat.Write("**BackgroundSync in Notification_Android");
             sample.SetAlarm(Forms.Context);
             //sample.StartService(Forms.Context);
         }

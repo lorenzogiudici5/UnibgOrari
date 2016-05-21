@@ -10,6 +10,9 @@ using OrariUnibg.Services.Database;
 using OrariUnibg.Services;
 using Plugin.Connectivity;
 using Plugin.Toasts;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace OrariUnibg
 {
@@ -196,13 +199,14 @@ namespace OrariUnibg
             _lblAlert.IsVisible = true;
             _activityIndicator.IsVisible = true;
 
+
+
             _lblAlert.Text = string.Format("Accesso in corso");
             var user = await DependencyService.Get<IAuthentication>().LoginAsync(_service.MobileService, MobileServiceAuthenticationProvider.Google);
             _lblAlert.Text = string.Format("Sto ottenendo le tue informazioni");
 
             //aggiunge utente alla tabella
             var isNewUser = await addUser();
-
 
             //**NELL'IMPLEMENTAZIONE Dell'authentication
             //Settings.Email = user.Message.Email;
@@ -223,7 +227,7 @@ namespace OrariUnibg
                     BarBackgroundColor = ColorHelper.Blue700,
                     BarTextColor = ColorHelper.White,
                 };
-
+                Settings.SuccessLogin = true;
                 await Navigation.PushModalAsync(nav);
             }
             else //altrimenti accedo direttamente

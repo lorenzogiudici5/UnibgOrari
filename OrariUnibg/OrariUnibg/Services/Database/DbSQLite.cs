@@ -122,7 +122,7 @@ namespace OrariUnibg.Services.Database
         //}
         public bool CheckAppartieneMieiCorsi(Corso item)
         {
-			Logcat.Write ("dentro il check appartiene");
+			Logcat.Write (string.Format("check if {0} appartiene", item.Insegnamento));
 
 			return CheckAppartieneMieiCorsi (item.Insegnamento);
         }
@@ -155,7 +155,7 @@ namespace OrariUnibg.Services.Database
         public IEnumerable<Orari> GetAllOrari()
         {
 			var o = (from i in db.Table<Orari>() select i).ToList();
-			return o;
+            return o;
         }
         
         public bool AppartieneOrari(CorsoGiornaliero item)

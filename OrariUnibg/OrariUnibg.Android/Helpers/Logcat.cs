@@ -14,6 +14,7 @@ namespace OrariUnibg.Droid
         public static void WriteDB(DbSQLite db, string log)
         {
             db.InsertLog(log);
+            Write(log);
         }
 	}
 }

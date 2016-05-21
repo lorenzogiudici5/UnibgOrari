@@ -310,7 +310,7 @@ namespace OrariUnibg.Services.Azure
             if (!Settings.IsLoggedIn)
             {
                 await Initialize();
-                var user = await DependencyService.Get<IAuthentication>().LoginAsync(MobileService, MobileServiceAuthenticationProvider.MicrosoftAccount);
+                var user = await DependencyService.Get<IAuthentication>().LoginAsync(MobileService, MobileServiceAuthenticationProvider.Google);
                 if (user == null)
                     return;
 
