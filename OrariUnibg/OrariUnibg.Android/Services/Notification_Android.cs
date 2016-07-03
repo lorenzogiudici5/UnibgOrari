@@ -38,13 +38,16 @@ namespace OrariUnibg.Droid.Services.Notifications
             Logcat.Write("SEND NOTIFICATION");
 
             // Set up an intent so that tapping the notifications returns to this app:
-            Intent intent = new Intent(Forms.Context, typeof(MainActivity));
+            var context = Android.App.Application.Context;
+            //var context = Forms.Context;
+
+            Intent intent = new Intent(context, typeof(MainActivity));
 
             // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
             const int pendingIntentId = 0;
-            PendingIntent pendingIntent = PendingIntent.GetActivity(Forms.Context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+            PendingIntent pendingIntent = PendingIntent.GetActivity(context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
 
-            Notification.Builder builder = new Notification.Builder(Forms.Context)
+            Notification.Builder builder = new Notification.Builder(context)
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(l.Note.ToUpper())
 				.SetContentText(l.Insegnamento + " - " + l.Date + " - " + l.Ora )
@@ -64,7 +67,7 @@ namespace OrariUnibg.Droid.Services.Notifications
             Notification notification = builder.Build();
 
             // Get the notification manager:
-            NotificationManager notificationManager = Forms.Context.GetSystemService(Context.NotificationService) as NotificationManager;
+            NotificationManager notificationManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
 
             // Publish the notification:
 //            const int notificationId = 1;
@@ -74,7 +77,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 
         //public void StartService()
         //{
-        //    Intent service = new Intent(Forms.Context, typeof(SampleSchedulingService));
+        //    Intent service = new Intent(context, typeof(SampleSchedulingService));
         //    // Start the service, keeping the device awake while it is launching.
         //}
     }

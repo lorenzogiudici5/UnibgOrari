@@ -12,15 +12,13 @@ namespace OrariUnibg.Models
         private string _ora = string.Empty;
         private string _aulaOra = string.Empty;
         private string _note = string.Empty;
+
         public enum Day
         {
             Lunedi = 0, Martedi = 1, Mercoledi = 2, Giovedi = 3, Venerdi = 4, Sabato = 5
         }
         public int _day;
-        public Lezione()
-        {
 
-        }
         public int day { get { return _day; } }
         public Day Giorno { get; set; }
         public string AulaOra

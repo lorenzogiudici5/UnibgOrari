@@ -15,6 +15,7 @@ using Xamarin.Forms;
 using Plugin.Connectivity;
 using Plugin.Toasts;
 using OrariUnibg.ViewModels;
+using Android.OS;
 
 namespace OrariUnibg.Droid.Services.Notifications
 {
@@ -231,18 +232,22 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             Logcat.Write("Creazione Notifica");
             Logcat.WriteDB(_db, "Creazione notifica");
-            Logcat.WriteDB(_db, l.Note.ToUpper() + l.Insegnamento + " - " + l.Date + " - " + l.Ora);
+            Logcat.WriteDB(_db, l.Note.ToUpper() + l.Insegnamento + " - " + l.Date.ToShortDateString() + " - " + l.Ora);
+
             // Set up an intent so that tapping the notifications returns to this app:
-            Intent intent = new Intent(Forms.Context, typeof(MainActivity));
+            var context = Android.App.Application.Context;
+            //var context = Forms.Context;
 
-			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
-			const int pendingIntentId = 0;
-			PendingIntent pendingIntent = PendingIntent.GetActivity(Forms.Context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
-
-			Notification.Builder builder = new Notification.Builder(Forms.Context)
+            Intent intent = new Intent(context, typeof(MainActivity));
+            Logcat.WriteDB(_db, "Intent created");
+            // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+            const int pendingIntentId = 0;
+			PendingIntent pendingIntent = PendingIntent.GetActivity(context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+            Logcat.WriteDB(_db, "PendingIntent created");
+            Notification.Builder builder = new Notification.Builder(context)
 				.SetContentIntent(pendingIntent)
 				.SetContentTitle(l.Note.ToUpper())
-				.SetContentText(l.Insegnamento + " - " + l.Date + " - " + l.Ora )
+				.SetContentText(l.Insegnamento + " - " + l.Date.ToShortDateString() + " - " + l.Ora )
 				.SetSmallIcon(Resource.Drawable.ic_notification_school)
 				.SetAutoCancel(true);
 			//builder.SetStyle(new Notification.BigTextStyle().BigText(longMess));
@@ -258,75 +263,75 @@ namespace OrariUnibg.Droid.Services.Notifications
 			Notification notification = builder.Build();
 
 			// Get the notification manager:
-			NotificationManager notificationManager = Forms.Context.GetSystemService(Context.NotificationService) as NotificationManager;
+			NotificationManager notificationManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
 
 			// Publish the notification:
-			//            const int notificationId = 1;
+			// const int notificationId = 1;
 			var rnd = new System.Random ();
 			notificationManager.Notify(rnd.Next(), notification);
 		}
 
-//		private void SendNotification(string text)
-//		{
-//			Logcat.Write("SEND NOTIFICATION");
-//
-//			// Set up an intent so that tapping the notifications returns to this app:
-//			Intent intent = new Intent(this, typeof(MainActivity));
-//
-//			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
-//			const int pendingIntentId = 0;
-//			PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
-//
-//			Notification.Builder builder = new Notification.Builder(this)
-//				.SetContentIntent(pendingIntent)
-//				.SetContentTitle("NOTIFICA")
-//				.SetContentText(text)
-//				.SetSmallIcon(Resource.Drawable.UnibgOk);
-//
-//			Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-//			builder.SetStyle(inboxStyle);
-//
-//			// Build the notification:
-//			Notification notification = builder.Build();
-//
-//			// Get the notification manager:
-//			NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
-//
-//			// Publish the notification:
-//			int notificationId = new Random().Next();
-//			notificationManager.Notify(notificationId, notification);
-//		}
-//
-//        private void SendNotification()
-//        {
-//			Logcat.Write("SEND NOTIFICATION");
-//
-//            // Set up an intent so that tapping the notifications returns to this app:
-//            Intent intent = new Intent(this, typeof(MainActivity));
-//
-//            // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
-//            const int pendingIntentId = 0;
-//            PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
-//
-//            Notification.Builder builder = new Notification.Builder(this)
-//                .SetContentIntent(pendingIntent)
-//                .SetContentTitle("NOTIFICA")
-//				.SetContentText("NOTIFICA TEST" + DateTime.Now)
-//                .SetSmallIcon(Resource.Drawable.UnibgOk);
-//
-//            Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-//            builder.SetStyle(inboxStyle);
-//
-//            // Build the notification:
-//            Notification notification = builder.Build();
-//
-//            // Get the notification manager:
-//            NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
-//
-//            // Publish the notification:
-//            const int notificationId = 1;
-//            notificationManager.Notify(notificationId, notification);
-//        }
+        //		private void SendNotification(string text)
+        //		{
+        //			Logcat.Write("SEND NOTIFICATION");
+        //
+        //			// Set up an intent so that tapping the notifications returns to this app:
+        //			Intent intent = new Intent(this, typeof(MainActivity));
+        //
+        //			// Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+        //			const int pendingIntentId = 0;
+        //			PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+        //
+        //			Notification.Builder builder = new Notification.Builder(this)
+        //				.SetContentIntent(pendingIntent)
+        //				.SetContentTitle("NOTIFICA")
+        //				.SetContentText(text)
+        //				.SetSmallIcon(Resource.Drawable.UnibgOk);
+        //
+        //			Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+        //			builder.SetStyle(inboxStyle);
+        //
+        //			// Build the notification:
+        //			Notification notification = builder.Build();
+        //
+        //			// Get the notification manager:
+        //			NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
+        //
+        //			// Publish the notification:
+        //			int notificationId = new Random().Next();
+        //			notificationManager.Notify(notificationId, notification);
+        //		}
+        //
+        //        private void SendNotification()
+        //        {
+        //			Logcat.Write("SEND NOTIFICATION");
+        //
+        //            // Set up an intent so that tapping the notifications returns to this app:
+        //            Intent intent = new Intent(this, typeof(MainActivity));
+        //
+        //            // Create a PendingIntent; we're only using one PendingIntent (ID = 0):
+        //            const int pendingIntentId = 0;
+        //            PendingIntent pendingIntent = PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
+        //
+        //            Notification.Builder builder = new Notification.Builder(this)
+        //                .SetContentIntent(pendingIntent)
+        //                .SetContentTitle("NOTIFICA")
+        //				.SetContentText("NOTIFICA TEST" + DateTime.Now)
+        //                .SetSmallIcon(Resource.Drawable.UnibgOk);
+        //
+        //            Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+        //            builder.SetStyle(inboxStyle);
+        //
+        //            // Build the notification:
+        //            Notification notification = builder.Build();
+        //
+        //            // Get the notification manager:
+        //            NotificationManager notificationManager = this.GetSystemService(Context.NotificationService) as NotificationManager;
+        //
+        //            // Publish the notification:
+        //            const int notificationId = 1;
+        //            notificationManager.Notify(notificationId, notification);
+        //        }
         #endregion
 
 

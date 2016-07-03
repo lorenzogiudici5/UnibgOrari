@@ -287,6 +287,10 @@ namespace OrariUnibg.Views
 
             Settings.MieiCorsiCount = _db.GetAllMieiCorsi().Count();
             _db.CheckUtenzeDoppioni();
+
+            //Settings.LastUpdate = DateTime.Now.ToString ("R");
+            //Settings.ToUpdate = false;
+            Settings.LastUpdate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
 
@@ -296,6 +300,14 @@ namespace OrariUnibg.Views
                 _lblInfo.Text = "Trascina verso il basso per aggiornare";
             else
                 _lblInfo.Text = "Rilassati! Non hai lezioni!";
+
+            _lblInfo.TextColor = ColorHelper.Green500;
+        }
+
+        private void updateLabelInfo(string text, Color color)
+        {
+            _lblInfo.Text = text;
+            _lblInfo.TextColor = color;
         }
 
         private async void sync()
@@ -309,12 +321,25 @@ namespace OrariUnibg.Views
                 await toast.Notify(ToastNotificationType.Error, "Errore", "Nessun accesso a internet", TimeSpan.FromSeconds(3));
                 return;
             }
-            var success = await _db.SynchronizeAzureDb();
 
-            if(!success)
-                await toast.Notify(ToastNotificationType.Error, "Errore", "Sincronizzazione fallita!", TimeSpan.FromSeconds(3));
+            bool success = false;
+            for (int i = 0; i < 3; i++)
+            {
+                success = await _db.SynchronizeAzureDb();
 
-            await updateDbOrariUtenza();
+                if (!success)
+                {
+                    //await toast.Notify(ToastNotificationType.Error, "Errore", "Sincronizzazione fallita!", TimeSpan.FromSeconds(3));
+                    if(i==2)
+                        await toast.Notify(ToastNotificationType.Error, "Errore", "Sincronizzazione fallita!", TimeSpan.FromSeconds(3));
+
+                    updateLabelInfo(string.Format("Errore sincronizzazione - Tentativo {0}", i+1),Color.Red);
+                    continue; //riprovo
+                }
+                    
+                await updateDbOrariUtenza();
+                break;
+            }
 
             MessagingCenter.Send<TabbedDayView, int>(this, "pullToRefresh", 0);
             Debug.WriteLine("Command executed");
@@ -386,10 +411,6 @@ namespace OrariUnibg.Views
                         _db.Insert(ut);
                 }
             }
-
-            //Settings.LastUpdate = DateTime.Now.ToString ("R");
-            //Settings.ToUpdate = false;
-            Settings.LastUpdate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
         #endregion
 

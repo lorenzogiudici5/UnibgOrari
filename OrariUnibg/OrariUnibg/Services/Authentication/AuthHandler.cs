@@ -73,7 +73,7 @@ namespace OrariUnibg.Services.Authentication
                         catch
                         {
                             //EngagementAgent.Instance.StartActivity("Login");
-
+                            await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
                             return response;
                         }
                     }

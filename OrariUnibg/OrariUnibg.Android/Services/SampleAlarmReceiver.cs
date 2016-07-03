@@ -62,7 +62,7 @@ namespace OrariUnibg.Droid.Services.Notifications
 
             am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour * Settings.UpdateInterval, pi);
             //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, AlarmManager.IntervalHour, pi); //Ogni Ora
-            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 400000, pi); //5minuti
+            //am.SetRepeating(AlarmType.RtcWakeup, alarmTime.TimeInMillis, 400000, pi); //5minuti ***DEBUG
 
 
             Console.WriteLine(alarmTime);
