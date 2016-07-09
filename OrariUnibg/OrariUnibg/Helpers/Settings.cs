@@ -87,9 +87,11 @@ namespace OrariUnibg.Helpers
       	private const string OrderKey = "order_key";
       	private const string RaggruppaKey = "raggruppa_key";
 
-      	private const string MieiCorsiCountKey = "mieiCorsiCount_key"; 
+      	private const string MieiCorsiCountKey = "mieiCorsiCount_key";
 
-		private static readonly string VersionString = "0.1.8";
+        private const string HelpSuggerisciHideKey = "help_key";
+
+        private static readonly string VersionString = "1.0";
 		private static readonly string AppNameString = "UnibgOrari";
 		private static readonly string FirmaString = string.Format ("\n\n\nCondiviso da {0}", AppNameString);
       	private static readonly string DefaultString = string.Empty;
@@ -315,43 +317,23 @@ namespace OrariUnibg.Helpers
                 ToUpdate = false;
             }
 		}
-    
-    #endregion
-      
-      #region PersonalInformation
-    public static string Nome
-    {
-        get
+
+        public static bool HelpSuggerisciCorsiHide
         {
-            return AppSettings.GetValueOrDefault(NomeKey, DefaultString);
+            get
+            {
+                return AppSettings.GetValueOrDefault(HelpSuggerisciHideKey, DefaultBoolFalse);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(HelpSuggerisciHideKey, value);
+                ToUpdate = false;
+            }
         }
-        set
-        {
-            AppSettings.AddOrUpdateValue(NomeKey, value);
-        }
-    }
-    public static string Cognome
-    {
-        get
-        {
-            return AppSettings.GetValueOrDefault(CognomeKey, DefaultString);
-        }
-        set
-        {
-            AppSettings.AddOrUpdateValue(CognomeKey, value);
-        }
-    }
-    //public static string Email
-    //{
-    //    get
-    //    {
-    //        return AppSettings.GetValueOrDefault(MailKey, DefaultString);
-    //    }
-    //    set
-    //    {
-    //        AppSettings.AddOrUpdateValue(MailKey, value);
-    //    }
-    //}
+
+        #endregion
+
+        #region PersonalInformation
     public static string Matricola
     {
         get
@@ -456,7 +438,7 @@ namespace OrariUnibg.Helpers
         }
 
         #endregion
-
+        
         #region PickerIndex
         public static int? FacoltaIndex
         {
@@ -516,7 +498,7 @@ namespace OrariUnibg.Helpers
       
       #endregion
 
-      #region DB
+        #region DB
       public static int MieiCorsiCount
       {
           get
@@ -529,6 +511,8 @@ namespace OrariUnibg.Helpers
           }
       }
       #endregion
+
+
 
 	#region Strings
 

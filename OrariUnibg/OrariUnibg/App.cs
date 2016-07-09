@@ -28,6 +28,14 @@ namespace OrariUnibg
 
         public App()
         {
+            //***DEBUG NO AUTENTICAZIONE
+            //MainPage = new NavigationPage(
+            //    new MasterDetailView())
+            //{
+            //    BarBackgroundColor = ColorHelper.Blue700,
+            //    BarTextColor = ColorHelper.White
+            //};
+
             _service = new AzureDataService();
 
             if (Settings.PrimoAvvio) //prima volta che avvio la app
@@ -45,7 +53,6 @@ namespace OrariUnibg
                 else //utente non login
                     MainPage = new LoginView() { Service = _service };
             }
-//			MainPage = new SelectGiornaliero ();
         }
 
 

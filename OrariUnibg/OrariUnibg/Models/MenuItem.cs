@@ -17,7 +17,7 @@ namespace OrariUnibg.Models
         //public string Subtitle { get; set; }
 		public MenuType MenuType { get; set; }
 
-        public string IconSelected { get {return Icon+"_blue.png";}}
+        public string IconSelected { get {return Icon+ "_blue.png";}}
         public string IconDeSelected { get { return Icon + "_dark.png"; } }
         public bool _selected;
         public const string SelectedPropertyName = "Selected";
@@ -36,7 +36,7 @@ namespace OrariUnibg.Models
         Home,
         Giornaliero,
         Completo,
-        Esami,
+        SuggerisciCorsi,
 		Impostazioni
     }
 }

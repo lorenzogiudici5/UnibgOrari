@@ -23,8 +23,8 @@ namespace OrariUnibg.Services
 		private PdfPen blackPen = new PdfPen(Syncfusion.Drawing.Color.FromArgb(255, 0, 0, 0));
 		private PdfPen transparentPen = new PdfPen(Syncfusion.Drawing.Color.FromArgb(0, 0, 0, 0), .3f);
 		private PdfStandardFont titleFont = new PdfStandardFont(PdfFontFamily.Helvetica, 24);
-//		private PdfStandardFont subTitleFontBold = new PdfStandardFont(PdfFontFamily.Helvetica, 20, PdfFontStyle.Bold);
-		private PdfStandardFont subTitleFont = new PdfStandardFont(PdfFontFamily.Helvetica, 18);
+        private PdfStandardFont subTitleFontBold = new PdfStandardFont(PdfFontFamily.Helvetica, 20, PdfFontStyle.Bold);
+        private PdfStandardFont subTitleFont = new PdfStandardFont(PdfFontFamily.Helvetica, 18);
 //		private PdfStandardFont groupTitleFont = new PdfStandardFont(PdfFontFamily.Helvetica, 16);
 		private PdfStandardFont textFontBold = new PdfStandardFont(PdfFontFamily.Helvetica, 14, PdfFontStyle.Bold);
 		private PdfStandardFont textFontInfo = new PdfStandardFont(PdfFontFamily.Helvetica, 14);
@@ -137,11 +137,15 @@ namespace OrariUnibg.Services
 
 		private void createHeader()
 		{
-			Stream logoStream = typeof(App).GetTypeInfo().Assembly.GetManifestResourceStream("OrariUnibg.Resources.Image.Unibg.jpg");
+			Stream logoStream = typeof(App).GetTypeInfo().Assembly.GetManifestResourceStream("OrariUnibg.Resources.Image.Logo_flat.jpg");
 			// header
 			PdfPageTemplateElement header = new PdfPageTemplateElement(new RectangleF(new PointF(0, 0), new SizeF(_document.PageSettings.Width, heightHeader)));
-			header.Graphics.DrawString(string.Format("{0} {1} tramite: {2}", Settings.Nome, Settings.Cognome, Settings.AppName), smallFont, brushBlack, new PointF(marginLeft, 40 ));
-			header.Graphics.DrawImage(PdfImage.FromStream(logoStream), new PointF(_document.PageSettings.Width - marginRight * 2, 15), new SizeF(40, 40));
+            string tramite = string.Format("Condiviso tramite: {0}", Settings.AppName);
+            if (Settings.IsLoggedIn)
+                tramite = string.Format("{0} tramite: {2}", Settings.Name, Settings.AppName);
+            
+            header.Graphics.DrawString(tramite, smallFont, brushBlack, new PointF(marginLeft, 40 ));
+			header.Graphics.DrawImage(PdfImage.FromStream(logoStream), new PointF(_document.PageSettings.Width + 5 - marginRight * 2, 15), new SizeF(40, 40));
 			_document.Template.Top = header;
 		}
 
@@ -166,24 +170,30 @@ namespace OrariUnibg.Services
 
 		private void addTitles()
 		{
-			//title
 			PdfStringFormat stringFormat = new PdfStringFormat() { Alignment = PdfTextAlignment.Center };
 			RectangleF rectangleCenterPage = new Syncfusion.Drawing.RectangleF(0, currentY, _document.PageSettings.Size.Width, titleFont.Height);
-//			_document.Pages[0].Graphics.DrawString(Title, titleFont, brushBlack, rectangleCenterPage, stringFormat);
-			_document.Pages[0].Graphics.DrawString(TitleFacolta, titleFont, brushBlack, rectangleCenterPage, stringFormat);
+            
+            //title
+            _document.Pages[0].Graphics.DrawString(Title, titleFont, brushBlack, rectangleCenterPage, stringFormat);
+
+            currentY += spaceDefault;
+            rectangleCenterPage.Y = currentY;
+
+            //Laurea
+            _document.Pages[0].Graphics.DrawString(TitleFacolta, subTitleFontBold, brushBlack, rectangleCenterPage, stringFormat);
 
 			currentY += spaceDefault;
 			rectangleCenterPage.Y = currentY;
 
-			//subTitleLaurea
+			//Info = anno semestre
 			_document.Pages[0].Graphics.DrawString(TitleInfo, subTitleFont, brushBlack, rectangleCenterPage, stringFormat);
 			currentY += spaceDefault;
 
 //			rectangleCenterPage.Y = currentY;
 
 			//subTitleInfo
-//			_document.Pages[0].Graphics.DrawString(SubtitleInfo, subTitleFont, brushBlack, rectangleCenterPage, stringFormat);
-//			currentY += spaceDefault;
+			//_document.Pages[0].Graphics.DrawString(SubtitleInfo, subTitleFont, brushBlack, rectangleCenterPage, stringFormat);
+			//currentY += spaceDefault;
 
 		}
 		#endregion

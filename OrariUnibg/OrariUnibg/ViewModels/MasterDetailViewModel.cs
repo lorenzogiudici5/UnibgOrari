@@ -22,12 +22,15 @@ namespace OrariUniBg.ViewModels
 			MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 0, Title = "Home", MenuType = MenuType.Home, Icon = "ic_home"});
 			MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 1, Title = "Orario Giornaliero", MenuType = MenuType.Giornaliero, Icon = "ic_clock" });
             MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 2, Title = "Orario Completo", MenuType = MenuType.Completo, Icon = "ic_completo" });
+            MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 3, Title = "Corsi Suggeriti", MenuType = MenuType.SuggerisciCorsi, Icon = "ic_suggeriti" });
 
-			if (Settings.SuccessLogin) {
-				MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 3, Title = "Impostazioni", MenuType = MenuType.Impostazioni, Icon = "ic_settings" });
-			}
+            //**DEBUG
+            //MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 4, Title = "Impostazioni", MenuType = MenuType.Impostazioni, Icon = "ic_settings" });
 
-//            MenuItems.Add(new MenuItem() { Id = 3, Title = "Esami", MenuType = MenuType.Esami, Icon = "ic_esami.png" });
+            if (Settings.SuccessLogin)
+            {
+                MenuItems.Add(new OrariUnibg.Models.MenuItem() { Id = 4, Title = "Impostazioni", MenuType = MenuType.Impostazioni, Icon = "ic_settings" });
+            }
         }
 
     }

@@ -23,13 +23,27 @@ namespace OrariUnibg
 		#region Private Methods
 		private View getView()
 		{
-			_lblLogin = new Label () {
-				Text = "Effettua il login per sfruttare al meglio OrariUniBg! \n" +
-					"- Ricevi notifiche se una lezione viene sospesa . ." +
-					"- Aggiungi i tuoi corsi preferiti" +
-					"- . . e molto altro ancora!",
+            _lblLogin = new Label() {
+                Text = "Effettua il login per sfruttare al meglio UnibgOrari!",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
-			};
+                FontAttributes = FontAttributes.Bold,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                TextColor = ColorHelper.Green500,
+            };
+
+            var str1 = "Aggiungi i tuoi corsi preferiti";
+            var str2 = "Sincronizza i dati tra diversi dispositivi";
+            var str3 = "Ricevi notifiche se una lezione viene sospesa";
+            var str4 = "Aggiornamento automatico delle lezioni";
+            var str5 = "Memorizza i PDF generati";
+            var str6 = ". . e molto altro ancora!";
+
+            var lblInfo = new Label()
+            {
+                Text = string.Format("- {1}{0}- {2}{0}- {3}{0}- {4}{0}- {5}{0}- {5}{0}", "\n", str1, str2, str3, str4, str5, str6 ),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, this),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+            };
 
 			_btnLogin = new Button()
 			{
@@ -43,10 +57,11 @@ namespace OrariUnibg
 
 			var layout = new StackLayout () {
 				BackgroundColor = ColorHelper.White,
-				Padding = new Thickness(10, 10, 10, 10),
+				Padding = new Thickness(15, 10, 15, 10),
+                Spacing = 5,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				Children = {_lblLogin, _btnLogin}
+				Children = {_lblLogin, lblInfo, _btnLogin}
 			};
 
 			return layout;

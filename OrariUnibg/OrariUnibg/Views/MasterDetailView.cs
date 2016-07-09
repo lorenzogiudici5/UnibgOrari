@@ -103,6 +103,7 @@ namespace OrariUnibg.Views
         private SelectCompleto selectCompletoView;
         private SelectGiornaliero selectGiornView;
 		private ImpostazioniView impostazioniView;
+        private SuggerisciCorsiView suggerisciView;
         private MasterDetailViewModel _viewModel;
         #endregion
         
@@ -290,21 +291,24 @@ namespace OrariUnibg.Views
 	                PageSelection = selectCompletoView;
 	                break;
 
-				case MenuType.Impostazioni:
+                case MenuType.SuggerisciCorsi:
+                    if (suggerisciView == null)
+                        suggerisciView = new SuggerisciCorsiView();
+
+                    _viewModel.MenuItems.Where(x => x.Id == 3).FirstOrDefault().Selected = true;
+                    PageSelection = suggerisciView;
+                    break;
+
+                case MenuType.Impostazioni:
 					if (impostazioniView == null)
 						impostazioniView = new ImpostazioniView();
 
 //					_viewModel.MenuItems[3].Selected = true;
-				    _viewModel.MenuItems.Where(x => x.Id == 3).FirstOrDefault().Selected = true;
+				    _viewModel.MenuItems.Where(x => x.Id == 4).FirstOrDefault().Selected = true;
 					PageSelection = impostazioniView;
 					break;
 
-                //case MenuType.Esami:
-                //    if (downloadView == null)
-                //        downloadView = new DownloadView();
 
-                //    PageSelection = downloadView;
-                //    break;
             }
 
             ((ListView)sender).SelectedItem = null;

@@ -84,7 +84,29 @@ namespace OrariUnibg.Views.ViewCells
 						_layout.BackgroundColor = ColorHelper.White;
 				});
 
-			_layout = new StackLayout()
+            MessagingCenter.Subscribe<SuggerisciCorsiView, CorsoCompleto>(this, "select_obb", (sender, arg) =>
+            {
+                if (arg.Insegnamento == _lblInsegnamento.Text)
+                    _layout.BackgroundColor = ColorHelper.LightBlue500;
+            });
+            MessagingCenter.Subscribe<SuggerisciCorsiView, CorsoCompleto>(this, "deselect_obb", (sender, arg) =>
+            {
+                if (arg.Insegnamento == _lblInsegnamento.Text)
+                    _layout.BackgroundColor = ColorHelper.White;
+            });
+
+            MessagingCenter.Subscribe<SuggerisciCorsiView, CorsoCompleto>(this, "select_scelta", (sender, arg) =>
+            {
+                if (arg.Insegnamento == _lblInsegnamento.Text)
+                    _layout.BackgroundColor = ColorHelper.LightBlue500;
+            });
+            MessagingCenter.Subscribe<SuggerisciCorsiView, CorsoCompleto>(this, "deselect_scelta", (sender, arg) =>
+            {
+                if (arg.Insegnamento == _lblInsegnamento.Text)
+                    _layout.BackgroundColor = ColorHelper.White;
+            });
+
+            _layout = new StackLayout()
 			{
 				BackgroundColor = ColorHelper.White,
 				Padding = new Thickness(10, 10, 10, 10),

@@ -145,7 +145,7 @@ namespace OrariUnibg.Views
             pickerAnno.SelectedIndex = (int)Settings.AnnoIndex;
 
             //Se siamo a Marzo, secondo semsestre
-            pickerSemestre.SelectedIndex = DateTime.Today.Month >= new DateTime(2016, 03, 01).Month ? 1 : 0;
+            pickerSemestre.SelectedIndex = DateTime.Today.Month >= new DateTime(2016, 03, 01).Month && DateTime.Today.Month <= new DateTime(2016, 06, 01).Month ? 1 : 0;
 
             pickerRaggruppa.SelectedIndex = Settings.Raggruppa;
 

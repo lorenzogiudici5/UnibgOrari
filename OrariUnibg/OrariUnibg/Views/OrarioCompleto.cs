@@ -29,7 +29,7 @@ namespace OrariUnibg.Views
         #region Private Fields
         private ListView lv;
         private List<CorsoCompleto> lista;
-		private IEnumerable<IGrouping<Lezione.Day, CorsoCompletoGroupViewModel>> listaGroup;
+        private IEnumerable<IGrouping<Lezione.Day, CorsoCompletoGroupViewModel>> listaGroup;
         //private List<CorsoCompleto> OriginalList;
         private DbSQLite _db;
         private OrariCompletoViewModel _viewModel;

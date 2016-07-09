@@ -19,7 +19,14 @@ namespace OrariUnibg.Models
         }
         public int _day;
 
-        public int day { get { return _day; } }
+        public int day
+        {
+            get
+            {
+                _day = (int)Giorno;
+                return _day;
+            }
+        }
         public Day Giorno { get; set; }
         public string AulaOra
         {
@@ -43,7 +50,35 @@ namespace OrariUnibg.Models
         }
         public string Ora
         {
-            get { return _ora; }
+            get { return _ora.Replace('.', ':'); }
+        }
+
+        public DateTime? OraInizio
+        {
+            get
+            {
+                if (Ora != string.Empty)
+                {
+                    var inizio = string.Format("{0}:00", Ora.Split('-')[0]);
+                    return DateTime.Parse(inizio, System.Globalization.CultureInfo.CurrentCulture);
+                }
+                return null;
+                //return DateTime.ParseExact(inizio, "HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+        }
+        public DateTime? OraFine
+        {
+            get
+            {
+                if(Ora != string.Empty)
+                {
+                    var fine = string.Format("{0}:00", Ora.Split('-')[1]);
+                    return DateTime.Parse(fine, System.Globalization.CultureInfo.CurrentCulture);
+                }
+
+                return null;
+                //return DateTime.ParseExact(fine, "HH:mm:ss", CultureInfo.InvariantCulture);
+            }
         }
 
         public string Note { get { return _note; } set { } }

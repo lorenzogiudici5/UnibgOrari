@@ -15,7 +15,11 @@ namespace OrariUnibg.Models
         private string _inizioFine;
         #endregion
 
-        public List<Lezione> Lezioni { get { return _lezioni; } }
+        public List<Lezione> Lezioni
+        {
+            get { return _lezioni; }
+            set { if (value != _lezioni) _lezioni = value; }
+        }
         public List<Lezione> _lezioni = new List<Lezione>(); 
         
         public string InizioFine 
@@ -62,7 +66,12 @@ namespace OrariUnibg.Models
 
 		public override string ToString ()
 		{
-			return string.Format ("{0} \n{1}\n", InsegnamentoToString(), string.Join("\n", Lezioni.Where(x => x.AulaOra != string.Empty)));
+			return string.Format ("{0} ({1}) \n{2}\n", InsegnamentoToString(), Docente, string.Join("\n", Lezioni.Where(x => x.AulaOra != string.Empty)));
 		}
+    }
+
+    public class CorsoCompletoAlgoritmo : CorsoCompleto
+    {
+        public int Punteggio { get; set; }
     }
 }

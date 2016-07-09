@@ -171,7 +171,10 @@ namespace OrariUnibg.Services
                             _giorno = Lezione.Day.Sabato;
                             break;
                     }
-                    corso._lezioni.Add(new Lezione() { Giorno =  _giorno, AulaOra = col[i].InnerText.Trim() });
+
+                    var s = col[i].InnerText.Trim();
+                    //if (s != string.Empty)
+                        corso._lezioni.Add(new Lezione() { Giorno =  _giorno, AulaOra = col[i].InnerText.Trim() });
                     //corso.Giorni[i - 3] = col[i].InnerText.Trim();
                 }
 

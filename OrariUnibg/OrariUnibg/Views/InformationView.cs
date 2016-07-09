@@ -298,8 +298,8 @@ namespace OrariUnibg.Views
             string laurea = _pickLaurea.Items[_pickLaurea.SelectedIndex];
             int annoIndex = _pickAnno.SelectedIndex + 1;
             string anno = _pickAnno.Items[annoIndex - 1];
-			Settings.Nome = _entryNome.Text.TrimEnd();
-			Settings.Cognome = _entryCognome.Text.TrimEnd();
+			Settings.Name = _entryNome.Text.TrimEnd();
+			Settings.GivenName = _entryCognome.Text.TrimEnd();
 			Settings.Email = _entryMail.Text.Trim () + "@studenti.unibg.it";
 
             
