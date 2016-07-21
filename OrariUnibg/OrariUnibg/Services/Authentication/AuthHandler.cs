@@ -45,81 +45,51 @@ namespace OrariUnibg.Services.Authentication
                 // User is not logged in – we got a 401
 
                 //***VERSIONE FUNZIONANTE (funziona il refresh del token per 2-3 giorni, dopodiche non rientra più)
-                try
-                {
-                    MobileServiceUser user = Client.CurrentUser;
-
-                    if (user == null)
-                    {
-                        // prompt with login UI
-                        await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
-                        //user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
-                    }
-                    else
-                    {
-                        // Refresh Tokens
-                        try
-                        {
-                            //EngagementAgent.Instance.StartActivity("RefreshToken");
-
-                            // Calling /.auth/refresh will update the tokens in the token store
-                            // and will also return a new mobile authentication token.
-                            JObject refreshJson = (JObject)await this.Client.InvokeApiAsync("/.auth/refresh",
-                                HttpMethod.Get,
-                                null);
-
-                            string newToken = refreshJson["authenticationToken"].Value<string>();
-                            user.MobileServiceAuthenticationToken = newToken;
-                            Settings.AuthToken = newToken;
-                        }
-                        catch
-                        {
-                            //EngagementAgent.Instance.StartActivity("Login");
-                            await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
-                            return response;
-                        }
-                    }
-
-                    // we're now logged in again.
-
-                    // Save the user to the app settings
-                    //saveUserDelegate(user);
-
-                    // Clone the request
-                    clonedRequest = await CloneRequest(request);
-
-                    clonedRequest.Headers.Remove("X-ZUMO-AUTH");
-
-                    // Set the authentication header
-                    clonedRequest.Headers.Add("X-ZUMO-AUTH", user.MobileServiceAuthenticationToken);
-
-                    // Resend the request
-                    response = await base.SendAsync(clonedRequest, cancellationToken);
-                }
-                catch (InvalidOperationException)
-                {
-                    // user cancelled auth, so lets return the original response
-                    return response;
-                }
-
-
-                //****NUOVA VERSIONE SDK AGGIORANTA (da testare)
-                //Forum Xamarin https://forums.xamarin.com/discussion/comment/210298#Comment_210298 
                 //try
                 //{
-                //    //var user = await this.Client.RefreshUserAsync();
-                //    //var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
-                //    //var user = await this.Client.LoginAsync()
+                //    MobileServiceUser user = Client.CurrentUser;
+
+                //    if (user == null)
+                //    {
+                //        // prompt with login UI
+                //        await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
+                //        //user = await Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                //    }
+                //    else
+                //    {
+                //        // Refresh Tokens
+                //        try
+                //        {
+                //            //EngagementAgent.Instance.StartActivity("RefreshToken");
+
+                //            // Calling /.auth/refresh will update the tokens in the token store
+                //            // and will also return a new mobile authentication token.
+                //            JObject refreshJson = (JObject)await this.Client.InvokeApiAsync("/.auth/refresh",
+                //                HttpMethod.Get,
+                //                null);
+
+                //            string newToken = refreshJson["authenticationToken"].Value<string>();
+                //            user.MobileServiceAuthenticationToken = newToken;
+                //            Settings.AuthToken = newToken;
+                //        }
+                //        catch
+                //        {
+                //            //EngagementAgent.Instance.StartActivity("Login");
+                //            await DependencyService.Get<IAuthentication>().LoginAsync((MobileServiceClient)Client, MobileServiceAuthenticationProvider.Google);
+                //            return response;
+                //        }
+                //    }
+
                 //    // we're now logged in again.
+
+                //    // Save the user to the app settings
+                //    //saveUserDelegate(user);
 
                 //    // Clone the request
                 //    clonedRequest = await CloneRequest(request);
 
-
-                //    Settings.UserId = user.UserId;
-                //    Settings.AuthToken = user.MobileServiceAuthenticationToken;
-
                 //    clonedRequest.Headers.Remove("X-ZUMO-AUTH");
+
                 //    // Set the authentication header
                 //    clonedRequest.Headers.Add("X-ZUMO-AUTH", user.MobileServiceAuthenticationToken);
 
@@ -131,6 +101,36 @@ namespace OrariUnibg.Services.Authentication
                 //    // user cancelled auth, so lets return the original response
                 //    return response;
                 //}
+
+
+                //****NUOVA VERSIONE SDK AGGIORANTA (da testare)
+                //Forum Xamarin https://forums.xamarin.com/discussion/comment/210298#Comment_210298 
+                try
+                {
+                    var user = await this.Client.RefreshUserAsync();
+                    //var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                    //var user = await this.Client.LoginAsync()
+                    // we're now logged in again.
+
+                    // Clone the request
+                    clonedRequest = await CloneRequest(request);
+
+
+                    Settings.UserId = user.UserId;
+                    Settings.AuthToken = user.MobileServiceAuthenticationToken;
+
+                    clonedRequest.Headers.Remove("X-ZUMO-AUTH");
+                    // Set the authentication header
+                    clonedRequest.Headers.Add("X-ZUMO-AUTH", user.MobileServiceAuthenticationToken);
+
+                    // Resend the request
+                    response = await base.SendAsync(clonedRequest, cancellationToken);
+                }
+                catch (InvalidOperationException)
+                {
+                    // user cancelled auth, so lets return the original response
+                    return response;
+                }
             }
 
             return response;
