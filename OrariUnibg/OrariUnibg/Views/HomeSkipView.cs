@@ -40,7 +40,7 @@ namespace OrariUnibg
 
             var lblInfo = new Label()
             {
-                Text = string.Format("- {1}{0}- {2}{0}- {3}{0}- {4}{0}- {5}{0}- {5}{0}", "\n", str1, str2, str3, str4, str5, str6 ),
+                Text = string.Format("- {1}{0}- {2}{0}- {3}{0}- {4}{0}- {5}{0}- {6}{0}", "\n", str1, str2, str3, str4, str5, str6 ),
                 FontSize = Device.GetNamedSize(NamedSize.Medium, this),
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };

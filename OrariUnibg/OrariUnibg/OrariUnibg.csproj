@@ -118,8 +118,8 @@
       <HintPath>..\..\packages\Xam.Plugins.Forms.ImageCircle.1.4.1\lib\portable-net45+wp8+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Mobile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Client.2.0.1\lib\portable-win+net45+wp8+wpa81+monotouch+monoandroid\Microsoft.WindowsAzure.Mobile.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Mobile, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Client.2.1.0\lib\portable-win+net45+wp8+wpa81+monotouch+monoandroid\Microsoft.WindowsAzure.Mobile.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -150,6 +150,14 @@
       <HintPath>..\..\packages\SQLite.Net-PCL.3.1.1\lib\portable-win8+net45+wp8+wpa81+MonoAndroid1+MonoTouch1\SQLite.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Syncfusion.Compression.Portable, Version=14.2451.0.26, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Syncfusion.Xamarin.Compression.14.2.0.26\lib\portable-win+net45+wp80+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Syncfusion.Compression.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Syncfusion.Pdf.Portable, Version=14.2451.0.26, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Syncfusion.Xamarin.Pdf.14.2.0.26\lib\portable-win+net45+wp80+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Syncfusion.Pdf.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
     </Reference>
@@ -158,12 +166,6 @@
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Pdf.Portable">
-      <HintPath>C:\Program Files %28x86%29\Syncfusion\Essential Studio\13.3.0.7\lib\pcl\Syncfusion.Pdf.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Compression.Portable">
-      <HintPath>C:\Program Files %28x86%29\Syncfusion\Essential Studio\13.3.0.7\lib\pcl\Syncfusion.Compression.Portable.dll</HintPath>
     </Reference>
     <Reference Include="Toasts.Forms.Plugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Toasts.Forms.Plugin.2.0.3\lib\portable-net45+wp8+win8+wpa81+netcore451+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Toasts.Forms.Plugin.Abstractions.dll</HintPath>

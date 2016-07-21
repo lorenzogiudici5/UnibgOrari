@@ -43,6 +43,8 @@ namespace OrariUnibg.Services.Authentication
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // User is not logged in – we got a 401
+
+                //***VERSIONE FUNZIONANTE (funziona il refresh del token per 2-3 giorni, dopodiche non rientra più)
                 try
                 {
                     MobileServiceUser user = Client.CurrentUser;
@@ -100,12 +102,13 @@ namespace OrariUnibg.Services.Authentication
                     return response;
                 }
 
-                // Oh noes, user is not logged in - we got a 401
-                // Log them in, this time hardcoded with Microsoft but you would
-                // trigger the login presentation in your application
+
+                //****NUOVA VERSIONE SDK AGGIORANTA (da testare)
+                //Forum Xamarin https://forums.xamarin.com/discussion/comment/210298#Comment_210298 
                 //try
                 //{
-                //    var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
+                //    //var user = await this.Client.RefreshUserAsync();
+                //    //var user = await this.Client.LoginAsync(MobileServiceAuthenticationProvider.Google, null);
                 //    //var user = await this.Client.LoginAsync()
                 //    // we're now logged in again.
 

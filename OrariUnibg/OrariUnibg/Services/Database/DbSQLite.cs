@@ -150,7 +150,6 @@ namespace OrariUnibg.Services.Database
         }
         #endregion
 
-
         #region Orari
         public IEnumerable<Orari> GetAllOrari()
         {

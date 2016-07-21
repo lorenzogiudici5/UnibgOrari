@@ -27,9 +27,14 @@ namespace OrariUnibg.Models
             get { return _inizioFine; }
             set 
             { 
-                _inizio = value.Substring(0, 10);
-                _fine = value.Substring(10, 10);
-                _inizioFine = _inizio + " - " + _fine;
+                if(_inizioFine == null)
+                {
+                    var lenght = value.Length;
+                    _inizio = value.Substring(0, 10);
+                    _fine = value.Substring(lenght - 10, 10);
+                    _inizioFine = _inizio + " - " + _fine;
+                }
+
             }
         }
 

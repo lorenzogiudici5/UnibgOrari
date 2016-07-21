@@ -16,6 +16,7 @@ using OrariUnibg.Helpers;
 using ImageCircle.Forms.Plugin.Droid;
 using Plugin.Toasts;
 using Refractored.XamForms.PullToRefresh.Droid;
+using System.Threading.Tasks;
 
 namespace OrariUnibg.Droid
 {
@@ -52,6 +53,16 @@ namespace OrariUnibg.Droid
 //				ActionBar.SetIcon ( new ColorDrawable (Resources.GetColor (Android.Resource.Color.Transparent))); 
 //			}
 		}
+
+        protected async override void OnResume()
+        {
+            base.OnResume();
+
+            await Task.Delay(10);
+            // Lets start from the beginning again
+            //var nav = ServiceLocator.Current.GetInstance<INavService>();
+            //nav.Home();
+        }
     }
 }
 

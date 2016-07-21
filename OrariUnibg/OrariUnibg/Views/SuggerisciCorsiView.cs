@@ -43,6 +43,7 @@ namespace OrariUnibg.Views
         AbsoluteLayout layout5_risultatoGiorni;
         private int appearingListItemIndex = 0;
         private OrariCompletoViewModel _viewModel;
+        private bool resetView = true;
 
         private List<CorsoCompleto> _listSource;
         private List<CorsoCompleto> _listObbligatori;
@@ -737,7 +738,11 @@ namespace OrariUnibg.Views
                 if (s.Contains("Condividi")) //Condividi PDF
                     DependencyService.Get<IFile>().Share(pdf._filename);
                 else
+                {
+                    resetView = false;  //non voglio resettare le view
                     await pdf.Display(); //visualizza PDF
+                }
+
             }
             else
             {
@@ -768,7 +773,10 @@ namespace OrariUnibg.Views
                 if (s.Contains("Condividi")) //Condividi PDF
                     DependencyService.Get<IFile>().Share(pdf._filename);
                 else
+                {
+                    resetView = false;  //non voglio resettare le view
                     await pdf.Display(); //visualizza PDF
+                }
             }
             else
             {
@@ -1021,7 +1029,10 @@ namespace OrariUnibg.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            this.CurrentPage = this.Children[0];
+            if(resetView)
+                this.CurrentPage = this.Children[0];
+
+            resetView = true;
             //lv.ItemAppearing += List_ItemAppearing;
             //lv.ItemDisappearing += List_ItemDisappearing;
         }
@@ -1029,10 +1040,14 @@ namespace OrariUnibg.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            _lvCorsiSUggerit.ItemsSource = null;
-            _lvGiorni.ItemsSource = null;
-            _listViewObbligatori.ItemsSource = null;
-            _listViewScelta.ItemsSource = null;
+
+            if (resetView)
+            {
+                _lvCorsiSUggerit.ItemsSource = null;
+                _lvGiorni.ItemsSource = null;
+                _listViewObbligatori.ItemsSource = null;
+                _listViewScelta.ItemsSource = null;
+            }
             //lv.ItemAppearing -= List_ItemAppearing;
             //lv.ItemDisappearing -= List_ItemDisappearing;
         }

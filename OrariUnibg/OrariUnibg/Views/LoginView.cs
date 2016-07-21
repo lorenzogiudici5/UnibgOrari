@@ -273,7 +273,9 @@ namespace OrariUnibg
 		{
 			Navigation.PopModalAsync ();
 		}
-		#endregion
-	}
+
+
+        #endregion
+    }
 }
 

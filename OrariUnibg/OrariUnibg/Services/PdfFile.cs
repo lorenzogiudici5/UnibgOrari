@@ -142,7 +142,7 @@ namespace OrariUnibg.Services
 			PdfPageTemplateElement header = new PdfPageTemplateElement(new RectangleF(new PointF(0, 0), new SizeF(_document.PageSettings.Width, heightHeader)));
             string tramite = string.Format("Condiviso tramite: {0}", Settings.AppName);
             if (Settings.IsLoggedIn)
-                tramite = string.Format("{0} tramite: {2}", Settings.Name, Settings.AppName);
+                tramite = string.Format("{0} tramite: {1}", Settings.Name, Settings.AppName);
             
             header.Graphics.DrawString(tramite, smallFont, brushBlack, new PointF(marginLeft, 40 ));
 			header.Graphics.DrawImage(PdfImage.FromStream(logoStream), new PointF(_document.PageSettings.Width + 5 - marginRight * 2, 15), new SizeF(40, 40));

@@ -9,18 +9,27 @@ namespace OrariUnibg.Helpers
 {
     public static class AlgoritmoCorsi
     {
-        public static IEnumerable<CorsoCompleto> SuggerisciCorsi(List<CorsoCompleto> corsiObbligatori, List<CorsoCompletoAlgoritmo> corsiScelta, int numCorsi, int punteggioMezzora, int punteggioGiorno)
+        public static IEnumerable<CorsoCompleto> SuggerisciCorsi(List<CorsoCompleto> corsiObbligatori, List<CorsoCompletoAlgoritmo> corsiSceltaSource, int numCorsi, int punteggioMezzora, int punteggioGiorno)
         {
+            List<CorsoCompleto> corsiSuggeritiTemp = new List<CorsoCompleto>();
+            List<CorsoCompletoAlgoritmo> corsiSceltaTemp = new List<CorsoCompletoAlgoritmo>();
+
             //  ho già  raggiunto il numero di corsi scelti dall'utente ritorno i corsi obbligatori
             if (corsiObbligatori.Count() >= numCorsi)
                 return corsiObbligatori;
 
             //se somma corsi obbligatori + corsi a scelta minore o uguale del numero dei corsi, return
-            if (corsiObbligatori.Count() + corsiScelta.Count() <= numCorsi)
+            else if (corsiObbligatori.Count() + corsiSceltaSource.Count() <= numCorsi)
             {
-                corsiObbligatori.AddRange(corsiScelta);
+                corsiObbligatori.AddRange(corsiSceltaSource);
                 return corsiObbligatori;
             }
+            else
+            {
+                corsiSuggeritiTemp.AddRange(corsiObbligatori); //aggiungo ai corsi suggeriti tutti gli obbligatori
+                corsiSceltaTemp.AddRange(corsiSceltaSource); //lista temporanea
+            }
+                
                 
 
             // Le 5 liste successive serviranno per dividere le lezione dei corsi obbligatori in giorni
@@ -36,7 +45,7 @@ namespace OrariUnibg.Helpers
             };
 
             // popolo le liste dividendo le lezioni dei corsi obbligatori in diverse liste una per giorno
-            foreach (var corso in corsiObbligatori)
+            foreach (var corso in corsiSuggeritiTemp)
             {
                 foreach (var lezione in corso.Lezioni)
                     if (lezione.AulaOra == string.Empty)
@@ -45,15 +54,16 @@ namespace OrariUnibg.Helpers
                         giorniLezioni[lezione.day].Add(lezione);
             }
 
-            while (corsiObbligatori.Count() != numCorsi)
+            while (corsiSuggeritiTemp.Count() != numCorsi)
             {
                 //ora si aggiungono ai corsi obbligatori i corsiAScelta con punteggioScelta minore
-                foreach (var scelta in corsiScelta)
+                foreach (var scelta in corsiSceltaTemp)
                 {
                     scelta.Punteggio = 0;                                   // setto i punteggi di ogni corso a zero
 
                     foreach (var lezione in scelta.Lezioni)
                     {
+                        var l = lezione;
                         if (lezione.AulaOra == string.Empty)
                             continue;
 
@@ -80,10 +90,11 @@ namespace OrariUnibg.Helpers
                     }
                 }
 
-                corsiScelta = corsiScelta.OrderBy(x => x.Punteggio).ToList();              // Si ordina in base al punteggioScelta in modo crescente
+                corsiSceltaTemp = corsiSceltaTemp.OrderBy(x => x.Punteggio).ToList();              // Si ordina in base al punteggioScelta in modo crescente
 
-                var corsoPrescelto = corsiScelta.First();
-                corsiObbligatori.Add(corsoPrescelto);               //aggiungo ai corsi obbligatori il primo corso a scelta ordinato in base al punteggio
+                var corsoPrescelto = corsiSceltaTemp.First();
+                //corsiObbligatori.Add(corsoPrescelto);               //aggiungo ai corsi obbligatori il primo corso a scelta ordinato in base al punteggio
+                corsiSuggeritiTemp.Add(corsoPrescelto);
 
                 foreach (var lezione in corsoPrescelto.Lezioni)      //aggiungo le lezioni del primo corso a scelta alle varie liste dei giorni
                 {
@@ -95,10 +106,10 @@ namespace OrariUnibg.Helpers
 
                 // tolgo dalla lista corsi a scelta il corso aggiunto ai corsi obbligatori, ripeto il tutto con un altro 
                 // corso a scelta finchÃ¨ non raggiungo il numero di corsi scelti dall'utente.
-                corsiScelta.Remove(corsoPrescelto);
+                corsiSceltaTemp.Remove(corsoPrescelto);
             }
 
-            return corsiObbligatori;
+            return corsiSuggeritiTemp;
         }
 
         private static double confrontaOrari(DateTime? Scelta_oraInizio, DateTime? Scelta_oraFine, DateTime? Obb_oraInizio, DateTime? Obb_oraFine)
