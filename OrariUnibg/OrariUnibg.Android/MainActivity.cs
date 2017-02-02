@@ -17,6 +17,7 @@ using ImageCircle.Forms.Plugin.Droid;
 using Plugin.Toasts;
 using Refractored.XamForms.PullToRefresh.Droid;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile;
 
 namespace OrariUnibg.Droid
 {
@@ -36,15 +37,17 @@ namespace OrariUnibg.Droid
             ToastNotificatorImplementation.Init(this);  //TOAST NOTIFICATION
             PullToRefreshLayoutRenderer.Init();
 
-            Insights.DisableCollection = true;
+
+            //Insights.DisableCollection = true;
             //Insights.DisableCollection = Settings.StatisticData;
-            Insights.Initialize("37a1497d790f720508e527850ad82785c117c774", Xamarin.Forms.Forms.Context);
+            //Insights.Initialize("37a1497d790f720508e527850ad82785c117c774", Xamarin.Forms.Forms.Context);
 
 			FormsAppCompatActivity.ToolbarResource = Resource.Layout.toolbar;
 			FormsAppCompatActivity.TabLayoutResource = Resource.Layout.tabs;
 
 
-
+            //Set up Mobile Center https://mobile.azure.com/users/lorenzogiudici5/apps/unibgorari 
+            MobileCenter.Configure("99e6b366-7e20-46e7-97e9-43f3ec720529");
             LoadApplication(new App()); // method is new in 1.3
 
 

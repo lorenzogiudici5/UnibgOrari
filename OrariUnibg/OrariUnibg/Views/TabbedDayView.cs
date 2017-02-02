@@ -440,9 +440,9 @@ namespace OrariUnibg.Views
 			text+= Settings.Firma;
 			DependencyService.Get<IMethods> ().Share (text); //condividi testo
 
-			Insights.Track("Share", new Dictionary <string,string>{
-				{"Orario", "Preferiti_"+s},
-			});
+			//Insights.Track("Share", new Dictionary <string,string>{
+			//	{"Orario", "Preferiti_"+s},
+			//});
 
 		}
         #endregion

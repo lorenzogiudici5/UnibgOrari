@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace OrariUnibg
 {
@@ -37,6 +40,7 @@ namespace OrariUnibg
             //};
 
             _service = new AzureDataService();
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             if (Settings.PrimoAvvio) //prima volta che avvio la app
             {

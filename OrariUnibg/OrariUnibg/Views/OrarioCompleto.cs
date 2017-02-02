@@ -229,9 +229,9 @@ namespace OrariUnibg.Views
 
 			}
 				
-			Insights.Track("Share", new Dictionary <string,string>{
-				{"Orario", "Completo_" + s},
-			});
+			//Insights.Track("Share", new Dictionary <string,string>{
+			//	{"Orario", "Completo_" + s},
+			//});
 		}
 
         private void showAll()

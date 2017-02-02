@@ -174,9 +174,9 @@ namespace OrariUnibg.Views
 				DependencyService.Get<IMethods> ().Share (text); //condividi testo
 			}
 				
-			Insights.Track("Share", new Dictionary <string,string>{
-				{"Orario", "Giornaliero_" + s},
-			});
+			//Insights.Track("Share", new Dictionary <string,string>{
+			//	{"Orario", "Giornaliero_" + s},
+			//});
 
 		}
         private void showAll()
